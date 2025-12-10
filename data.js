@@ -42,6 +42,7 @@ const familyData = [
     gender: "female",
     born: "2009/12/15-2024/12/25",
     locate: "東山動植物園",
+    img: "https://dj-kata.github.io/koala_familytree/imgs/tilly.jpg",
   },
   {
     id: 5,
@@ -484,6 +485,7 @@ const familyData = [
     gender: "male",
     born: "2021/5/14",
     locate: "平川動物公園",
+    img: "https://dj-kata.github.io/koala_familytree/imgs/raito.JPG",
   },
   {
     id: 50,
@@ -552,6 +554,7 @@ const familyData = [
     gender: "male",
     born: "2022/8/11",
     locate: "平川動物公園",
+    img: "https://dj-kata.github.io/koala_familytree/imgs/taiyou.JPG",
   },
   {
     id: 57,
@@ -722,6 +725,7 @@ const familyData = [
     gender: "male",
     born: "2023/11/18",
     locate: "平川動物公園",
+    img: "https://dj-kata.github.io/koala_familytree/imgs/star.JPG",
   },
   {
     id: 74,
