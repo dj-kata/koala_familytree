@@ -90,6 +90,7 @@ const familyData = [
     gender: "female",
     born: "2013/12/25",
     locate: "東山動植物園",
+    img: "https://dj-kata.github.io/koala_familytree/imgs/holly.jpg",
   },
   {
     id: 10,
@@ -224,6 +225,7 @@ const familyData = [
     gender: "female",
     born: "2017/8/23",
     locate: "東山動植物園",
+    img: "https://dj-kata.github.io/koala_familytree/imgs/rin.jpg",
   },
   {
     id: 24,
@@ -234,6 +236,7 @@ const familyData = [
     gender: "male",
     born: "2017/5/14",
     locate: "東山動植物園",
+    img: "https://dj-kata.github.io/koala_familytree/imgs/ishin.jpg",
   },
   {
     id: 25,
@@ -351,6 +354,7 @@ const familyData = [
     gender: "female",
     born: "2020/9/3",
     locate: "平川動物公園",
+    img: "https://dj-kata.github.io/koala_familytree/imgs/tukusi.png",
   },
   {
     id: 37,
@@ -361,6 +365,7 @@ const familyData = [
     gender: "female",
     born: "2019/12/22",
     locate: "平川動物公園",
+    img: "https://dj-kata.github.io/koala_familytree/imgs/indeko.png",
   },
   {
     id: 38,
@@ -557,6 +562,7 @@ const familyData = [
     gender: "male",
     born: "2022/4/4",
     locate: "平川動物公園",
+    img: "https://dj-kata.github.io/koala_familytree/imgs/sisio.png",
   },
   {
     id: 58,
@@ -695,6 +701,7 @@ const familyData = [
     gender: "female",
     born: "2024/9/11",
     locate: "平川動物公園",
+    img: "https://dj-kata.github.io/koala_familytree/imgs/sumire.jpg",
   },
   {
     id: 72,
