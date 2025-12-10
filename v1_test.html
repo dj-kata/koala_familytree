@@ -267,6 +267,19 @@ id,name,father,mother,partners,gender,born,locate
                 } else if (this.value === 'csv') {
                     document.getElementById('csvInput').style.display = 'block';
                 }
+                
+                // データソース切り替え時にチャートをクリア（オプション）
+                // 切り替えるたびにクリアしたくない場合はこの部分をコメントアウト
+                /*
+                if (chart && this.value !== 'default') {
+                    try {
+                        chart.destroy();
+                    } catch (e) {}
+                    chart = null;
+                    document.getElementById('tree').innerHTML = '';
+                    clearMessages();
+                }
+                */
             });
         });
 
@@ -283,27 +296,40 @@ id,name,father,mother,partners,gender,born,locate
         }
 
         function initChart(data) {
+            // 既存のチャートを完全に破棄
             if (chart) {
-                document.getElementById('tree').innerHTML = '';
-            }
-
-            var options = getOptions();
-
-            chart = new FamilyTree(document.getElementById("tree"), {
-                mouseScrool: FamilyTree.none,
-                scaleInitial: options.scaleInitial,
-                siblingSeparation: 120,
-                template: 'john',
-                nodeBinding: {
-                    field_0: "name",
-                    field_1: "born",
-                    img_0: "img",
-                    field_2: "locate",
+                try {
+                    chart.destroy();
+                } catch (e) {
+                    console.log('Chart destroy error:', e);
                 }
-            });
+                chart = null;
+            }
+            
+            // DOMをクリア
+            const treeElement = document.getElementById('tree');
+            treeElement.innerHTML = '';
+            
+            // 少し待ってから新しいチャートを作成
+            setTimeout(() => {
+                var options = getOptions();
 
-            chart.load(data);
-            currentData = data;
+                chart = new FamilyTree(treeElement, {
+                    mouseScrool: FamilyTree.none,
+                    scaleInitial: options.scaleInitial,
+                    siblingSeparation: 120,
+                    template: 'john',
+                    nodeBinding: {
+                        field_0: "name",
+                        field_1: "born",
+                        img_0: "img",
+                        field_2: "locate",
+                    }
+                });
+
+                chart.load(data);
+                currentData = data;
+            }, 100);
         }
 
         function loadData() {
@@ -345,8 +371,11 @@ id,name,father,mother,partners,gender,born,locate
                     return;
                 }
 
+                // チャートの初期化は非同期なので、メッセージを少し遅らせる
                 initChart(data);
-                showMessage(`家系図を生成しました (${data.length}個のノード)`, 'success');
+                setTimeout(() => {
+                    showMessage(`家系図を生成しました (${data.length}個のノード)`, 'success');
+                }, 300);
 
             } catch (error) {
                 console.error('Error loading data:', error);
@@ -358,7 +387,8 @@ id,name,father,mother,partners,gender,born,locate
             const result = Papa.parse(csvText, {
                 header: true,
                 skipEmptyLines: true,
-                dynamicTyping: false
+                dynamicTyping: false,
+                trimHeaders: true
             });
 
             if (result.errors.length > 0) {
@@ -366,6 +396,11 @@ id,name,father,mother,partners,gender,born,locate
             }
 
             const data = result.data.map(row => {
+                // idは必須
+                if (!row.id || row.id.trim() === '') {
+                    return null;
+                }
+
                 const node = {
                     id: parseInt(row.id),
                     name: row.name || '',
@@ -376,17 +411,26 @@ id,name,father,mother,partners,gender,born,locate
 
                 // 父親ID
                 if (row.father && row.father.trim() !== '') {
-                    node.fid = parseInt(row.father);
+                    const fid = parseInt(row.father);
+                    if (!isNaN(fid)) {
+                        node.fid = fid;
+                    }
                 }
 
                 // 母親ID
                 if (row.mother && row.mother.trim() !== '') {
-                    node.mid = parseInt(row.mother);
+                    const mid = parseInt(row.mother);
+                    if (!isNaN(mid)) {
+                        node.mid = mid;
+                    }
                 }
 
                 // パートナーID (カンマ区切りまたはセミコロン区切り)
                 if (row.partners && row.partners.trim() !== '') {
-                    node.pids = row.partners.split(/[,;]/).map(p => parseInt(p.trim())).filter(p => !isNaN(p));
+                    const pids = row.partners.split(/[,;]/)
+                        .map(p => parseInt(p.trim()))
+                        .filter(p => !isNaN(p) && p !== node.id); // 自分自身は除外
+                    node.pids = pids;
                 } else {
                     node.pids = [];
                 }
@@ -397,7 +441,7 @@ id,name,father,mother,partners,gender,born,locate
                 }
 
                 return node;
-            });
+            }).filter(node => node !== null); // nullを除外
 
             return data;
         }
@@ -489,10 +533,15 @@ id,name,father,mother,partners,gender,born,locate
             document.getElementById('csvData').value = '';
             
             if (chart) {
-                document.getElementById('tree').innerHTML = '';
+                try {
+                    chart.destroy();
+                } catch (e) {
+                    console.log('Chart destroy error:', e);
+                }
                 chart = null;
             }
             
+            document.getElementById('tree').innerHTML = '';
             currentData = null;
             clearMessages();
             showMessage('クリアしました', 'info');
@@ -525,8 +574,10 @@ id,name,father,mother,partners,gender,born,locate
         window.addEventListener('load', function() {
             // デフォルトデータがあれば自動的に表示
             if (typeof window.familyData !== 'undefined') {
-                initChart(window.familyData);
-                showMessage('デフォルトデータを表示しています', 'info');
+                setTimeout(() => {
+                    initChart(window.familyData);
+                    showMessage('デフォルトデータを表示しています', 'info');
+                }, 200);
             }
         });
     </script>
