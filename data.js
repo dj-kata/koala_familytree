@@ -118,7 +118,7 @@ const familyData = [
     pids: [],
     gender: "female",
     born: "2014/8/3-2024/8/15",
-    locate: "埼玉こども動物自然公園",
+    locate: "埼玉県こども動物自然公園",
     img: "https://dj-kata.github.io/koala_familytree/imgs/.png",
   },
   {
@@ -147,7 +147,7 @@ const familyData = [
     pids: [16,105],
     gender: "female",
     born: "2013/2/23-2023/7/8",
-    locate: "埼玉こども動物自然公園",
+    locate: "埼玉県こども動物自然公園",
     img: "https://dj-kata.github.io/koala_familytree/imgs/.png",
   },
   {
@@ -224,7 +224,7 @@ const familyData = [
     pids: [16],
     gender: "female",
     born: "2015/3/23-2023/5/31",
-    locate: "埼玉こども動物自然公園",
+    locate: "埼玉県こども動物自然公園",
     img: "https://dj-kata.github.io/koala_familytree/imgs/.png",
   },
   {
@@ -363,7 +363,7 @@ const familyData = [
     pids: [42],
     gender: "female",
     born: "2019/6/12",
-    locate: "埼玉こども動物自然公園",
+    locate: "埼玉県こども動物自然公園",
     img: "https://dj-kata.github.io/koala_familytree/imgs/fuku.png",
   },
   {
@@ -374,7 +374,7 @@ const familyData = [
     pids: [17],
     gender: "female",
     born: "2019/4/2",
-    locate: "埼玉こども動物自然公園",
+    locate: "埼玉県こども動物自然公園",
     img: "https://dj-kata.github.io/koala_familytree/imgs/koharu.png",
   },
   {
@@ -451,7 +451,7 @@ const familyData = [
     pids: [34,51],
     gender: "male",
     born: "2020/6/14",
-    locate: "埼玉こども動物自然公園",
+    locate: "埼玉県こども動物自然公園",
     img: "https://dj-kata.github.io/koala_familytree/imgs/sora.png",
   },
   {
@@ -548,7 +548,7 @@ const familyData = [
     pids: [42],
     gender: "female",
     born: "2021/4/30",
-    locate: "埼玉こども動物自然公園",
+    locate: "埼玉県こども動物自然公園",
     img: "https://dj-kata.github.io/koala_familytree/imgs/mira.png",
   },
   {
@@ -753,7 +753,7 @@ const familyData = [
     pids: [],
     gender: "male",
     born: "2022/12/9",
-    locate: "埼玉こども動物自然公園",
+    locate: "埼玉県こども動物自然公園",
     img: "https://dj-kata.github.io/koala_familytree/imgs/asahi.png",
   },
   {
@@ -830,7 +830,7 @@ const familyData = [
     pids: [],
     gender: "female",
     born: "2024/5/9",
-    locate: "埼玉こども動物自然公園",
+    locate: "埼玉県こども動物自然公園",
     img: "https://dj-kata.github.io/koala_familytree/imgs/sachi.png",
   },
   {
@@ -874,7 +874,7 @@ const familyData = [
     pids: [],
     gender: "male",
     born: "2024/6/23-2025/1/14",
-    locate: "埼玉こども動物自然公園",
+    locate: "埼玉県こども動物自然公園",
     img: "https://dj-kata.github.io/koala_familytree/imgs/.png",
   },
   {
@@ -948,7 +948,7 @@ const familyData = [
     pids: [],
     gender: "male",
     born: "-2023/7/9",
-    locate: "埼玉こども動物自然公園",
+    locate: "埼玉県こども動物自然公園",
     img: "https://dj-kata.github.io/koala_familytree/imgs/.png",
   },
   {
