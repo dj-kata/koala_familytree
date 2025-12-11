@@ -223,9 +223,10 @@
                 3. 「家系図を生成」ボタンをクリック<br>
                 <br>
                 <strong>✅ vis.jsライブラリ使用 - ノード数制限なし！</strong><br>
-                <strong>🎨 新機能:</strong><br>
-                • 親同士の線（オレンジ）の中点から子へ線を引く<br>
-                • オレンジの円（親ペアの中点）も自由に移動可能<br>
+                <strong>🎨 機能:</strong><br>
+                • 親からユニオンノード（円）への線は性別で色分け（青=オス、赤=メス）<br>
+                • オレンジの円（親ペアの中点）から子へ線を引く<br>
+                • オレンジの円も自由に移動可能<br>
                 • 行番号列でY座標制御（同じ番号=同じ高さ）<br>
                 • 行番号省略時は自動割り当て<br>
                 • 全てのノードを自由にドラッグ可能<br>
@@ -538,22 +539,24 @@
                     physics: false
                 });
 
-                // 親1 → ユニオン
+                // 親1 → ユニオン（性別に応じた色）
+                const parent1Color = parent1.gender === 'male' ? '#2196f3' : '#e91e63';
                 visEdges.push({
                     id: edgeId++,
                     from: parent1Id,
                     to: currentUnionId,
-                    color: { color: '#ff9800' },
+                    color: { color: parent1Color },
                     width: 3,
                     arrows: ''
                 });
 
-                // 親2 → ユニオン
+                // 親2 → ユニオン（性別に応じた色）
+                const parent2Color = parent2.gender === 'male' ? '#2196f3' : '#e91e63';
                 visEdges.push({
                     id: edgeId++,
                     from: parent2Id,
                     to: currentUnionId,
-                    color: { color: '#ff9800' },
+                    color: { color: parent2Color },
                     width: 3,
                     arrows: ''
                 });
@@ -571,7 +574,7 @@
                 });
             });
 
-            // Step 5: 親のいない個体同士のパートナー関係のエッジ（子供がいない場合）
+            // Step 5: 子供がいない個体同士のパートナー関係（ユニオンノード経由）
             const processedPairs = new Set();
             familyData.forEach(person => {
                 if (person.pids && person.pids.length > 0) {
@@ -583,13 +586,54 @@
                         
                         if (!processedPairs.has(pairKey)) {
                             processedPairs.add(pairKey);
+                            
+                            const partner = familyData.find(p => p.id === partnerId);
+                            if (!partner) return;
+                            
+                            // ユニオンノードの位置を計算（パートナーの中点）
+                            const pos1 = nodePositions.get(person.id);
+                            const pos2 = nodePositions.get(partnerId);
+                            const unionX = (pos1.x + pos2.x) / 2;
+                            const unionY = (pos1.y + pos2.y) / 2;
+
+                            // ユニオンノードを作成（小さな円）
+                            const currentUnionId = unionNodeId++;
+                            visNodes.push({
+                                id: currentUnionId,
+                                label: '',
+                                shape: 'dot',
+                                size: 8,
+                                color: {
+                                    background: '#ff9800',
+                                    border: '#f57c00'
+                                },
+                                borderWidth: 2,
+                                x: unionX,
+                                y: unionY,
+                                fixed: false,
+                                physics: false
+                            });
+
+                            // person → ユニオン（性別に応じた色）
+                            const personColor = person.gender === 'male' ? '#2196f3' : '#e91e63';
                             visEdges.push({
                                 id: edgeId++,
                                 from: person.id,
-                                to: partnerId,
-                                color: { color: '#ff9800' },
+                                to: currentUnionId,
+                                color: { color: personColor },
                                 width: 3,
-                                dashes: false
+                                arrows: ''
+                            });
+
+                            // partner → ユニオン（性別に応じた色）
+                            const partnerColor = partner.gender === 'male' ? '#2196f3' : '#e91e63';
+                            visEdges.push({
+                                id: edgeId++,
+                                from: partnerId,
+                                to: currentUnionId,
+                                color: { color: partnerColor },
+                                width: 3,
+                                arrows: ''
                             });
                         }
                     });
