@@ -225,24 +225,26 @@
 
             <div id="csvInput" style="display: none;">
                 <textarea id="csvData" placeholder='CSVデータを貼り付けてください
-フォーマット: id,name,father,mother,partners,gender,born,locate
+フォーマット: 個体名,性別,生年月日,父親,母親,アイコン,現在地
 例:
-id,name,father,mother,partners,gender,born,locate
-0,太郎,,,1,male,1950/1/1,東京
-1,花子,,,0,female,1952/3/15,東京
-2,一郎,0,1,,male,1975/5/20,横浜'></textarea>
+個体名,性別,生年月日,父親,母親,アイコン,現在地
+太郎,male,1950/1/1,,,http://example.com/taro.jpg,東京
+花子,female,1952/3/15,,,,東京
+一郎,male,1975/5/20,太郎,花子,,横浜
+
+※パートナー関係は両親情報から自動的に判定されます'></textarea>
             </div>
 
             <div class="format-info">
                 <strong>データフォーマット説明:</strong><br>
                 <strong>JSON:</strong> <code>id</code>, <code>name</code>, <code>fid</code>(父ID), <code>mid</code>(母ID), <code>pids</code>(パートナーID配列), <code>gender</code>, <code>born</code>, <code>locate</code>, <code>img</code>(オプション)<br>
-                <strong>CSV:</strong> id,name,father,mother,partners(カンマ区切り),gender,born,locate,img(オプション)<br>
+                <strong>CSV:</strong> 個体名,性別,生年月日,父親,母親,アイコン,現在地 ※パートナー関係は自動判定<br>
                 <strong>生年月日フォーマット:</strong> YYYY/M/D または YYYY/M/D-YYYY/M/D (誕生日-死亡日)
             </div>
 
             <div class="button-group">
                 <button class="btn-primary" onclick="loadData()">家系図を生成</button>
-                <button class="btn-secondary" onclick="loadSampleData()">サンプルデータをロード</button>
+                <button class="btn-secondary" onclick="loadSampleData()">サンプルデータをロード (選択中のフォーマット)</button>
                 <button class="btn-danger" onclick="clearAll()">クリア</button>
             </div>
 
@@ -395,135 +397,183 @@ id,name,father,mother,partners,gender,born,locate
                 throw new Error('CSV解析エラー: ' + result.errors[0].message);
             }
 
-            const data = result.data.map(row => {
-                // idは必須
-                if (!row.id || row.id.trim() === '') {
-                    return null;
+            // Step 1: 全データを読み込み、IDを割り当て
+            const nameToId = {};
+            const data = [];
+            
+            result.data.forEach((row, index) => {
+                const name = row['個体名'] || row['name'];
+                if (!name || name.trim() === '') {
+                    return; // 名前がない行はスキップ
                 }
-
+                
+                const trimmedName = name.trim();
+                nameToId[trimmedName] = index;
+                
                 const node = {
-                    id: parseInt(row.id),
-                    name: row.name || '',
-                    gender: row.gender || '',
-                    born: row.born || '',
-                    locate: row.locate || ''
+                    id: index,
+                    name: trimmedName,
+                    gender: (row['性別'] || row['gender'] || '').toLowerCase(),
+                    born: row['生年月日'] || row['birthDate'] || row['born'] || '',
+                    locate: row['現在地'] || row['location'] || row['locate'] || '',
+                    pids: []
                 };
+                
+                // アイコン/画像URL
+                const img = row['アイコン'] || row['icon'] || row['img'];
+                if (img && img.trim() !== '') {
+                    node.img = img.trim();
+                }
+                
+                // 一時的に父親・母親の名前を保存
+                node._fatherName = (row['父親'] || row['father'] || '').trim();
+                node._motherName = (row['母親'] || row['mother'] || '').trim();
+                
+                data.push(node);
+            });
 
-                // 父親ID
-                if (row.father && row.father.trim() !== '') {
-                    const fid = parseInt(row.father);
-                    if (!isNaN(fid)) {
-                        node.fid = fid;
+            // Step 2: 父親・母親の名前をIDに変換
+            data.forEach(node => {
+                if (node._fatherName && nameToId.hasOwnProperty(node._fatherName)) {
+                    node.fid = nameToId[node._fatherName];
+                }
+                if (node._motherName && nameToId.hasOwnProperty(node._motherName)) {
+                    node.mid = nameToId[node._motherName];
+                }
+            });
+
+            // Step 3: 両親情報からパートナー関係を自動判定
+            const partnerPairs = new Map(); // key: 個体ID, value: Set<パートナーID>
+            
+            data.forEach(node => {
+                if (node.fid !== undefined && node.mid !== undefined) {
+                    // この子供の父親と母親はパートナー
+                    if (!partnerPairs.has(node.fid)) {
+                        partnerPairs.set(node.fid, new Set());
                     }
-                }
-
-                // 母親ID
-                if (row.mother && row.mother.trim() !== '') {
-                    const mid = parseInt(row.mother);
-                    if (!isNaN(mid)) {
-                        node.mid = mid;
+                    if (!partnerPairs.has(node.mid)) {
+                        partnerPairs.set(node.mid, new Set());
                     }
+                    
+                    partnerPairs.get(node.fid).add(node.mid);
+                    partnerPairs.get(node.mid).add(node.fid);
                 }
+            });
 
-                // パートナーID (カンマ区切りまたはセミコロン区切り)
-                if (row.partners && row.partners.trim() !== '') {
-                    const pids = row.partners.split(/[,;]/)
-                        .map(p => parseInt(p.trim()))
-                        .filter(p => !isNaN(p) && p !== node.id); // 自分自身は除外
-                    node.pids = pids;
-                } else {
-                    node.pids = [];
+            // Step 4: pidsを設定
+            data.forEach(node => {
+                if (partnerPairs.has(node.id)) {
+                    node.pids = Array.from(partnerPairs.get(node.id));
                 }
-
-                // 画像URL
-                if (row.img && row.img.trim() !== '') {
-                    node.img = row.img.trim();
-                }
-
-                return node;
-            }).filter(node => node !== null); // nullを除外
+                
+                // 一時的なプロパティを削除
+                delete node._fatherName;
+                delete node._motherName;
+            });
 
             return data;
         }
 
         function loadSampleData() {
-            const sampleJSON = [
-                {
-                    id: 0,
-                    name: "祖父",
-                    pids: [1],
-                    gender: "male",
-                    born: "1930/4/15",
-                    locate: "東京"
-                },
-                {
-                    id: 1,
-                    name: "祖母",
-                    pids: [0],
-                    gender: "female",
-                    born: "1932/8/20",
-                    locate: "東京"
-                },
-                {
-                    id: 2,
-                    name: "父",
-                    fid: 0,
-                    mid: 1,
-                    pids: [3],
-                    gender: "male",
-                    born: "1955/3/10",
-                    locate: "横浜"
-                },
-                {
-                    id: 3,
-                    name: "母",
-                    pids: [2],
-                    gender: "female",
-                    born: "1957/11/25",
-                    locate: "横浜"
-                },
-                {
-                    id: 4,
-                    name: "自分",
-                    fid: 2,
-                    mid: 3,
-                    pids: [5],
-                    gender: "male",
-                    born: "1980/7/5",
-                    locate: "東京"
-                },
-                {
-                    id: 5,
-                    name: "配偶者",
-                    pids: [4],
-                    gender: "female",
-                    born: "1982/9/12",
-                    locate: "東京"
-                },
-                {
-                    id: 6,
-                    name: "子供1",
-                    fid: 4,
-                    mid: 5,
-                    gender: "male",
-                    born: "2005/4/20",
-                    locate: "東京"
-                },
-                {
-                    id: 7,
-                    name: "子供2",
-                    fid: 4,
-                    mid: 5,
-                    gender: "female",
-                    born: "2008/12/3",
-                    locate: "東京"
-                }
-            ];
+            const dataSource = document.querySelector('input[name="dataSource"]:checked').value;
+            
+            if (dataSource === 'csv') {
+                // CSVサンプルデータ
+                const sampleCSV = `個体名,性別,生年月日,父親,母親,アイコン,現在地
+祖父,male,1930/4/15,,,,東京
+祖母,female,1932/8/20,,,,東京
+父,male,1955/3/10,祖父,祖母,,横浜
+母,female,1957/11/25,,,,横浜
+自分,male,1980/7/5,父,母,,東京
+配偶者,female,1982/9/12,,,,東京
+子供1,male,2005/4/20,自分,配偶者,,東京
+子供2,female,2008/12/3,自分,配偶者,,東京`;
+                
+                document.querySelector('input[name="dataSource"][value="csv"]').checked = true;
+                document.getElementById('jsonInput').style.display = 'none';
+                document.getElementById('csvInput').style.display = 'block';
+                document.getElementById('csvData').value = sampleCSV;
+                
+            } else {
+                // JSONサンプルデータ
+                const sampleJSON = [
+                    {
+                        id: 0,
+                        name: "祖父",
+                        pids: [1],
+                        gender: "male",
+                        born: "1930/4/15",
+                        locate: "東京"
+                    },
+                    {
+                        id: 1,
+                        name: "祖母",
+                        pids: [0],
+                        gender: "female",
+                        born: "1932/8/20",
+                        locate: "東京"
+                    },
+                    {
+                        id: 2,
+                        name: "父",
+                        fid: 0,
+                        mid: 1,
+                        pids: [3],
+                        gender: "male",
+                        born: "1955/3/10",
+                        locate: "横浜"
+                    },
+                    {
+                        id: 3,
+                        name: "母",
+                        pids: [2],
+                        gender: "female",
+                        born: "1957/11/25",
+                        locate: "横浜"
+                    },
+                    {
+                        id: 4,
+                        name: "自分",
+                        fid: 2,
+                        mid: 3,
+                        pids: [5],
+                        gender: "male",
+                        born: "1980/7/5",
+                        locate: "東京"
+                    },
+                    {
+                        id: 5,
+                        name: "配偶者",
+                        pids: [4],
+                        gender: "female",
+                        born: "1982/9/12",
+                        locate: "東京"
+                    },
+                    {
+                        id: 6,
+                        name: "子供1",
+                        fid: 4,
+                        mid: 5,
+                        gender: "male",
+                        born: "2005/4/20",
+                        locate: "東京"
+                    },
+                    {
+                        id: 7,
+                        name: "子供2",
+                        fid: 4,
+                        mid: 5,
+                        gender: "female",
+                        born: "2008/12/3",
+                        locate: "東京"
+                    }
+                ];
 
-            document.querySelector('input[name="dataSource"][value="json"]').checked = true;
-            document.getElementById('jsonInput').style.display = 'block';
-            document.getElementById('csvInput').style.display = 'none';
-            document.getElementById('jsonData').value = JSON.stringify(sampleJSON, null, 2);
+                document.querySelector('input[name="dataSource"][value="json"]').checked = true;
+                document.getElementById('csvInput').style.display = 'none';
+                document.getElementById('jsonInput').style.display = 'block';
+                document.getElementById('jsonData').value = JSON.stringify(sampleJSON, null, 2);
+            }
             
             showMessage('サンプルデータをロードしました。「家系図を生成」ボタンをクリックしてください。', 'info');
         }
