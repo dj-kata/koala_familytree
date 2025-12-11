@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>家系図ツール - vis.js版</title>
+    <script type="text/javascript" src="data.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -218,13 +219,21 @@
             
             <div style="background: #e3f2fd; padding: 12px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #2196f3; font-size: 13px;">
                 <strong>📝 使い方:</strong><br>
-                1. データソース（デフォルト/JSON/CSV）を選択<br>
-                2. JSON/CSVの場合はデータを貼り付け<br>
+                1. データソース（CSV/JSON）を選択<br>
+                2. CSVの場合はデータを貼り付けるか、サンプルCSVをロード<br>
                 3. 「家系図を生成」ボタンをクリック<br>
                 <br>
+                <strong>⚠️ CSVファイル読み込みの注意:</strong><br>
+                同じディレクトリのCSVファイルを読み込むには、ローカルサーバーが必要です。<br>
+                例: <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">python -m http.server</code><br>
+                その後、ブラウザで <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">http://localhost:8000/v1_visjs.html</code> を開いてください。
+            </div>
+
+            <div style="background: #f1f8e9; padding: 12px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #4caf50; font-size: 13px;">
                 <strong>✅ vis.jsライブラリ使用 - ノード数制限なし！</strong><br>
                 <strong>🎨 機能:</strong><br>
                 • 親からユニオンノード（円）への線は性別で色分け（青=オス、赤=メス）<br>
+                • 画像ノード（円形）も太い枠線で性別を識別可能<br>
                 • オレンジの円（親ペアの中点）から子へ線を引く<br>
                 • オレンジの円も自由に移動可能<br>
                 • 行番号列でY座標制御（同じ番号=同じ高さ）<br>
@@ -235,16 +244,12 @@
             
             <div class="data-source-toggle">
                 <label>
-                    <input type="radio" name="dataSource" value="default" checked>
-                    デフォルトデータ (data.js)
+                    <input type="radio" name="dataSource" value="csv" checked>
+                    CSVデータ
                 </label>
                 <label>
                     <input type="radio" name="dataSource" value="json">
                     JSONデータ
-                </label>
-                <label>
-                    <input type="radio" name="dataSource" value="csv">
-                    CSVデータ
                 </label>
             </div>
 
@@ -252,7 +257,7 @@
                 <textarea id="jsonData" placeholder='JSONデータを貼り付けてください'></textarea>
             </div>
 
-            <div id="csvInput" style="display: none;">
+            <div id="csvInput" style="display: block;">
                 <textarea id="csvData" placeholder='CSVデータを貼り付けてください
 フォーマット: 個体名,性別,生年月日,父親,母親,アイコン,現在地,行番号
 ※性別は「オス/メス」または「male/female」に対応
@@ -279,9 +284,17 @@
                 <strong>行番号:</strong> Y座標を制御（同じ番号=同じ高さに配置、省略時は自動）
             </div>
 
+            <div style="margin-bottom: 15px;">
+                <label for="csvSampleSelect" style="font-weight: bold; margin-right: 10px;">サンプルCSV選択:</label>
+                <select id="csvSampleSelect" style="padding: 8px; border-radius: 5px; border: 2px solid #4caf50; font-size: 14px;">
+                    <option value="data.js">data.jsから生成</option>
+                    <option value="indeko_tukusi.csv">インディコ・つくし周辺</option>
+                </select>
+            </div>
+
             <div class="button-group">
                 <button class="btn-primary" onclick="loadData()">家系図を生成</button>
-                <button class="btn-secondary" onclick="loadSampleData()">サンプルデータをロード (data.jsから全件)</button>
+                <button class="btn-secondary" onclick="loadSampleData()">サンプルデータをロード</button>
                 <button class="btn-danger" onclick="clearAll()">クリア</button>
             </div>
 
@@ -488,6 +501,27 @@
                 if (person.img) {
                     nodeData.image = person.img;
                     nodeData.shape = 'circularImage';
+                    nodeData.borderWidth = 5; // 画像ノードの枠線を太く（線分より太め）
+                    nodeData.shapeProperties = {
+                        borderDashes: false,
+                        useBorderWithImage: true
+                    };
+                    // 性別に応じた枠線色を明示的に設定
+                    if (person.gender === 'male') {
+                        nodeData.color = {
+                            border: '#1976d2',
+                            highlight: {
+                                border: '#0d47a1'
+                            }
+                        };
+                    } else if (person.gender === 'female') {
+                        nodeData.color = {
+                            border: '#c2185b',
+                            highlight: {
+                                border: '#880e4f'
+                            }
+                        };
+                    }
                 }
 
                 visNodes.push(nodeData);
@@ -670,7 +704,7 @@
                 },
                 nodes: {
                     borderWidth: 2,
-                    borderWidthSelected: 4
+                    borderWidthSelected: 6
                 },
                 edges: {
                     smooth: {
@@ -746,21 +780,7 @@
             try {
                 let data;
 
-                if (dataSource === 'default') {
-                    if (typeof window.familyData !== 'undefined') {
-                        data = window.familyData;
-                        // デフォルトデータにrowNumberがない場合は追加
-                        data.forEach((node, index) => {
-                            if (node.rowNumber === undefined) {
-                                node.rowNumber = index;
-                            }
-                        });
-                        console.log('loadData: Loaded default data, nodes =', data.length);
-                    } else {
-                        showMessage('data.jsが読み込まれていません', 'error');
-                        return;
-                    }
-                } else if (dataSource === 'json') {
+                if (dataSource === 'json') {
                     const jsonText = document.getElementById('jsonData').value.trim();
                     if (!jsonText) {
                         showMessage('JSONデータを入力してください', 'error');
@@ -799,87 +819,123 @@
             }
         }
 
-        function loadSampleData() {
+        async function loadSampleData() {
             const dataSource = document.querySelector('input[name="dataSource"]:checked').value;
+            const sampleType = document.getElementById('csvSampleSelect').value;
             
-            // data.jsから全データをサンプルとして使用
             let sampleData = [];
-            if (typeof window.familyData !== 'undefined' && window.familyData.length > 0) {
-                // 全データを取得
-                sampleData = window.familyData.map((person, index) => {
-                    return {
-                        ...person,
-                        rowNumber: person.rowNumber !== undefined ? person.rowNumber : index  // 既存の行番号を優先、なければindex
-                    };
-                });
-            } else {
-                // data.jsがない場合のフォールバック
-                sampleData = [
-                    { id: 0, name: "祖父", pids: [1], gender: "male", born: "1930/4/15", locate: "東京", rowNumber: 0 },
-                    { id: 1, name: "祖母", pids: [0], gender: "female", born: "1932/8/20", locate: "東京", rowNumber: 0 },
-                    { id: 2, name: "父", fid: 0, mid: 1, pids: [3], gender: "male", born: "1955/3/10", locate: "横浜", rowNumber: 5 },
-                    { id: 3, name: "母", pids: [2], gender: "female", born: "1957/11/25", locate: "横浜", rowNumber: 5 },
-                    { id: 4, name: "自分", fid: 2, mid: 3, pids: [5], gender: "male", born: "1980/7/5", locate: "東京", rowNumber: 10 },
-                    { id: 5, name: "配偶者", pids: [4], gender: "female", born: "1982/9/12", locate: "東京", rowNumber: 10 },
-                    { id: 6, name: "子供1", fid: 4, mid: 5, gender: "male", born: "2005/4/20", locate: "東京", rowNumber: 15 },
-                    { id: 7, name: "子供2", fid: 4, mid: 5, gender: "female", born: "2008/12/3", locate: "東京", rowNumber: 15 }
-                ];
-            }
+            let csvText = '';
             
-            if (dataSource === 'csv') {
-                // JSONデータをCSVに変換
-                const csvRows = ['個体名,性別,生年月日,父親,母親,アイコン,現在地,行番号'];
-                
-                // CSVフィールドをエスケープする関数
-                const escapeCsvField = (field) => {
-                    if (field === null || field === undefined) return '';
-                    const str = String(field);
-                    // カンマ、改行、ダブルクォートが含まれる場合はダブルクォートで囲む
-                    if (str.includes(',') || str.includes('\n') || str.includes('"')) {
-                        return '"' + str.replace(/"/g, '""') + '"';
+            try {
+                // サンプルタイプに応じてデータを生成
+                if (sampleType === 'data.js') {
+                    // data.jsから全データをサンプルとして使用
+                    if (typeof window.familyData !== 'undefined' && window.familyData.length > 0) {
+                        // 全データを取得
+                        sampleData = window.familyData.map((person, index) => {
+                            return {
+                                ...person,
+                                rowNumber: person.rowNumber !== undefined ? person.rowNumber : index
+                            };
+                        });
+                    } else {
+                        showMessage('data.jsが読み込まれていません', 'error');
+                        return;
                     }
-                    return str;
-                };
-                
-                // 全データから親の名前を解決するためのマップを作成
-                const idToNameMap = new Map();
-                if (typeof window.familyData !== 'undefined') {
-                    window.familyData.forEach(p => {
-                        idToNameMap.set(p.id, p.name);
-                    });
+                } else if (sampleType.endsWith('.csv')) {
+                    // CSVファイルを読み込む
+                    try {
+                        const response = await fetch(sampleType);
+                        if (!response.ok) {
+                            throw new Error(`ファイル ${sampleType} が見つかりません`);
+                        }
+                        csvText = await response.text();
+                        
+                        // CSVデータをテキストエリアに設定
+                        document.querySelector('input[name="dataSource"][value="csv"]').checked = true;
+                        document.getElementById('csvInput').style.display = 'block';
+                        document.getElementById('jsonInput').style.display = 'none';
+                        document.getElementById('csvData').value = csvText;
+                        
+                        const sampleName = document.getElementById('csvSampleSelect').selectedOptions[0].text;
+                        showMessage(`サンプルCSVをロードしました（${sampleName}）。「家系図を生成」ボタンをクリックしてください。`, 'info');
+                        return;
+                    } catch (error) {
+                        showMessage(`CSVファイルの読み込みエラー: ${error.message}. ローカルサーバー（例: python -m http.server）を使用してください。`, 'error');
+                        return;
+                    }
                 }
                 
-                sampleData.forEach(person => {
-                    const fatherName = person.fid !== undefined ? (idToNameMap.get(person.fid) || '') : '';
-                    const motherName = person.mid !== undefined ? (idToNameMap.get(person.mid) || '') : '';
-                    const genderStr = person.gender === 'male' ? 'オス' : (person.gender === 'female' ? 'メス' : '');
+                if (sampleData.length === 0) {
+                    showMessage('サンプルデータがありません', 'error');
+                    return;
+                }
+                
+                if (sampleData.length === 0) {
+                    showMessage('サンプルデータがありません', 'error');
+                    return;
+                }
+                
+                // data.jsの場合はCSV/JSON形式で表示
+                if (dataSource === 'csv') {
+                    // JSONデータをCSVに変換
+                    const csvRows = ['個体名,性別,生年月日,父親,母親,アイコン,現在地,行番号'];
                     
-                    csvRows.push([
-                        escapeCsvField(person.name || ''),
-                        escapeCsvField(genderStr),
-                        escapeCsvField(person.born || ''),
-                        escapeCsvField(fatherName),
-                        escapeCsvField(motherName),
-                        escapeCsvField(person.img || ''),
-                        escapeCsvField(person.locate || ''),
-                        escapeCsvField(person.rowNumber !== undefined ? person.rowNumber : '')
-                    ].join(','));
-                });
+                    // CSVフィールドをエスケープする関数
+                    const escapeCsvField = (field) => {
+                        if (field === null || field === undefined) return '';
+                        const str = String(field);
+                        // カンマ、改行、ダブルクォートが含まれる場合はダブルクォートで囲む
+                        if (str.includes(',') || str.includes('\n') || str.includes('"')) {
+                            return '"' + str.replace(/"/g, '""') + '"';
+                        }
+                        return str;
+                    };
+                    
+                    // 全データから親の名前を解決するためのマップを作成
+                    const idToNameMap = new Map();
+                    if (typeof window.familyData !== 'undefined') {
+                        window.familyData.forEach(p => {
+                            idToNameMap.set(p.id, p.name);
+                        });
+                    }
+                    
+                    sampleData.forEach(person => {
+                        const fatherName = person.fid !== undefined ? (idToNameMap.get(person.fid) || '') : '';
+                        const motherName = person.mid !== undefined ? (idToNameMap.get(person.mid) || '') : '';
+                        const genderStr = person.gender === 'male' ? 'オス' : (person.gender === 'female' ? 'メス' : '');
+                        
+                        csvRows.push([
+                            escapeCsvField(person.name || ''),
+                            escapeCsvField(genderStr),
+                            escapeCsvField(person.born || ''),
+                            escapeCsvField(fatherName),
+                            escapeCsvField(motherName),
+                            escapeCsvField(person.img || ''),
+                            escapeCsvField(person.locate || ''),
+                            escapeCsvField(person.rowNumber !== undefined ? person.rowNumber : '')
+                        ].join(','));
+                    });
+                    
+                    const sampleCSV = csvRows.join('\n');
+                    
+                    document.querySelector('input[name="dataSource"][value="csv"]').checked = true;
+                    document.getElementById('csvInput').style.display = 'block';
+                    document.getElementById('jsonInput').style.display = 'none';
+                    document.getElementById('csvData').value = sampleCSV;
+                } else {
+                    document.querySelector('input[name="dataSource"][value="json"]').checked = true;
+                    document.getElementById('jsonInput').style.display = 'block';
+                    document.getElementById('csvInput').style.display = 'none';
+                    document.getElementById('jsonData').value = JSON.stringify(sampleData, null, 2);
+                }
                 
-                const sampleCSV = csvRows.join('\n');
-                
-                document.querySelector('input[name="dataSource"][value="csv"]').checked = true;
-                document.getElementById('csvInput').style.display = 'block';
-                document.getElementById('jsonInput').style.display = 'none';
-                document.getElementById('csvData').value = sampleCSV;
-            } else {
-                document.querySelector('input[name="dataSource"][value="json"]').checked = true;
-                document.getElementById('jsonInput').style.display = 'block';
-                document.getElementById('csvInput').style.display = 'none';
-                document.getElementById('jsonData').value = JSON.stringify(sampleData, null, 2);
+                const sampleName = document.getElementById('csvSampleSelect').selectedOptions[0].text;
+                showMessage(`サンプルデータをロードしました（${sampleName}、全${sampleData.length}件）。「家系図を生成」ボタンをクリックしてください。`, 'info');
+            } catch (error) {
+                console.error('Error loading sample data:', error);
+                showMessage('サンプルデータの読み込みエラー: ' + error.message, 'error');
             }
-            
-            showMessage('サンプルデータをロードしました（data.jsから全' + sampleData.length + '件）。「家系図を生成」ボタンをクリックしてください。', 'info');
         }
 
         function clearAll() {
@@ -922,9 +978,9 @@
         // ページロード時の初期化
         window.addEventListener('load', function() {
             if (typeof window.familyData !== 'undefined') {
-                showMessage(`data.jsを読み込みました（${window.familyData.length}個のノード）。「家系図を生成」または「サンプルデータをロード」をクリックしてください。`, 'info');
+                showMessage(`data.jsを読み込みました（${window.familyData.length}個のノード）。サンプルデータをロードするか、CSVデータを貼り付けてください。`, 'info');
             } else {
-                showMessage('data.jsが見つかりません。CSVまたはJSONデータを入力するか、サンプルデータをお試しください。', 'info');
+                showMessage('CSVデータを貼り付けるか、サンプルデータをロードしてください。', 'info');
             }
         });
     </script>
