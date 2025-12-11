@@ -189,7 +189,12 @@
                 <strong>📝 使い方:</strong><br>
                 1. データソース（デフォルト/JSON/CSV）を選択<br>
                 2. JSON/CSVの場合はデータを貼り付け<br>
-                3. 「家系図を生成」ボタンをクリック
+                3. 「家系図を生成」ボタンをクリック<br>
+                <br>
+                <strong>💡 200ノード制限エラーが出る場合:</strong><br>
+                • 「クリア」ボタンでlocalStorageをクリア<br>
+                • 「完全リセット」ボタンでページを再読込<br>
+                • ページを開くたびにlocalStorageは自動クリアされます
             </div>
             
             <div class="data-source-toggle">
@@ -273,6 +278,32 @@
         var chart = null;
         var currentData = null;
 
+        // FamilyTreeのlocalStorageをクリアする関数
+        function clearFamilyTreeCache() {
+            console.log('Clearing FamilyTree localStorage...');
+            try {
+                // localStorageの全キーをチェック
+                const keysToRemove = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    // FamilyTree関連のキーを削除
+                    if (key && (key.includes('FamilyTree') || key.includes('bft-') || key.includes('familytree'))) {
+                        keysToRemove.push(key);
+                    }
+                }
+                keysToRemove.forEach(key => {
+                    console.log('Removing localStorage key:', key);
+                    localStorage.removeItem(key);
+                });
+                console.log('localStorage cleared:', keysToRemove.length, 'keys removed');
+            } catch (e) {
+                console.error('Error clearing localStorage:', e);
+            }
+        }
+
+        // ページロード時にlocalStorageをクリア
+        clearFamilyTreeCache();
+
         // データソース切り替え
         document.querySelectorAll('input[name="dataSource"]').forEach(radio => {
             radio.addEventListener('change', function() {
@@ -290,6 +321,10 @@
                 // データソース切り替え時に必ずチャートをクリア
                 if (chart) {
                     console.log('Clearing chart on data source change...');
+                    
+                    // localStorageをクリア
+                    clearFamilyTreeCache();
+                    
                     try {
                         chart.destroy();
                     } catch (e) {
@@ -389,6 +424,9 @@
         function loadData() {
             clearMessages();
             console.log('loadData: Starting...');
+
+            // localStorageをクリア
+            clearFamilyTreeCache();
 
             // 必ず既存チャートを破棄
             if (chart) {
@@ -701,6 +739,9 @@
                 chart = null;
             }
             
+            // localStorageもクリア
+            clearFamilyTreeCache();
+            
             // DOM要素を完全に削除して再作成
             const container = document.querySelector('.container');
             const oldTreeElement = document.getElementById('tree');
@@ -715,7 +756,7 @@
             
             currentData = null;
             clearMessages();
-            showMessage('クリアしました', 'info');
+            showMessage('クリアしました（localStorageもクリア済み）', 'info');
             console.log('clearAll: Complete');
         }
 
