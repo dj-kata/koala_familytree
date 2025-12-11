@@ -185,6 +185,13 @@
         <div class="input-section">
             <h3>データ入力</h3>
             
+            <div style="background: #e3f2fd; padding: 12px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #2196f3; font-size: 13px;">
+                <strong>📝 使い方:</strong><br>
+                1. データソース（デフォルト/JSON/CSV）を選択<br>
+                2. JSON/CSVの場合はデータを貼り付け<br>
+                3. 「家系図を生成」ボタンをクリック
+            </div>
+            
             <div class="data-source-toggle">
                 <label>
                     <input type="radio" name="dataSource" value="default" checked>
@@ -198,6 +205,10 @@
                     <input type="radio" name="dataSource" value="csv">
                     CSVデータ
                 </label>
+            </div>
+            
+            <div style="background: #fff3cd; padding: 10px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #ffc107; font-size: 13px;">
+                <strong>⚠ 注意:</strong> データソースを切り替えると、現在表示中の家系図は自動的にクリアされます。
             </div>
 
             <div id="jsonInput" style="display: none;">
@@ -226,11 +237,13 @@
             <div id="csvInput" style="display: none;">
                 <textarea id="csvData" placeholder='CSVデータを貼り付けてください
 フォーマット: 個体名,性別,生年月日,父親,母親,アイコン,現在地
+※性別は「オス/メス」または「male/female」に対応
+
 例:
 個体名,性別,生年月日,父親,母親,アイコン,現在地
-太郎,male,1950/1/1,,,http://example.com/taro.jpg,東京
-花子,female,1952/3/15,,,,東京
-一郎,male,1975/5/20,太郎,花子,,横浜
+太郎,オス,1950/1/1,,,http://example.com/taro.jpg,東京
+花子,メス,1952/3/15,,,,東京
+一郎,オス,1975/5/20,太郎,花子,,横浜
 
 ※パートナー関係は両親情報から自動的に判定されます'></textarea>
             </div>
@@ -239,6 +252,7 @@
                 <strong>データフォーマット説明:</strong><br>
                 <strong>JSON:</strong> <code>id</code>, <code>name</code>, <code>fid</code>(父ID), <code>mid</code>(母ID), <code>pids</code>(パートナーID配列), <code>gender</code>, <code>born</code>, <code>locate</code>, <code>img</code>(オプション)<br>
                 <strong>CSV:</strong> 個体名,性別,生年月日,父親,母親,アイコン,現在地 ※パートナー関係は自動判定<br>
+                <strong>性別:</strong> オス/メス、male/female、雄/雌、M/F のいずれかに対応<br>
                 <strong>生年月日フォーマット:</strong> YYYY/M/D または YYYY/M/D-YYYY/M/D (誕生日-死亡日)
             </div>
 
@@ -261,6 +275,8 @@
         // データソース切り替え
         document.querySelectorAll('input[name="dataSource"]').forEach(radio => {
             radio.addEventListener('change', function() {
+                console.log('Data source changed to:', this.value);
+                
                 document.getElementById('jsonInput').style.display = 'none';
                 document.getElementById('csvInput').style.display = 'none';
                 
@@ -270,18 +286,20 @@
                     document.getElementById('csvInput').style.display = 'block';
                 }
                 
-                // データソース切り替え時にチャートをクリア（オプション）
-                // 切り替えるたびにクリアしたくない場合はこの部分をコメントアウト
-                /*
-                if (chart && this.value !== 'default') {
+                // データソース切り替え時に必ずチャートをクリア
+                if (chart) {
+                    console.log('Clearing chart on data source change...');
                     try {
                         chart.destroy();
-                    } catch (e) {}
+                    } catch (e) {
+                        console.log('Chart destroy error:', e);
+                    }
                     chart = null;
                     document.getElementById('tree').innerHTML = '';
+                    currentData = null;
                     clearMessages();
+                    showMessage('データソースを切り替えました。新しいデータをロードしてください。', 'info');
                 }
-                */
             });
         });
 
@@ -298,8 +316,11 @@
         }
 
         function initChart(data) {
+            console.log('initChart: Starting with', data.length, 'nodes');
+            
             // 既存のチャートを完全に破棄
             if (chart) {
+                console.log('initChart: Destroying existing chart...');
                 try {
                     chart.destroy();
                 } catch (e) {
@@ -311,9 +332,11 @@
             // DOMをクリア
             const treeElement = document.getElementById('tree');
             treeElement.innerHTML = '';
+            console.log('initChart: DOM cleared');
             
-            // 少し待ってから新しいチャートを作成
+            // 十分な時間を待ってから新しいチャートを作成
             setTimeout(() => {
+                console.log('initChart: Creating new FamilyTree instance...');
                 var options = getOptions();
 
                 chart = new FamilyTree(treeElement, {
@@ -329,15 +352,32 @@
                     }
                 });
 
+                console.log('initChart: Loading data into chart...');
                 chart.load(data);
                 currentData = data;
-            }, 100);
+                console.log('initChart: Chart loaded successfully');
+            }, 300);
         }
 
         function loadData() {
             clearMessages();
+            console.log('loadData: Starting...');
+
+            // 必ず既存チャートを破棄
+            if (chart) {
+                console.log('loadData: Destroying existing chart...');
+                try {
+                    chart.destroy();
+                } catch (e) {
+                    console.log('Chart destroy error:', e);
+                }
+                chart = null;
+                document.getElementById('tree').innerHTML = '';
+                currentData = null;
+            }
 
             const dataSource = document.querySelector('input[name="dataSource"]:checked').value;
+            console.log('loadData: Data source =', dataSource);
 
             try {
                 let data;
@@ -346,6 +386,7 @@
                     // デフォルトデータ (data.js)
                     if (typeof window.familyData !== 'undefined') {
                         data = window.familyData;
+                        console.log('loadData: Loaded default data, nodes =', data.length);
                     } else {
                         showMessage('data.jsが読み込まれていません', 'error');
                         return;
@@ -358,6 +399,7 @@
                         return;
                     }
                     data = JSON.parse(jsonText);
+                    console.log('loadData: Parsed JSON data, nodes =', data.length);
                 } else if (dataSource === 'csv') {
                     // CSVデータ
                     const csvText = document.getElementById('csvData').value.trim();
@@ -365,7 +407,9 @@
                         showMessage('CSVデータを入力してください', 'error');
                         return;
                     }
+                    console.log('loadData: Parsing CSV data...');
                     data = parseCSVToFamilyData(csvText);
+                    console.log('loadData: Parsed CSV data, nodes =', data.length);
                 }
 
                 if (!data || data.length === 0) {
@@ -373,11 +417,12 @@
                     return;
                 }
 
-                // チャートの初期化は非同期なので、メッセージを少し遅らせる
+                console.log('loadData: Initializing chart...');
+                // チャートの初期化は非同期なので、メッセージをより遅らせる
                 initChart(data);
                 setTimeout(() => {
                     showMessage(`家系図を生成しました (${data.length}個のノード)`, 'success');
-                }, 300);
+                }, 600);
 
             } catch (error) {
                 console.error('Error loading data:', error);
@@ -386,6 +431,8 @@
         }
 
         function parseCSVToFamilyData(csvText) {
+            console.log('parseCSVToFamilyData: Starting CSV parse...');
+            
             const result = Papa.parse(csvText, {
                 header: true,
                 skipEmptyLines: true,
@@ -394,8 +441,25 @@
             });
 
             if (result.errors.length > 0) {
+                console.error('CSV parse errors:', result.errors);
                 throw new Error('CSV解析エラー: ' + result.errors[0].message);
             }
+
+            console.log('parseCSVToFamilyData: CSV parsed, rows =', result.data.length);
+
+            // 性別マッピング
+            const genderMap = {
+                'オス': 'male',
+                'おす': 'male',
+                'male': 'male',
+                'メス': 'female',
+                'めす': 'female',
+                'female': 'female',
+                '雄': 'male',
+                '雌': 'female',
+                'M': 'male',
+                'F': 'female'
+            };
 
             // Step 1: 全データを読み込み、IDを割り当て
             const nameToId = {};
@@ -410,10 +474,14 @@
                 const trimmedName = name.trim();
                 nameToId[trimmedName] = index;
                 
+                // 性別の変換
+                const rawGender = (row['性別'] || row['gender'] || '').trim();
+                const gender = genderMap[rawGender] || rawGender.toLowerCase();
+                
                 const node = {
                     id: index,
                     name: trimmedName,
-                    gender: (row['性別'] || row['gender'] || '').toLowerCase(),
+                    gender: gender,
                     born: row['生年月日'] || row['birthDate'] || row['born'] || '',
                     locate: row['現在地'] || row['location'] || row['locate'] || '',
                     pids: []
@@ -432,6 +500,8 @@
                 data.push(node);
             });
 
+            console.log('parseCSVToFamilyData: Step 1 complete, data nodes =', data.length);
+
             // Step 2: 父親・母親の名前をIDに変換
             data.forEach(node => {
                 if (node._fatherName && nameToId.hasOwnProperty(node._fatherName)) {
@@ -441,6 +511,8 @@
                     node.mid = nameToId[node._motherName];
                 }
             });
+
+            console.log('parseCSVToFamilyData: Step 2 complete, parent IDs assigned');
 
             // Step 3: 両親情報からパートナー関係を自動判定
             const partnerPairs = new Map(); // key: 個体ID, value: Set<パートナーID>
@@ -460,6 +532,8 @@
                 }
             });
 
+            console.log('parseCSVToFamilyData: Step 3 complete, partner pairs =', partnerPairs.size);
+
             // Step 4: pidsを設定
             data.forEach(node => {
                 if (partnerPairs.has(node.id)) {
@@ -471,6 +545,7 @@
                 delete node._motherName;
             });
 
+            console.log('parseCSVToFamilyData: Step 4 complete, returning data');
             return data;
         }
 
@@ -478,16 +553,16 @@
             const dataSource = document.querySelector('input[name="dataSource"]:checked').value;
             
             if (dataSource === 'csv') {
-                // CSVサンプルデータ
+                // CSVサンプルデータ（オス・メス表記）
                 const sampleCSV = `個体名,性別,生年月日,父親,母親,アイコン,現在地
-祖父,male,1930/4/15,,,,東京
-祖母,female,1932/8/20,,,,東京
-父,male,1955/3/10,祖父,祖母,,横浜
-母,female,1957/11/25,,,,横浜
-自分,male,1980/7/5,父,母,,東京
-配偶者,female,1982/9/12,,,,東京
-子供1,male,2005/4/20,自分,配偶者,,東京
-子供2,female,2008/12/3,自分,配偶者,,東京`;
+祖父,オス,1930/4/15,,,,東京
+祖母,メス,1932/8/20,,,,東京
+父,オス,1955/3/10,祖父,祖母,,横浜
+母,メス,1957/11/25,,,,横浜
+自分,オス,1980/7/5,父,母,,東京
+配偶者,メス,1982/9/12,,,,東京
+子供1,オス,2005/4/20,自分,配偶者,,東京
+子供2,メス,2008/12/3,自分,配偶者,,東京`;
                 
                 document.querySelector('input[name="dataSource"][value="csv"]').checked = true;
                 document.getElementById('jsonInput').style.display = 'none';
@@ -622,12 +697,10 @@
 
         // ページロード時の初期化
         window.addEventListener('load', function() {
-            // デフォルトデータがあれば自動的に表示
+            // デフォルトデータがあっても自動的には表示しない
+            // ユーザーが明示的に「家系図を生成」ボタンをクリックするまで待機
             if (typeof window.familyData !== 'undefined') {
-                setTimeout(() => {
-                    initChart(window.familyData);
-                    showMessage('デフォルトデータを表示しています', 'info');
-                }, 200);
+                showMessage('デフォルトデータが利用可能です。「家系図を生成」ボタンをクリックしてください。', 'info');
             }
         });
     </script>
