@@ -117,10 +117,29 @@
 
         #network-container {
             width: 100%;
-            height: 700px;
+            height: 800px;
+            min-height: 400px;
+            max-height: 2000px;
             border: 3px solid #4caf50;
             border-radius: 12px;
             margin-top: 20px;
+            resize: vertical; /* 縦方向にリサイズ可能 */
+            overflow: auto; /* リサイズ時のオーバーフロー処理 */
+            position: relative;
+        }
+
+        /* リサイズハンドルを視覚的にわかりやすく */
+        #network-container::after {
+            content: '⋮⋮⋮';
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            color: #4caf50;
+            font-size: 16px;
+            font-weight: bold;
+            pointer-events: none;
+            line-height: 0.5;
+            letter-spacing: -2px;
         }
 
         .message {
@@ -209,7 +228,8 @@
                 • オレンジの円（親ペアの中点）も自由に移動可能<br>
                 • 行番号列でY座標制御（同じ番号=同じ高さ）<br>
                 • 行番号省略時は自動割り当て<br>
-                • 全てのノードを自由にドラッグ可能
+                • 全てのノードを自由にドラッグ可能<br>
+                • <strong>キャンバスの右下をドラッグして表示領域を拡大/縮小可能</strong>
             </div>
             
             <div class="data-source-toggle">
@@ -658,6 +678,16 @@
                     }
                 }
             });
+
+            // コンテナのリサイズを監視
+            const resizeObserver = new ResizeObserver(entries => {
+                for (let entry of entries) {
+                    if (network) {
+                        network.redraw();
+                    }
+                }
+            });
+            resizeObserver.observe(container);
 
             console.log('createNetwork: Complete');
         }
