@@ -579,7 +579,7 @@
             familyData.forEach(person => {
                 if (person.pids && person.pids.length > 0) {
                     person.pids.forEach(partnerId => {
-                        const pairKey = [person.id, partnerId].sort().join('-');
+                        const pairKey = [person.id, partnerId].sort((a, b) => a - b).join('-'); // 数値ソートに修正
                         
                         // すでに子供経由で処理されているペアはスキップ
                         if (parentPairs.has(pairKey)) return;
