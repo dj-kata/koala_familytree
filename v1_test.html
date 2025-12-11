@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FamilyTree データ取り込み</title>
-    <script src="./familytree.js"></script>
+    <title>家系図ツール - vis.js版</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
         * {
@@ -114,7 +115,7 @@
             transform: none !important;
         }
 
-        #tree {
+        #network-container {
             width: 100%;
             height: 700px;
             border: 3px solid #4caf50;
@@ -174,12 +175,23 @@
         .data-source-toggle input[type="radio"] {
             margin-right: 5px;
         }
+
+        /* vis.jsノードスタイル */
+        .vis-network .vis-node.male {
+            background-color: #42a5f5 !important;
+            border-color: #1976d2 !important;
+        }
+
+        .vis-network .vis-node.female {
+            background-color: #ec407a !important;
+            border-color: #c2185b !important;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🐨 家系図ツール - データ取り込み版</h1>
+            <h1>🌳 家系図ツール - vis.js版</h1>
         </div>
 
         <div class="input-section">
@@ -191,10 +203,7 @@
                 2. JSON/CSVの場合はデータを貼り付け<br>
                 3. 「家系図を生成」ボタンをクリック<br>
                 <br>
-                <strong>💡 200ノード制限エラーが出る場合:</strong><br>
-                • 「クリア」ボタンでlocalStorageをクリア<br>
-                • 「完全リセット」ボタンでページを再読込<br>
-                • ページを開くたびにlocalStorageは自動クリアされます
+                <strong>✅ vis.jsライブラリ使用 - ノード数制限なし！</strong>
             </div>
             
             <div class="data-source-toggle">
@@ -211,104 +220,47 @@
                     CSVデータ
                 </label>
             </div>
-            
-            <div style="background: #fff3cd; padding: 10px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #ffc107; font-size: 13px;">
-                <strong>⚠ 注意:</strong> データソースを切り替えると、現在表示中の家系図は自動的にクリアされます。
-            </div>
 
             <div id="jsonInput" style="display: none;">
-                <textarea id="jsonData" placeholder='JSONデータを貼り付けてください
-例:
-[
-  {
-    "id": 0,
-    "name": "太郎",
-    "pids": [1],
-    "gender": "male",
-    "born": "1950/1/1",
-    "locate": "東京"
-  },
-  {
-    "id": 1,
-    "name": "花子",
-    "pids": [0],
-    "gender": "female",
-    "born": "1952/3/15",
-    "locate": "東京"
-  }
-]'></textarea>
+                <textarea id="jsonData" placeholder='JSONデータを貼り付けてください'></textarea>
             </div>
 
             <div id="csvInput" style="display: none;">
                 <textarea id="csvData" placeholder='CSVデータを貼り付けてください
 フォーマット: 個体名,性別,生年月日,父親,母親,アイコン,現在地
-※性別は「オス/メス」または「male/female」に対応
-
-例:
-個体名,性別,生年月日,父親,母親,アイコン,現在地
-太郎,オス,1950/1/1,,,http://example.com/taro.jpg,東京
-花子,メス,1952/3/15,,,,東京
-一郎,オス,1975/5/20,太郎,花子,,横浜
-
-※パートナー関係は両親情報から自動的に判定されます'></textarea>
+※性別は「オス/メス」または「male/female」に対応'></textarea>
             </div>
 
             <div class="format-info">
                 <strong>データフォーマット説明:</strong><br>
-                <strong>JSON:</strong> <code>id</code>, <code>name</code>, <code>fid</code>(父ID), <code>mid</code>(母ID), <code>pids</code>(パートナーID配列), <code>gender</code>, <code>born</code>, <code>locate</code>, <code>img</code>(オプション)<br>
-                <strong>CSV:</strong> 個体名,性別,生年月日,父親,母親,アイコン,現在地 ※パートナー関係は自動判定<br>
+                <strong>CSV:</strong> 個体名,性別,生年月日,父親,母親,アイコン,現在地<br>
                 <strong>性別:</strong> オス/メス、male/female、雄/雌、M/F のいずれかに対応<br>
-                <strong>生年月日フォーマット:</strong> YYYY/M/D または YYYY/M/D-YYYY/M/D (誕生日-死亡日)
+                <strong>生年月日:</strong> YYYY/M/D または YYYY/M/D-YYYY/M/D (誕生日-死亡日)
             </div>
 
             <div class="button-group">
                 <button class="btn-primary" onclick="loadData()">家系図を生成</button>
-                <button class="btn-secondary" onclick="loadSampleData()">サンプルデータをロード (選択中のフォーマット)</button>
+                <button class="btn-secondary" onclick="loadSampleData()">サンプルデータをロード</button>
                 <button class="btn-danger" onclick="clearAll()">クリア</button>
-                <button class="btn-warning" onclick="window.location.reload()">完全リセット (ページ再読込)</button>
             </div>
 
             <div id="messages"></div>
         </div>
 
-        <div id="tree"></div>
+        <div id="network-container"></div>
     </div>
 
+    <!-- data.jsを読み込む（オプション） -->
+    <script src="./data.js"></script>
+
     <script>
-        var chart = null;
-        var currentData = null;
-
-        // FamilyTreeのlocalStorageをクリアする関数
-        function clearFamilyTreeCache() {
-            console.log('Clearing FamilyTree localStorage...');
-            try {
-                // localStorageの全キーをチェック
-                const keysToRemove = [];
-                for (let i = 0; i < localStorage.length; i++) {
-                    const key = localStorage.key(i);
-                    // FamilyTree関連のキーを削除
-                    if (key && (key.includes('FamilyTree') || key.includes('bft-') || key.includes('familytree'))) {
-                        keysToRemove.push(key);
-                    }
-                }
-                keysToRemove.forEach(key => {
-                    console.log('Removing localStorage key:', key);
-                    localStorage.removeItem(key);
-                });
-                console.log('localStorage cleared:', keysToRemove.length, 'keys removed');
-            } catch (e) {
-                console.error('Error clearing localStorage:', e);
-            }
-        }
-
-        // ページロード時にlocalStorageをクリア
-        clearFamilyTreeCache();
+        var network = null;
+        var nodes = null;
+        var edges = null;
 
         // データソース切り替え
         document.querySelectorAll('input[name="dataSource"]').forEach(radio => {
             radio.addEventListener('change', function() {
-                console.log('Data source changed to:', this.value);
-                
                 document.getElementById('jsonInput').style.display = 'none';
                 document.getElementById('csvInput').style.display = 'none';
                 
@@ -317,189 +269,8 @@
                 } else if (this.value === 'csv') {
                     document.getElementById('csvInput').style.display = 'block';
                 }
-                
-                // データソース切り替え時に必ずチャートをクリア
-                if (chart) {
-                    console.log('Clearing chart on data source change...');
-                    
-                    // localStorageをクリア
-                    clearFamilyTreeCache();
-                    
-                    try {
-                        chart.destroy();
-                    } catch (e) {
-                        console.log('Chart destroy error:', e);
-                    }
-                    chart = null;
-                    
-                    // DOM要素を完全に削除して再作成
-                    const container = document.querySelector('.container');
-                    const oldTreeElement = document.getElementById('tree');
-                    if (oldTreeElement) {
-                        oldTreeElement.remove();
-                    }
-                    
-                    // 新しいtree要素を作成
-                    const newTreeElement = document.createElement('div');
-                    newTreeElement.id = 'tree';
-                    container.appendChild(newTreeElement);
-                    
-                    currentData = null;
-                    clearMessages();
-                    showMessage('データソースを切り替えました。新しいデータをロードしてください。', 'info');
-                }
             });
         });
-
-        function getOptions() {
-            const searchParams = new URLSearchParams(window.location.search);
-            var fit = searchParams.get('fit');
-            var enableSearch = true;
-            var scaleInitial = 1;
-            if (fit == 'yes') {
-                enableSearch = false;
-                scaleInitial = FamilyTree.match.boundary;
-            }
-            return { enableSearch, scaleInitial };
-        }
-
-        function initChart(data) {
-            console.log('initChart: Starting with', data.length, 'nodes');
-            
-            // 既存のチャートを完全に破棄
-            if (chart) {
-                console.log('initChart: Destroying existing chart...');
-                try {
-                    chart.destroy();
-                } catch (e) {
-                    console.log('Chart destroy error:', e);
-                }
-                chart = null;
-            }
-            
-            // すべてのtree要素を削除（念のため）
-            const container = document.querySelector('.container');
-            const allTreeElements = container.querySelectorAll('#tree');
-            allTreeElements.forEach(el => {
-                console.log('initChart: Removing tree element');
-                el.remove();
-            });
-            
-            // 新しいtree要素を作成
-            const newTreeElement = document.createElement('div');
-            newTreeElement.id = 'tree';
-            container.appendChild(newTreeElement);
-            console.log('initChart: Created new tree element');
-            
-            // 十分な時間を待ってから新しいチャートを作成
-            setTimeout(() => {
-                console.log('initChart: Creating new FamilyTree instance...');
-                var options = getOptions();
-
-                try {
-                    chart = new FamilyTree(newTreeElement, {
-                        mouseScrool: FamilyTree.none,
-                        scaleInitial: options.scaleInitial,
-                        siblingSeparation: 120,
-                        template: 'john',
-                        nodeBinding: {
-                            field_0: "name",
-                            field_1: "born",
-                            img_0: "img",
-                            field_2: "locate",
-                        }
-                    });
-
-                    console.log('initChart: Loading data into chart...');
-                    chart.load(data);
-                    currentData = data;
-                    console.log('initChart: Chart loaded successfully');
-                } catch (e) {
-                    console.error('initChart: Error creating chart:', e);
-                    showMessage('チャート作成エラー: ' + e.message, 'error');
-                }
-            }, 500);
-        }
-
-        function loadData() {
-            clearMessages();
-            console.log('loadData: Starting...');
-
-            // localStorageをクリア
-            clearFamilyTreeCache();
-
-            // 必ず既存チャートを破棄
-            if (chart) {
-                console.log('loadData: Destroying existing chart...');
-                try {
-                    chart.destroy();
-                } catch (e) {
-                    console.log('Chart destroy error:', e);
-                }
-                chart = null;
-                
-                // DOM要素を完全に削除
-                const oldTreeElement = document.getElementById('tree');
-                if (oldTreeElement) {
-                    oldTreeElement.remove();
-                }
-                
-                currentData = null;
-            }
-
-            const dataSource = document.querySelector('input[name="dataSource"]:checked').value;
-            console.log('loadData: Data source =', dataSource);
-
-            try {
-                let data;
-
-                if (dataSource === 'default') {
-                    // デフォルトデータ (data.js)
-                    if (typeof window.familyData !== 'undefined') {
-                        data = window.familyData;
-                        console.log('loadData: Loaded default data, nodes =', data.length);
-                    } else {
-                        showMessage('data.jsが読み込まれていません', 'error');
-                        return;
-                    }
-                } else if (dataSource === 'json') {
-                    // JSONデータ
-                    const jsonText = document.getElementById('jsonData').value.trim();
-                    if (!jsonText) {
-                        showMessage('JSONデータを入力してください', 'error');
-                        return;
-                    }
-                    data = JSON.parse(jsonText);
-                    console.log('loadData: Parsed JSON data, nodes =', data.length);
-                } else if (dataSource === 'csv') {
-                    // CSVデータ
-                    const csvText = document.getElementById('csvData').value.trim();
-                    if (!csvText) {
-                        showMessage('CSVデータを入力してください', 'error');
-                        return;
-                    }
-                    console.log('loadData: Parsing CSV data...');
-                    data = parseCSVToFamilyData(csvText);
-                    console.log('loadData: Parsed CSV data, nodes =', data.length);
-                }
-
-                if (!data || data.length === 0) {
-                    showMessage('有効なデータが見つかりません', 'error');
-                    return;
-                }
-
-                console.log('loadData: Initializing chart...');
-                // チャートの初期化は非同期なので、メッセージをより遅らせる
-                initChart(data);
-                setTimeout(() => {
-                    showMessage(`家系図を生成しました (${data.length}個のノード)`, 'success');
-                }, 800);
-
-            } catch (error) {
-                console.error('Error loading data:', error);
-                showMessage('データの読み込みエラー: ' + error.message, 'error');
-            }
-        }
 
         function parseCSVToFamilyData(csvText) {
             console.log('parseCSVToFamilyData: Starting CSV parse...');
@@ -539,7 +310,7 @@
             result.data.forEach((row, index) => {
                 const name = row['個体名'] || row['name'];
                 if (!name || name.trim() === '') {
-                    return; // 名前がない行はスキップ
+                    return;
                 }
                 
                 const trimmedName = name.trim();
@@ -583,14 +354,13 @@
                 }
             });
 
-            console.log('parseCSVToFamilyData: Step 2 complete, parent IDs assigned');
+            console.log('parseCSVToFamilyData: Step 2 complete');
 
             // Step 3: 両親情報からパートナー関係を自動判定
-            const partnerPairs = new Map(); // key: 個体ID, value: Set<パートナーID>
+            const partnerPairs = new Map();
             
             data.forEach(node => {
                 if (node.fid !== undefined && node.mid !== undefined) {
-                    // この子供の父親と母親はパートナー
                     if (!partnerPairs.has(node.fid)) {
                         partnerPairs.set(node.fid, new Set());
                     }
@@ -611,20 +381,226 @@
                     node.pids = Array.from(partnerPairs.get(node.id));
                 }
                 
-                // 一時的なプロパティを削除
                 delete node._fatherName;
                 delete node._motherName;
             });
 
-            console.log('parseCSVToFamilyData: Step 4 complete, returning data');
+            console.log('parseCSVToFamilyData: Complete, returning data');
             return data;
+        }
+
+        function convertToVisJsData(familyData) {
+            const visNodes = [];
+            const visEdges = [];
+            const edgeId = { value: 0 };
+
+            // ノードを作成
+            familyData.forEach(person => {
+                let label = person.name;
+                if (person.born) {
+                    label += '\n' + person.born;
+                }
+                if (person.locate) {
+                    label += '\n' + person.locate;
+                }
+
+                const nodeData = {
+                    id: person.id,
+                    label: label,
+                    shape: 'box',
+                    size: 25,
+                    font: { size: 14 },
+                    group: person.gender || 'unknown'
+                };
+
+                if (person.img) {
+                    nodeData.image = person.img;
+                    nodeData.shape = 'circularImage';
+                }
+
+                visNodes.push(nodeData);
+            });
+
+            // エッジを作成（親子関係）
+            familyData.forEach(person => {
+                // 父親とのリンク
+                if (person.fid !== undefined) {
+                    visEdges.push({
+                        id: edgeId.value++,
+                        from: person.fid,
+                        to: person.id,
+                        arrows: 'to',
+                        color: { color: '#2196f3' },
+                        width: 2
+                    });
+                }
+                
+                // 母親とのリンク
+                if (person.mid !== undefined) {
+                    visEdges.push({
+                        id: edgeId.value++,
+                        from: person.mid,
+                        to: person.id,
+                        arrows: 'to',
+                        color: { color: '#e91e63' },
+                        width: 2
+                    });
+                }
+            });
+
+            // パートナー関係のエッジを作成
+            const processedPairs = new Set();
+            familyData.forEach(person => {
+                if (person.pids && person.pids.length > 0) {
+                    person.pids.forEach(partnerId => {
+                        const pairKey = [person.id, partnerId].sort().join('-');
+                        if (!processedPairs.has(pairKey)) {
+                            processedPairs.add(pairKey);
+                            visEdges.push({
+                                id: edgeId.value++,
+                                from: person.id,
+                                to: partnerId,
+                                color: { color: '#ff9800' },
+                                width: 3,
+                                dashes: false
+                            });
+                        }
+                    });
+                }
+            });
+
+            return { nodes: visNodes, edges: visEdges };
+        }
+
+        function createNetwork(data) {
+            console.log('createNetwork: Starting with', data.length, 'nodes');
+
+            const container = document.getElementById('network-container');
+            container.innerHTML = '';
+
+            const visData = convertToVisJsData(data);
+            
+            nodes = new vis.DataSet(visData.nodes);
+            edges = new vis.DataSet(visData.edges);
+
+            const networkData = {
+                nodes: nodes,
+                edges: edges
+            };
+
+            const options = {
+                layout: {
+                    hierarchical: {
+                        direction: 'UD',
+                        sortMethod: 'directed',
+                        nodeSpacing: 150,
+                        levelSeparation: 200
+                    }
+                },
+                physics: {
+                    enabled: false
+                },
+                nodes: {
+                    borderWidth: 2,
+                    borderWidthSelected: 4
+                },
+                edges: {
+                    smooth: {
+                        type: 'cubicBezier',
+                        forceDirection: 'vertical'
+                    }
+                },
+                groups: {
+                    male: {
+                        color: {
+                            background: '#42a5f5',
+                            border: '#1976d2'
+                        }
+                    },
+                    female: {
+                        color: {
+                            background: '#ec407a',
+                            border: '#c2185b'
+                        }
+                    }
+                },
+                interaction: {
+                    hover: true,
+                    navigationButtons: true,
+                    keyboard: true
+                }
+            };
+
+            network = new vis.Network(container, networkData, options);
+            
+            network.on('click', function(params) {
+                if (params.nodes.length > 0) {
+                    const nodeId = params.nodes[0];
+                    const person = data.find(p => p.id === nodeId);
+                    if (person) {
+                        showMessage(`選択: ${person.name}`, 'info');
+                    }
+                }
+            });
+
+            console.log('createNetwork: Complete');
+        }
+
+        function loadData() {
+            clearMessages();
+            console.log('loadData: Starting...');
+
+            const dataSource = document.querySelector('input[name="dataSource"]:checked').value;
+            console.log('loadData: Data source =', dataSource);
+
+            try {
+                let data;
+
+                if (dataSource === 'default') {
+                    if (typeof window.familyData !== 'undefined') {
+                        data = window.familyData;
+                        console.log('loadData: Loaded default data, nodes =', data.length);
+                    } else {
+                        showMessage('data.jsが読み込まれていません', 'error');
+                        return;
+                    }
+                } else if (dataSource === 'json') {
+                    const jsonText = document.getElementById('jsonData').value.trim();
+                    if (!jsonText) {
+                        showMessage('JSONデータを入力してください', 'error');
+                        return;
+                    }
+                    data = JSON.parse(jsonText);
+                    console.log('loadData: Parsed JSON data, nodes =', data.length);
+                } else if (dataSource === 'csv') {
+                    const csvText = document.getElementById('csvData').value.trim();
+                    if (!csvText) {
+                        showMessage('CSVデータを入力してください', 'error');
+                        return;
+                    }
+                    console.log('loadData: Parsing CSV data...');
+                    data = parseCSVToFamilyData(csvText);
+                    console.log('loadData: Parsed CSV data, nodes =', data.length);
+                }
+
+                if (!data || data.length === 0) {
+                    showMessage('有効なデータが見つかりません', 'error');
+                    return;
+                }
+
+                createNetwork(data);
+                showMessage(`家系図を生成しました (${data.length}個のノード)`, 'success');
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showMessage('データの読み込みエラー: ' + error.message, 'error');
+            }
         }
 
         function loadSampleData() {
             const dataSource = document.querySelector('input[name="dataSource"]:checked').value;
             
             if (dataSource === 'csv') {
-                // CSVサンプルデータ（オス・メス表記）
                 const sampleCSV = `個体名,性別,生年月日,父親,母親,アイコン,現在地
 祖父,オス,1930/4/15,,,,東京
 祖母,メス,1932/8/20,,,,東京
@@ -636,128 +612,40 @@
 子供2,メス,2008/12/3,自分,配偶者,,東京`;
                 
                 document.querySelector('input[name="dataSource"][value="csv"]').checked = true;
-                document.getElementById('jsonInput').style.display = 'none';
                 document.getElementById('csvInput').style.display = 'block';
                 document.getElementById('csvData').value = sampleCSV;
-                
             } else {
-                // JSONサンプルデータ
                 const sampleJSON = [
-                    {
-                        id: 0,
-                        name: "祖父",
-                        pids: [1],
-                        gender: "male",
-                        born: "1930/4/15",
-                        locate: "東京"
-                    },
-                    {
-                        id: 1,
-                        name: "祖母",
-                        pids: [0],
-                        gender: "female",
-                        born: "1932/8/20",
-                        locate: "東京"
-                    },
-                    {
-                        id: 2,
-                        name: "父",
-                        fid: 0,
-                        mid: 1,
-                        pids: [3],
-                        gender: "male",
-                        born: "1955/3/10",
-                        locate: "横浜"
-                    },
-                    {
-                        id: 3,
-                        name: "母",
-                        pids: [2],
-                        gender: "female",
-                        born: "1957/11/25",
-                        locate: "横浜"
-                    },
-                    {
-                        id: 4,
-                        name: "自分",
-                        fid: 2,
-                        mid: 3,
-                        pids: [5],
-                        gender: "male",
-                        born: "1980/7/5",
-                        locate: "東京"
-                    },
-                    {
-                        id: 5,
-                        name: "配偶者",
-                        pids: [4],
-                        gender: "female",
-                        born: "1982/9/12",
-                        locate: "東京"
-                    },
-                    {
-                        id: 6,
-                        name: "子供1",
-                        fid: 4,
-                        mid: 5,
-                        gender: "male",
-                        born: "2005/4/20",
-                        locate: "東京"
-                    },
-                    {
-                        id: 7,
-                        name: "子供2",
-                        fid: 4,
-                        mid: 5,
-                        gender: "female",
-                        born: "2008/12/3",
-                        locate: "東京"
-                    }
+                    { id: 0, name: "祖父", pids: [1], gender: "male", born: "1930/4/15", locate: "東京" },
+                    { id: 1, name: "祖母", pids: [0], gender: "female", born: "1932/8/20", locate: "東京" },
+                    { id: 2, name: "父", fid: 0, mid: 1, pids: [3], gender: "male", born: "1955/3/10", locate: "横浜" },
+                    { id: 3, name: "母", pids: [2], gender: "female", born: "1957/11/25", locate: "横浜" },
+                    { id: 4, name: "自分", fid: 2, mid: 3, pids: [5], gender: "male", born: "1980/7/5", locate: "東京" },
+                    { id: 5, name: "配偶者", pids: [4], gender: "female", born: "1982/9/12", locate: "東京" },
+                    { id: 6, name: "子供1", fid: 4, mid: 5, gender: "male", born: "2005/4/20", locate: "東京" },
+                    { id: 7, name: "子供2", fid: 4, mid: 5, gender: "female", born: "2008/12/3", locate: "東京" }
                 ];
 
                 document.querySelector('input[name="dataSource"][value="json"]').checked = true;
-                document.getElementById('csvInput').style.display = 'none';
                 document.getElementById('jsonInput').style.display = 'block';
-                document.getElementById('jsonData').value = JSON.stringify(sampleJSON, null, 2);
+                document.getElementById('csvData').value = JSON.stringify(sampleJSON, null, 2);
             }
             
             showMessage('サンプルデータをロードしました。「家系図を生成」ボタンをクリックしてください。', 'info');
         }
 
         function clearAll() {
-            console.log('clearAll: Starting...');
-            
             document.getElementById('jsonData').value = '';
             document.getElementById('csvData').value = '';
             
-            if (chart) {
-                try {
-                    chart.destroy();
-                } catch (e) {
-                    console.log('Chart destroy error:', e);
-                }
-                chart = null;
+            if (network) {
+                network.destroy();
+                network = null;
             }
             
-            // localStorageもクリア
-            clearFamilyTreeCache();
-            
-            // DOM要素を完全に削除して再作成
-            const container = document.querySelector('.container');
-            const oldTreeElement = document.getElementById('tree');
-            if (oldTreeElement) {
-                oldTreeElement.remove();
-            }
-            
-            // 新しいtree要素を作成（空の状態）
-            const newTreeElement = document.createElement('div');
-            newTreeElement.id = 'tree';
-            container.appendChild(newTreeElement);
-            
-            currentData = null;
+            document.getElementById('network-container').innerHTML = '';
             clearMessages();
-            showMessage('クリアしました（localStorageもクリア済み）', 'info');
-            console.log('clearAll: Complete');
+            showMessage('クリアしました', 'info');
         }
 
         function showMessage(text, type) {
@@ -782,18 +670,6 @@
         function clearMessages() {
             document.getElementById('messages').innerHTML = '';
         }
-
-        // ページロード時の初期化
-        window.addEventListener('load', function() {
-            // デフォルトデータがあっても自動的には表示しない
-            // ユーザーが明示的に「家系図を生成」ボタンをクリックするまで待機
-            if (typeof window.familyData !== 'undefined') {
-                showMessage('デフォルトデータが利用可能です。「家系図を生成」ボタンをクリックしてください。', 'info');
-            }
-        });
     </script>
-    
-    <!-- data.jsを読み込む（オプション） -->
-    <script src="./data.js"></script>
 </body>
 </html>
