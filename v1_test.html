@@ -260,6 +260,7 @@
                 <button class="btn-primary" onclick="loadData()">家系図を生成</button>
                 <button class="btn-secondary" onclick="loadSampleData()">サンプルデータをロード (選択中のフォーマット)</button>
                 <button class="btn-danger" onclick="clearAll()">クリア</button>
+                <button class="btn-warning" onclick="window.location.reload()">完全リセット (ページ再読込)</button>
             </div>
 
             <div id="messages"></div>
@@ -295,7 +296,19 @@
                         console.log('Chart destroy error:', e);
                     }
                     chart = null;
-                    document.getElementById('tree').innerHTML = '';
+                    
+                    // DOM要素を完全に削除して再作成
+                    const container = document.querySelector('.container');
+                    const oldTreeElement = document.getElementById('tree');
+                    if (oldTreeElement) {
+                        oldTreeElement.remove();
+                    }
+                    
+                    // 新しいtree要素を作成
+                    const newTreeElement = document.createElement('div');
+                    newTreeElement.id = 'tree';
+                    container.appendChild(newTreeElement);
+                    
                     currentData = null;
                     clearMessages();
                     showMessage('データソースを切り替えました。新しいデータをロードしてください。', 'info');
@@ -329,34 +342,48 @@
                 chart = null;
             }
             
-            // DOMをクリア
-            const treeElement = document.getElementById('tree');
-            treeElement.innerHTML = '';
-            console.log('initChart: DOM cleared');
+            // すべてのtree要素を削除（念のため）
+            const container = document.querySelector('.container');
+            const allTreeElements = container.querySelectorAll('#tree');
+            allTreeElements.forEach(el => {
+                console.log('initChart: Removing tree element');
+                el.remove();
+            });
+            
+            // 新しいtree要素を作成
+            const newTreeElement = document.createElement('div');
+            newTreeElement.id = 'tree';
+            container.appendChild(newTreeElement);
+            console.log('initChart: Created new tree element');
             
             // 十分な時間を待ってから新しいチャートを作成
             setTimeout(() => {
                 console.log('initChart: Creating new FamilyTree instance...');
                 var options = getOptions();
 
-                chart = new FamilyTree(treeElement, {
-                    mouseScrool: FamilyTree.none,
-                    scaleInitial: options.scaleInitial,
-                    siblingSeparation: 120,
-                    template: 'john',
-                    nodeBinding: {
-                        field_0: "name",
-                        field_1: "born",
-                        img_0: "img",
-                        field_2: "locate",
-                    }
-                });
+                try {
+                    chart = new FamilyTree(newTreeElement, {
+                        mouseScrool: FamilyTree.none,
+                        scaleInitial: options.scaleInitial,
+                        siblingSeparation: 120,
+                        template: 'john',
+                        nodeBinding: {
+                            field_0: "name",
+                            field_1: "born",
+                            img_0: "img",
+                            field_2: "locate",
+                        }
+                    });
 
-                console.log('initChart: Loading data into chart...');
-                chart.load(data);
-                currentData = data;
-                console.log('initChart: Chart loaded successfully');
-            }, 300);
+                    console.log('initChart: Loading data into chart...');
+                    chart.load(data);
+                    currentData = data;
+                    console.log('initChart: Chart loaded successfully');
+                } catch (e) {
+                    console.error('initChart: Error creating chart:', e);
+                    showMessage('チャート作成エラー: ' + e.message, 'error');
+                }
+            }, 500);
         }
 
         function loadData() {
@@ -372,7 +399,13 @@
                     console.log('Chart destroy error:', e);
                 }
                 chart = null;
-                document.getElementById('tree').innerHTML = '';
+                
+                // DOM要素を完全に削除
+                const oldTreeElement = document.getElementById('tree');
+                if (oldTreeElement) {
+                    oldTreeElement.remove();
+                }
+                
                 currentData = null;
             }
 
@@ -422,7 +455,7 @@
                 initChart(data);
                 setTimeout(() => {
                     showMessage(`家系図を生成しました (${data.length}個のノード)`, 'success');
-                }, 600);
+                }, 800);
 
             } catch (error) {
                 console.error('Error loading data:', error);
@@ -654,6 +687,8 @@
         }
 
         function clearAll() {
+            console.log('clearAll: Starting...');
+            
             document.getElementById('jsonData').value = '';
             document.getElementById('csvData').value = '';
             
@@ -666,10 +701,22 @@
                 chart = null;
             }
             
-            document.getElementById('tree').innerHTML = '';
+            // DOM要素を完全に削除して再作成
+            const container = document.querySelector('.container');
+            const oldTreeElement = document.getElementById('tree');
+            if (oldTreeElement) {
+                oldTreeElement.remove();
+            }
+            
+            // 新しいtree要素を作成（空の状態）
+            const newTreeElement = document.createElement('div');
+            newTreeElement.id = 'tree';
+            container.appendChild(newTreeElement);
+            
             currentData = null;
             clearMessages();
             showMessage('クリアしました', 'info');
+            console.log('clearAll: Complete');
         }
 
         function showMessage(text, type) {
