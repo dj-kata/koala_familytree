@@ -212,7 +212,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🌳 家系図ツール - vis.js版</h1>
+            <h1>🌳 家系図作成ツールv3</h1>
         </div>
 
         <div class="input-section">
@@ -228,6 +228,11 @@
                 同じディレクトリのCSVファイルを読み込むには、ローカルサーバーが必要です。<br>
                 例: <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">python -m http.server</code><br>
                 その後、ブラウザで <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">http://localhost:8000/v1_visjs.html</code> を開いてください。
+                <br><br>
+                <strong>📁 GitHub Pagesでサブディレクトリのファイルを使う場合:</strong><br>
+                • リポジトリに <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">csvs/</code> フォルダを作成<br>
+                • その中にCSVファイルを配置（例: <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">csvs/indeko_tukusi.csv</code>）<br>
+                • ファイルがコミット・プッシュされていることを確認
                 <br><br>
                 <strong>⚠️ GitHub Pagesのキャッシュ対策:</strong><br>
                 • data.jsを更新したら、HTMLの <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">data.js?v=1</code> の数字を増やす（例: v=2）<br>
@@ -306,8 +311,8 @@
                 <label for="csvSampleSelect" style="font-weight: bold; margin-right: 10px;">サンプルCSV選択:</label>
                 <select id="csvSampleSelect" style="padding: 8px; border-radius: 5px; border: 2px solid #4caf50; font-size: 14px;">
                     <option value="data.js">data.jsから生成</option>
-                    <option value="csvs/indeko_tukusi.csv">インディコ・つくし周辺</option>
-                    <option value="csvs/sachi.csv">さち周辺</option>
+                    <option value="./csvs/indeko_tukusi.csv">インディコ・つくし周辺</option>
+                    <option value="./csvs/sachi.csv">さち周辺</option>
                 </select>
             </div>
 
@@ -924,11 +929,23 @@
                 } else if (sampleType.endsWith('.csv')) {
                     // CSVファイルを読み込む（キャッシュバスティング対応）
                     try {
-                        const response = await fetch(sampleType + '?v=' + new Date().getTime());
+                        // パスを正規化（相対パスの場合は ./ を明示）
+                        let filePath = sampleType;
+                        if (!filePath.startsWith('http') && !filePath.startsWith('/') && !filePath.startsWith('./')) {
+                            filePath = './' + filePath;
+                        }
+                        
+                        console.log('Fetching CSV file:', filePath);
+                        const response = await fetch(filePath + '?v=' + new Date().getTime());
+                        
+                        console.log('Response status:', response.status, response.statusText);
+                        
                         if (!response.ok) {
-                            throw new Error(`ファイル ${sampleType} が見つかりません`);
+                            throw new Error(`ファイル ${sampleType} が見つかりません (${response.status} ${response.statusText})`);
                         }
                         csvText = await response.text();
+                        
+                        console.log('CSV loaded, length:', csvText.length);
                         
                         // CSVデータをテキストエリアに設定
                         document.querySelector('input[name="dataSource"][value="csv"]').checked = true;
@@ -940,7 +957,8 @@
                         showMessage(`サンプルCSVをロードしました（${sampleName}）。「家系図を生成」ボタンをクリックしてください。`, 'info');
                         return;
                     } catch (error) {
-                        showMessage(`CSVファイルの読み込みエラー: ${error.message}. ローカルサーバー（例: python -m http.server）を使用してください。`, 'error');
+                        console.error('CSV fetch error:', error);
+                        showMessage(`CSVファイルの読み込みエラー: ${error.message}<br>ファイルパス: ${sampleType}<br>GitHub Pagesの場合、リポジトリ内に csvs/ フォルダとファイルが存在することを確認してください。`, 'error');
                         return;
                     }
                 }
