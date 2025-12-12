@@ -223,22 +223,6 @@
                 1. データソース（CSV/JSON）を選択<br>
                 2. CSVの場合はデータを貼り付けるか、サンプルCSVをロード<br>
                 3. 「家系図を生成」ボタンをクリック<br>
-                <br>
-                <strong>⚠️ CSVファイル読み込みの注意:</strong><br>
-                同じディレクトリのCSVファイルを読み込むには、ローカルサーバーが必要です。<br>
-                例: <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">python -m http.server</code><br>
-                その後、ブラウザで <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">http://localhost:8000/v1_visjs.html</code> を開いてください。
-                <br><br>
-                <strong>📁 GitHub Pagesでサブディレクトリのファイルを使う場合:</strong><br>
-                • リポジトリに <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">csvs/</code> フォルダを作成<br>
-                • その中にCSVファイルを配置（例: <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">csvs/indeko_tukusi.csv</code>）<br>
-                • ファイルがコミット・プッシュされていることを確認
-                <br><br>
-                <strong>⚠️ GitHub Pagesのキャッシュ対策:</strong><br>
-                • data.jsを更新したら、HTMLの <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">data.js?v=1</code> の数字を増やす（例: v=2）<br>
-                • 画像を更新した場合、data.js内のURLに <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">?v=1</code> を追加<br>
-                • 例: <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">img: "imgs/koala.jpg?v=2"</code><br>
-                • ブラウザで強制リロード: <strong>Ctrl+Shift+R</strong> (Windows) または <strong>Cmd+Shift+R</strong> (Mac)
             </div>
 
             <div style="background: #f1f8e9; padding: 12px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #4caf50; font-size: 13px;">
@@ -253,11 +237,9 @@
                 • <strong>行番号・列番号省略時はグリッド状に自動配置（見やすく整列）</strong><br>
                 • 全てのノードを自由にドラッグ可能<br>
                 • <strong>キャンバスの右下をドラッグして表示領域を拡大/縮小可能</strong>
-                <strong>⚠️ その他:</strong><br>
             </div>
             <div style="background: #f1dde9; padding: 12px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #4caf50; font-size: 13px;">
                 <strong>その他</strong><br>
-                • 作者: かた(@cold_planet_)<br>
                 • 一部のアイコンはコアラwikiから拝借しています。<br>
                 • この子の周辺の家系図を用意して！等のリクエストは作者(@cold_planet_)までどうぞ<br>
             </div>
