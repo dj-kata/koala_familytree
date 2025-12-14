@@ -289,7 +289,7 @@ const familyData = [
     mid: 9,
     pids: [15,24],
     gender: "female",
-    born: "2018/7/7",
+    born: "2018/7/7-2025/12/11",
     locate: "東山動植物園",
     img: "https://dj-kata.github.io/koala_familytree/imgs/nanami.png",
   },
