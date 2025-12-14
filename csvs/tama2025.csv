@@ -1,0 +1,12 @@
+行番号,列番号,個体名,性別,生年月日,父親,母親,現在地,アイコン
+1,1,アーチャー(東山),オス,-2016/4/3,,,東山動植物園,https://dj-kata.github.io/koala_familytree/imgs/.png
+1,3,ティリー,メス,2009/12/15-2024/12/25,,,東山動植物園,https://dj-kata.github.io/koala_familytree/imgs/tilly.png
+1,5,タイチ,オス,2012/5/3-2022/9/29,ティムタム,ライチ,平川動物公園,https://dj-kata.github.io/koala_familytree/imgs/taichi.png
+1,7,ホリー,メス,2013/12/25,,,東山動植物園,https://dj-kata.github.io/koala_familytree/imgs/holly.png
+1,9,マックス,オス,,,,,https://dj-kata.github.io/koala_familytree/imgs/max.png
+2,2,チャーリー,オス,2014/11/27,アーチャー(東山),ティリー,多摩動物公園,https://dj-kata.github.io/koala_familytree/imgs/charlie.png
+3,4,きらら,メス,2018/9/6,タイチ,ティリー,多摩動物公園,https://dj-kata.github.io/koala_familytree/imgs/kirara.png
+3,6,コロン,オス,2014/11/22,フランク,ココロ,金沢動物園,https://dj-kata.github.io/koala_familytree/imgs/koron.png
+3,8,こまち,メス,2017/4/27,マックス,ホリー,多摩動物公園,https://dj-kata.github.io/koala_familytree/imgs/komati.png
+4,5,きんとき,オス,2022/6/25,コロン,きらら,多摩動物公園,https://dj-kata.github.io/koala_familytree/imgs/kintoki.png
+4,7,あずま,メス,2021/5/18,コロン,こまち,多摩動物公園,https://dj-kata.github.io/koala_familytree/imgs/azuma.png

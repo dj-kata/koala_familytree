@@ -216,7 +216,14 @@
         </div>
 
         <div class="input-section">
-            <h3>データ入力</h3>
+            <div style="background: #f1dde9; padding: 12px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #4caf50; font-size: 13px;">
+                • 作者: @<a href="https://x.com/cold_planet_">cold_planet_</a><br>
+                • 日本で飼育されているコアラの家系図を作成するためのツールです。<br>
+                • 非公式のツールであり、情報の妥当性や正確性について保証するものではありません。<br>
+                • 全ての個体を網羅すると図が煩雑になるため、範囲ごとにピックアップしたデータも用意しています。<br>
+                • 基本的に作者が撮影した写真を使っていますが、一部のアイコンは<a href="https://w.atwiki.jp/koala_wiki/">コアラwiki</a>から拝借しています。<br>
+                • アイコンはこれがいい！この子の周辺の家系図を用意して！等のリクエストは作者までどうぞ<br>
+            </div>
             
             <div style="background: #e3f2fd; padding: 12px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #2196f3; font-size: 13px;">
                 <strong>📝 使い方:</strong><br>
@@ -237,11 +244,6 @@
                 • <strong>行番号・列番号省略時はグリッド状に自動配置（見やすく整列）</strong><br>
                 • 全てのノードを自由にドラッグ可能<br>
                 • <strong>キャンバスの右下をドラッグして表示領域を拡大/縮小可能</strong>
-            </div>
-            <div style="background: #f1dde9; padding: 12px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #4caf50; font-size: 13px;">
-                <strong>その他</strong><br>
-                • 一部のアイコンはコアラwikiから拝借しています。<br>
-                • この子の周辺の家系図を用意して！等のリクエストは作者(@cold_planet_)までどうぞ<br>
             </div>
             
             <div class="data-source-toggle">
@@ -292,7 +294,8 @@
             <div style="margin-bottom: 15px;">
                 <label for="csvSampleSelect" style="font-weight: bold; margin-right: 10px;">サンプルCSV選択:</label>
                 <select id="csvSampleSelect" style="padding: 8px; border-radius: 5px; border: 2px solid #4caf50; font-size: 14px;">
-                    <option value="data.js">data.jsから生成</option>
+                    <option value="data.js">登録済みの全個体</option>
+                    <option value="./csvs/tama2025.csv">多摩動物公園</option>
                     <option value="./csvs/indeko_tukusi.csv">インディコ・つくし周辺</option>
                     <option value="./csvs/sachi.csv">さち周辺</option>
                 </select>
