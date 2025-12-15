@@ -967,7 +967,7 @@ const familyData = [
     gender: "",
     born: "",
     locate: "",
-    img: "https://dj-kata.github.io/koala_familytree/imgs/yume.png",
+    img: "https://dj-kata.github.io/koala_familytree/imgs/yume_south.png",
   },
   {
     id: 92,
