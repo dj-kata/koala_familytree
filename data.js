@@ -1123,7 +1123,7 @@ const familyData = [
     pids: [],
     gender: "",
     born: "2025/5/1",
-    locate: "平川動物公園",
+    locate: "埼玉県こども動物自然公園",
     img: "https://dj-kata.github.io/koala_familytree/imgs/.png",
   },
   {
