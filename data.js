@@ -393,7 +393,7 @@ const familyData = [
     name: "インディコ",
     fid: 24,
     mid: 4,
-    pids: [31,15],
+    pids: [31,15,57],
     gender: "female",
     born: "2019/12/22",
     locate: "平川動物公園",
@@ -878,15 +878,6 @@ const familyData = [
     img: "https://dj-kata.github.io/koala_familytree/imgs/.png",
   },
   {
-    id: 82,
-    name: "",
-    pids: [82,94],
-    gender: "male",
-    born: "",
-    locate: "王子動物園",
-    img: "https://dj-kata.github.io/koala_familytree/imgs/.png",
-  },
-  {
     id: 83,
     name: "ピコ",
     pids: [84],
@@ -990,7 +981,7 @@ const familyData = [
   {
     id: 94,
     name: "ティアラ",
-    pids: [82],
+    pids: [],
     gender: "",
     born: "",
     locate: "",

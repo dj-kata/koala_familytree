@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>家系図作成ツールv3</title>
-    <!-- キャッシュ対策: data.jsを更新したら ?v= の番号を変更してください -->
-    <script type="text/javascript" src="data.js?v=1"></script>
+    <title>日本のコアラ家系図</title>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -149,6 +147,7 @@
             border-radius: 8px;
             margin: 15px 0;
             font-weight: bold;
+            white-space: pre-line;
         }
 
         .error-message {
@@ -212,7 +211,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🌳 家系図作成ツールv3</h1>
+            <h1>🌳 日本のコアラ家系図</h1>
         </div>
 
         <div class="input-section">
@@ -327,6 +326,7 @@
         var network = null;
         var nodes = null;
         var edges = null;
+        var networkResizeObserver = null;
 
         // データソース切り替え
         document.querySelectorAll('input[name="dataSource"]').forEach(radio => {
@@ -764,6 +764,12 @@
             console.log('createNetwork: Starting with', data.length, 'nodes');
 
             const container = document.getElementById('network-container');
+            if (networkResizeObserver) {
+                networkResizeObserver.disconnect();
+            }
+            if (network) {
+                network.destroy();
+            }
             container.innerHTML = '';
 
             const visData = convertToVisJsData(data);
@@ -841,14 +847,12 @@
             });
 
             // コンテナのリサイズを監視
-            const resizeObserver = new ResizeObserver(entries => {
-                for (let entry of entries) {
-                    if (network) {
-                        network.redraw();
-                    }
+            networkResizeObserver = new ResizeObserver(() => {
+                if (network) {
+                    network.redraw();
                 }
             });
-            resizeObserver.observe(container);
+            networkResizeObserver.observe(container);
 
             console.log('createNetwork: Complete');
         }
@@ -950,7 +954,7 @@
                         return;
                     } catch (error) {
                         console.error('CSV fetch error:', error);
-                        showMessage(`CSVファイルの読み込みエラー: ${error.message}<br>ファイルパス: ${sampleType}<br>GitHub Pagesの場合、リポジトリ内に csvs/ フォルダとファイルが存在することを確認してください。`, 'error');
+                        showMessage(`CSVファイルの読み込みエラー: ${error.message}\nファイルパス: ${sampleType}\nローカルではREADMEの手順でHTTPサーバーを起動してください。`, 'error');
                         return;
                     }
                 }
@@ -1036,6 +1040,10 @@
                 network.destroy();
                 network = null;
             }
+            if (networkResizeObserver) {
+                networkResizeObserver.disconnect();
+                networkResizeObserver = null;
+            }
             
             document.getElementById('network-container').innerHTML = '';
             clearMessages();
@@ -1052,17 +1060,20 @@
                 className = 'info-message';
             }
             
-            messagesDiv.innerHTML = `<div class="message ${className}">${text}</div>`;
+            const message = document.createElement('div');
+            message.className = `message ${className}`;
+            message.textContent = text;
+            messagesDiv.replaceChildren(message);
             
             setTimeout(() => {
-                if (messagesDiv.innerHTML.includes(text)) {
-                    messagesDiv.innerHTML = '';
+                if (messagesDiv.firstElementChild === message) {
+                    messagesDiv.replaceChildren();
                 }
             }, 6000);
         }
 
         function clearMessages() {
-            document.getElementById('messages').innerHTML = '';
+            document.getElementById('messages').replaceChildren();
         }
 
         // ページロード時の初期化

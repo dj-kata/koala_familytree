@@ -1,17 +1,50 @@
-page: https://dj-kata.github.io/koala_familytree/
+# 日本のコアラ家系図
 
-以下を利用
-https://balkan.app/FamilyTreeJS/Docs/GettingStarted
+GitHub Pages: <https://dj-kata.github.io/koala_familytree/>
 
-# やったこと
-familytree.jsを改造(3行目にfield_2を表示するための改造をしている)
+日本で飼育されているコアラの家系図を表示する静的Webアプリです。現在のメイン画面は `v3.html`、全件データは `data.js`、範囲別データは `csvs/` にあります。
 
-notionのcsv出力結果をconvert.pyでdata.jsに変換する
+## ローカルで確認する
 
-imgs/に画像をコミットし、https://dj-kata.github.io/koala_familytree/imgs/fuku.pngのようなURLをimg_0に埋め込む。
+CSVの読み込みに `fetch()` を使うため、HTMLファイルを直接開かずHTTPサーバー経由で確認します。PCへのPythonインストールは不要で、Windows版uvが管理するPythonを使います。
 
-# メモ
-アイコン画像について、jpgについてはconvert.shを実行してpngにしておくこと。正方形の画像を想定している。
+最初に `.env.example` を `.env` へコピーし、Windows版 `uv.exe` のWSLから見たパスを設定します。このリポジトリでは次のような内容です。
 
-各園の家系図ファイルは```csvs/```以下にある。  
-全件データは```data.js```から生成されるが、csv作成時に使いやすいように一応```csvs/all.csv```もコミットしている。  
+```dotenv
+WUV=/mnt/c/Users/katao/.local/bin/uv.exe
+```
+
+次のコマンドで起動します。
+
+```bash
+make serve
+```
+
+起動後、<http://127.0.0.1:8000/> を開きます。
+
+## データを確認する
+
+更新後は、CSVの必須列、個体名の重複、性別、行・列番号、画像参照を検査します。
+
+```bash
+make validate
+```
+
+画像が未登録の場合は警告だけを表示します。画像警告でも失敗させたい場合は `make validate-strict` を実行します。
+
+## データとファイル
+
+- `data.js`: 全個体の表示データ
+- `csvs/all.csv`: 全個体のCSV表現
+- `csvs/*.csv`: 園・家系など範囲別の表示データ
+- `imgs/`: アイコン画像（正方形のPNGを想定）
+- `export.csv`, `export_notion.py`: Notionエクスポート由来の旧変換フロー
+- `vls.html`, `v1.html`, `familytree.js`: 旧表示方式
+
+現状は `data.js` と `csvs/all.csv` が公開画面の最新データで、`export.csv` は件数が一致しないため、そのまま `export_notion.py` を実行して `data.js` を上書きしないでください。
+
+JPG画像をPNGへ変換する場合は ImageMagick が必要です。
+
+```bash
+./convert.sh
+```
