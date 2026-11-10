@@ -1,184 +1,142 @@
 #!/usr/bin/env python3
-"""Validate the CSV files used by the family-tree views."""
+"""Validate canonical pedigree facts, layouts, routes, and image references."""
 
 from __future__ import annotations
 
 import argparse
-import csv
-import json
-import re
 from collections import Counter
 from pathlib import Path
 from urllib.parse import urlparse
 
+from data_model import PROJECT_ROOT, load_data, people_by_id
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-CSV_DIRECTORY = PROJECT_ROOT / "csvs"
+
 IMAGE_DIRECTORY = PROJECT_ROOT / "imgs"
-DATA_FILE = PROJECT_ROOT / "data.js"
-REQUIRED_COLUMNS = (
-    "行番号",
-    "列番号",
-    "個体名",
-    "性別",
-    "生年月日",
-    "父親",
-    "母親",
-    "現在地",
-    "アイコン",
-)
-VALID_GENDERS = {"", "オス", "メス", "おす", "めす", "雄", "雌", "male", "female", "M", "F"}
+VALID_GENDERS = {"", "male", "female"}
 
 
-def validate_csv(path: Path) -> tuple[list[str], list[str]]:
+def validate() -> tuple[list[str], list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
-    placeholder_icon_count = 0
-    missing_icons: set[str] = set()
+    people, views = load_data()
+    by_id = people_by_id(people)
 
-    with path.open(encoding="utf-8-sig", newline="") as source:
-        reader = csv.DictReader(source)
-        columns = tuple(reader.fieldnames or ())
-        missing_columns = [column for column in REQUIRED_COLUMNS if column not in columns]
-        if missing_columns:
-            return ([f"必須列がありません: {', '.join(missing_columns)}"], warnings)
-        rows = list(reader)
-
-    names = [row["個体名"].strip() for row in rows if row["個体名"].strip()]
-    duplicates = sorted(name for name, count in Counter(names).items() if count > 1)
-    if duplicates:
-        errors.append(f"個体名が重複しています: {', '.join(duplicates)}")
-
-    for line_number, row in enumerate(rows, start=2):
-        name = row["個体名"].strip()
+    ids = [int(person["id"]) for person in people]
+    names = [str(person.get("name", "")) for person in people]
+    for person_id, count in Counter(ids).items():
+        if count > 1:
+            errors.append(f"ID {person_id} が重複しています")
+    for name, count in Counter(names).items():
         if not name:
-            errors.append(f"{line_number}行目: 個体名が空です")
+            errors.append("個体名が空のデータがあります")
+        elif count > 1:
+            errors.append(f"個体名「{name}」が重複しています")
 
-        gender = row["性別"].strip()
+    placeholder_names: list[str] = []
+    missing_icons: set[str] = set()
+    partner_pairs: set[tuple[int, int]] = set()
+    for person in people:
+        person_id = int(person["id"])
+        name = str(person.get("name", person_id))
+        gender = str(person.get("gender", ""))
         if gender not in VALID_GENDERS:
-            errors.append(f"{line_number}行目 ({name}): 未対応の性別「{gender}」です")
+            errors.append(f"{name}: 未対応のgender「{gender}」です")
+        if "dead" not in person:
+            errors.append(f"{name}: deadフィールドがありません")
+        if "-" in str(person.get("born", "")):
+            errors.append(f"{name}: bornに没日が混在しています")
 
-        for column in ("行番号", "列番号"):
-            value = row[column].strip()
-            if value:
-                try:
-                    int(value)
-                except ValueError:
-                    errors.append(f"{line_number}行目 ({name}): {column}「{value}」は整数ではありません")
+        parent_ids: list[int] = []
+        for field in ("fid", "mid"):
+            if field in person:
+                parent_id = int(person[field])
+                parent_ids.append(parent_id)
+                if parent_id not in by_id:
+                    errors.append(f"{name}: 存在しない{field}={parent_id}を参照しています")
+                if parent_id == person_id:
+                    errors.append(f"{name}: 自分自身が親になっています")
+        if len(parent_ids) == 2:
+            partner_pairs.add(tuple(sorted(parent_ids)))
 
-        icon = row["アイコン"].strip()
-        if not icon:
-            continue
+        icon = str(person.get("img", ""))
         filename = Path(urlparse(icon).path).name
         if filename == ".png":
-            placeholder_icon_count += 1
+            placeholder_names.append(name)
         elif filename and not (IMAGE_DIRECTORY / filename).is_file():
             missing_icons.add(filename)
 
-    if placeholder_icon_count:
-        warnings.append(f"プレースホルダーのアイコンURLが{placeholder_icon_count}件あります")
+    valid_ids = set(by_id)
+    for view_key, view in views.items():
+        members = [int(value) for value in view.get("members", [])]
+        duplicate_members = [value for value, count in Counter(members).items() if count > 1]
+        if duplicate_members:
+            errors.append(f"{view_key}: membersに重複IDがあります: {duplicate_members}")
+        for member_id in members:
+            if member_id not in valid_ids:
+                errors.append(f"{view_key}: 不明なmember ID {member_id}です")
+
+        member_set = set(members)
+        for person_id, position in view.get("positions", {}).items():
+            if int(person_id) not in member_set:
+                errors.append(f"{view_key}: positionsのID {person_id}がmembersにありません")
+            if not all(isinstance(position.get(axis), (int, float)) for axis in ("x", "y")):
+                errors.append(f"{view_key}: positions[{person_id}]の座標が不正です")
+
+        for pair_key, position in view.get("junctions", {}).items():
+            try:
+                pair = tuple(sorted(int(value) for value in pair_key.split("|")))
+            except ValueError:
+                errors.append(f"{view_key}: 接点キー「{pair_key}」が不正です")
+                continue
+            if pair not in partner_pairs:
+                errors.append(f"{view_key}: 接点「{pair_key}」に対応する親ペアがありません")
+            if not all(isinstance(position.get(axis), (int, float)) for axis in ("x", "y")):
+                errors.append(f"{view_key}: junctions[{pair_key}]の座標が不正です")
+
+        for route_key, route in view.get("routes", {}).items():
+            if ">" not in route_key:
+                errors.append(f"{view_key}: 経路キー「{route_key}」が不正です")
+                continue
+            pair_key, child_text = route_key.split(">", 1)
+            try:
+                child_id = int(child_text)
+            except ValueError:
+                errors.append(f"{view_key}: 経路の子ID「{child_text}」が不正です")
+                continue
+            child = by_id.get(child_id)
+            if child is None or "fid" not in child or "mid" not in child:
+                errors.append(f"{view_key}: 経路「{route_key}」の子または両親が不正です")
+            else:
+                expected_pair = "|".join(map(str, sorted((int(child["fid"]), int(child["mid"])))))
+                if pair_key != expected_pair:
+                    errors.append(f"{view_key}: 経路「{route_key}」の親ペアが一致しません")
+            points = route.get("points") if isinstance(route, dict) else None
+            if not isinstance(points, list) or any(
+                not isinstance(point, dict)
+                or not all(isinstance(point.get(axis), (int, float)) for axis in ("x", "y"))
+                for point in points
+            ):
+                errors.append(f"{view_key}: routes[{route_key}]のpointsが不正です")
+
+    if placeholder_names:
+        warnings.append(f"プレースホルダーのアイコンURLが{len(placeholder_names)}件あります")
     if missing_icons:
         warnings.append(f"存在しない画像があります: {', '.join(sorted(missing_icons))}")
-
     return errors, warnings
 
 
-def validate_data_js() -> list[str]:
-    errors: list[str] = []
-    source = DATA_FILE.read_text(encoding="utf-8")
-    blocks = re.findall(r"^  \{\n(.*?)^  \},$", source, flags=re.MULTILINE | re.DOTALL)
-    people: dict[int, dict[str, object]] = {}
-
-    for block_number, block in enumerate(blocks, start=1):
-        id_match = re.search(r"^    id: (\d+),$", block, flags=re.MULTILINE)
-        name_match = re.search(r'^    name: (".*"),$', block, flags=re.MULTILINE)
-        pids_match = re.search(r"^    pids: \[([^]]*)\],$", block, flags=re.MULTILINE)
-        if not (id_match and name_match and pids_match):
-            errors.append(f"data.jsの{block_number}番目の個体を解析できません")
-            continue
-
-        person_id = int(id_match.group(1))
-        try:
-            name = json.loads(name_match.group(1))
-        except json.JSONDecodeError:
-            errors.append(f"data.jsのID {person_id}: 個体名が不正な文字列です")
-            continue
-
-        if person_id in people:
-            errors.append(f"data.js: ID {person_id} が重複しています")
-        parent_ids = {
-            key: int(match.group(1))
-            for key in ("fid", "mid")
-            if (match := re.search(rf"^    {key}: (\d+),$", block, flags=re.MULTILINE))
-        }
-        people[person_id] = {
-            "name": name,
-            "pids": [int(value) for value in re.findall(r"\d+", pids_match.group(1))],
-            **parent_ids,
-        }
-
-    names = [str(person["name"]) for person in people.values()]
-    duplicate_names = sorted(name for name, count in Counter(names).items() if count > 1)
-    if "" in names:
-        errors.append("data.js: 個体名が空のデータがあります")
-    if duplicate_names:
-        errors.append(f"data.js: 個体名が重複しています: {', '.join(duplicate_names)}")
-
-    valid_ids = set(people)
-    for person_id, person in people.items():
-        referenced_ids = [*person["pids"]]
-        referenced_ids.extend(person[key] for key in ("fid", "mid") if key in person)
-        for referenced_id in referenced_ids:
-            if referenced_id not in valid_ids:
-                errors.append(f"data.jsのID {person_id}: 存在しないID {referenced_id} を参照しています")
-        if person_id in person["pids"]:
-            errors.append(f"data.jsのID {person_id}: 自分自身がパートナーになっています")
-        for partner_id in person["pids"]:
-            if partner_id in people and person_id not in people[partner_id]["pids"]:
-                errors.append(f"data.jsのID {person_id} と {partner_id}: パートナー参照が片方向です")
-
-    with (CSV_DIRECTORY / "all.csv").open(encoding="utf-8-sig", newline="") as source_file:
-        csv_names = [row["個体名"].strip() for row in csv.DictReader(source_file)]
-    if names != csv_names:
-        errors.append("data.js と csvs/all.csv の個体名・並び順が一致しません")
-
-    return errors
-
-
 def main() -> int:
-    parser = argparse.ArgumentParser(description="家系図CSVの重複・形式・画像参照を検査します")
-    parser.add_argument(
-        "--strict-images",
-        action="store_true",
-        help="画像参照の警告もエラーとして扱う",
-    )
+    parser = argparse.ArgumentParser(description="data.jsの家系・表示レイアウトを検査します")
+    parser.add_argument("--strict-images", action="store_true", help="画像警告もエラーとして扱う")
     args = parser.parse_args()
 
-    error_count = 0
-    warning_count = 0
-    paths = sorted(CSV_DIRECTORY.glob("*.csv"))
-    if not paths:
-        print("ERROR: csvs/*.csv が見つかりません")
-        return 1
-
-    for path in paths:
-        errors, warnings = validate_csv(path)
-        for message in errors:
-            print(f"ERROR {path.relative_to(PROJECT_ROOT)}: {message}")
-        for message in warnings:
-            print(f"WARN  {path.relative_to(PROJECT_ROOT)}: {message}")
-        error_count += len(errors)
-        warning_count += len(warnings)
-
-    data_errors = validate_data_js()
-    for message in data_errors:
-        print(f"ERROR data.js: {message}")
-    error_count += len(data_errors)
-
-    if args.strict_images:
-        error_count += warning_count
-
-    print(f"検査完了: {len(paths)}ファイル / エラー{error_count}件 / 画像警告{warning_count}件")
+    errors, warnings = validate()
+    for message in errors:
+        print(f"ERROR: {message}")
+    for message in warnings:
+        print(f"WARN: {message}")
+    error_count = len(errors) + (len(warnings) if args.strict_images else 0)
+    print(f"検査完了: 個体・表示レイアウト / エラー{error_count}件 / 画像警告{len(warnings)}件")
     return 1 if error_count else 0
 
 

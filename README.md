@@ -2,11 +2,11 @@
 
 GitHub Pages: <https://dj-kata.github.io/koala_familytree/>
 
-日本で飼育されているコアラの家系図を表示する静的Webアプリです。現在のメイン画面は `v3.html`、全件データは `data.js`、範囲別データは `csvs/` にあります。
+日本で飼育されているコアラの家系図を表示する静的Webアプリです。現在のメイン画面は `v3.html` です。個体情報と表示レイアウトのマスターは `data.js`、`csvs/` はそこから生成する互換ファイルです。
 
 ## ローカルで確認する
 
-CSVの読み込みに `fetch()` を使うため、HTMLファイルを直接開かずHTTPサーバー経由で確認します。PCへのPythonインストールは不要で、Windows版uvが管理するPythonを使います。
+HTMLファイルを直接開かずHTTPサーバー経由で確認します。PCへのPythonインストールは不要で、Windows版uvが管理するPythonを使います。
 
 最初に `.env.example` を `.env` へコピーし、Windows版 `uv.exe` のWSLから見たパスを設定します。このリポジトリでは次のような内容です。
 
@@ -22,9 +22,55 @@ make serve
 
 起動後、<http://127.0.0.1:8000/> を開きます。
 
+## 個体データを更新する
+
+`data.js` の `familyData` だけを編集します。主なフィールドは次のとおりです。
+
+```js
+{
+  "id": 4,
+  "name": "ティリー",
+  "gender": "female",
+  "born": "2009/12/15",
+  "dead": "2024/12/25",
+  "locate": "東山動植物園",
+  "img": "https://.../imgs/tilly.png"
+}
+```
+
+- `id`: 変更しない安定ID
+- `fid`, `mid`: 父・母のID。親が不明なら省略
+- `born`: 誕生日のみ
+- `dead`: 没日。存命または不明なら空文字
+
+編集後、CSVを再生成して検査します。
+
+```bash
+make generate
+make validate
+```
+
+`csvs/*.csv` は生成物なので直接編集しません。
+
+## 表示レイアウトを更新する
+
+1. `make serve` で起動する
+2. 対象ビューを選ぶ
+3. 「レイアウト編集」を有効にする
+4. 個体、オレンジの接点、黄色の中継点をドラッグする
+5. 「レイアウトを書き出す」でJSONを保存する
+6. ダウンロードしたJSONをリポジトリへ置いて反映する
+
+```bash
+make apply-layout FILE=layout-yume.json
+make validate
+```
+
+個体座標は `familyViews.*.positions`、親ペアの接点は `junctions`、子へ向かう中継点は `routes` に保存されます。自動配置は縦横の線分を優先しますが、複雑な家系では書き出した中継点を手動調整できます。
+
 ## データを確認する
 
-更新後は、CSVの必須列、個体名の重複、性別、行・列番号、画像参照を検査します。
+重複ID・個体名、親参照、`born` と `dead`、ビューのメンバー・座標・接点・経路、生成CSVとの同期を検査します。
 
 ```bash
 make validate
@@ -34,14 +80,18 @@ make validate
 
 ## データとファイル
 
-- `data.js`: 全個体の表示データ
-- `csvs/all.csv`: 全個体のCSV表現
-- `csvs/*.csv`: 園・家系など範囲別の表示データ
+- `data.js`: 全個体と表示レイアウトのマスター
+- `assets/app.js`: 家系図の配置・接点・経路・レイアウト編集
+- `assets/style.css`: 画面スタイル
+- `csvs/*.csv`: `data.js` から生成される互換データ
+- `scripts/generate_csvs.py`: CSV生成
+- `scripts/apply_layout.py`: ブラウザで書き出したレイアウトの反映
+- `scripts/validate_data.py`: データとレイアウトの検査
 - `imgs/`: アイコン画像（正方形のPNGを想定）
 - `export.csv`, `export_notion.py`: Notionエクスポート由来の旧変換フロー
 - `vls.html`, `v1.html`, `familytree.js`: 旧表示方式
 
-現状は `data.js` と `csvs/all.csv` が公開画面の最新データで、`export.csv` は件数が一致しないため、そのまま `export_notion.py` を実行して `data.js` を上書きしないでください。
+`export.csv` は最新マスターではありません。`export_notion.py` を実行して `data.js` を上書きしないでください。
 
 JPG画像をPNGへ変換する場合は ImageMagick が必要です。
 
