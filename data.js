@@ -15,7 +15,7 @@ const familyData = [
     "born": "2008/3/1",
     "locate": "淡路ファームパークイングランドの丘",
     "img": "https://dj-kata.github.io/koala_familytree/imgs/nozomi.png",
-    "dead": ""
+    "dead": "2026/7/8"
   },
   {
     "id": 2,
@@ -181,7 +181,7 @@ const familyData = [
     "born": "2014/11/27",
     "locate": "多摩動物公園",
     "img": "https://dj-kata.github.io/koala_familytree/imgs/charlie.png",
-    "dead": ""
+    "dead": "2026/3/15"
   },
   {
     "id": 18,
@@ -441,7 +441,7 @@ const familyData = [
     "born": "2020/5/14",
     "locate": "東山動植物園",
     "img": "https://dj-kata.github.io/koala_familytree/imgs/wattle.png",
-    "dead": ""
+    "dead": "2026/10/8"
   },
   {
     "id": 42,
@@ -602,7 +602,7 @@ const familyData = [
     "born": "2022/8/11",
     "locate": "平川動物公園",
     "img": "https://dj-kata.github.io/koala_familytree/imgs/taiyou.png",
-    "dead": ""
+    "dead": "2026/10/14"
   },
   {
     "id": 57,
@@ -798,7 +798,7 @@ const familyData = [
     "born": "2023/10/21",
     "locate": "平川動物公園",
     "img": "https://dj-kata.github.io/koala_familytree/imgs/charbou.png",
-    "dead": ""
+    "dead": "2026/7/2"
   },
   {
     "id": 75,
@@ -864,7 +864,7 @@ const familyData = [
     "born": "2024/9/20",
     "locate": "平川動物公園",
     "img": "https://dj-kata.github.io/koala_familytree/imgs/earth.png",
-    "dead": ""
+    "dead": "2026/7/20"
   },
   {
     "id": 81,
@@ -1099,11 +1099,11 @@ const familyData = [
     "id": 107,
     "fid": 31,
     "mid": 38,
-    "name": "キボウ仔",
+    "name": "ラムネ",
     "gender": "male",
     "born": "2025/4/9",
     "locate": "平川動物公園",
-    "img": "https://dj-kata.github.io/koala_familytree/imgs/.png",
+    "img": "https://dj-kata.github.io/koala_familytree/imgs/ramune.png",
     "dead": ""
   },
   {
@@ -1114,18 +1114,18 @@ const familyData = [
     "gender": "female",
     "born": "2025/5/1",
     "locate": "埼玉県こども動物自然公園",
-    "img": "https://dj-kata.github.io/koala_familytree/imgs/.png",
+    "img": "https://dj-kata.github.io/koala_familytree/imgs/hiyori.png",
     "dead": ""
   },
   {
     "id": 109,
     "fid": 57,
     "mid": 37,
-    "name": "インディコ仔",
+    "name": "コスモ",
     "gender": "female",
     "born": "2025/5/15",
     "locate": "平川動物公園",
-    "img": "https://dj-kata.github.io/koala_familytree/imgs/.png",
+    "img": "https://dj-kata.github.io/koala_familytree/imgs/cosmo.png",
     "dead": ""
   },
   {
@@ -1136,7 +1136,7 @@ const familyData = [
     "gender": "female",
     "born": "2025/6/2",
     "locate": "埼玉県こども動物自然公園",
-    "img": "https://dj-kata.github.io/koala_familytree/imgs/mirako2.png",
+    "img": "https://dj-kata.github.io/koala_familytree/imgs/poll.png",
     "dead": ""
   },
   {
@@ -1149,7 +1149,29 @@ const familyData = [
     "dead": "",
     "locate": "",
     "img": "https://dj-kata.github.io/koala_familytree/imgs/yui.png"
-  }
+  },
+  {
+    "id": 112,
+    "fid": 16,
+    "mid": 43,
+    "name": "キクタロー",
+    "gender": "male",
+    "born": "2025/12/2",
+    "locate": "金沢動物園",
+    "img": "https://dj-kata.github.io/koala_familytree/imgs/kikutaro.png",
+    "dead": ""
+  },
+  {
+    "id": 113,
+    "fid": 60,
+    "mid": 23,
+    "name": "てんむす",
+    "gender": "male",
+    "born": "2026/1/10",
+    "locate": "東山動植物園",
+    "img": "https://dj-kata.github.io/koala_familytree/imgs/tenmusu.png",
+    "dead": ""
+  },
 ];
 
 const familyViews = {
