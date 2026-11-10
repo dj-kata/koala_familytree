@@ -4,7 +4,7 @@
 1,15,ピース♂,オス,,,,,,https://dj-kata.github.io/koala_familytree/imgs/.png
 2,4,マックス,オス,,,,,,https://dj-kata.github.io/koala_familytree/imgs/max.png
 5,1,ぼたん,メス,2017/5/12,2024/12/13,アーティー,ウメ,金沢動物園,https://dj-kata.github.io/koala_familytree/imgs/botan.png
-5,3,チャーリー,オス,2014/11/27,,アーチャー(東山),ティリー,多摩動物公園,https://dj-kata.github.io/koala_familytree/imgs/charlie.png
+5,3,チャーリー,オス,2014/11/27,2026/3/15,アーチャー(東山),ティリー,多摩動物公園,https://dj-kata.github.io/koala_familytree/imgs/charlie.png
 6,5,りん,メス,2017/8/23,,マックス,ティリー,東山動植物園,https://dj-kata.github.io/koala_familytree/imgs/rin.png
 6,9,タイチ,オス,2012/5/3,2022/9/29,ティムタム,ライチ,平川動物公園,https://dj-kata.github.io/koala_familytree/imgs/taichi.png
 7,4,ハリー,オス,2022/4/22,,チャーリー,コハル,金沢動物園,https://dj-kata.github.io/koala_familytree/imgs/harry.png
@@ -28,12 +28,14 @@
 11,4,きんとき,オス,2022/6/25,,コロン,きらら,多摩動物公園,https://dj-kata.github.io/koala_familytree/imgs/kintoki.png
 11,8,スター,オス,2023/11/18,,アーチャー,インディコ,平川動物公園,https://dj-kata.github.io/koala_familytree/imgs/star.png
 11,10,ししお,オス,2022/4/4,,タイチ,ホリー,平川動物公園,https://dj-kata.github.io/koala_familytree/imgs/sisio.png
-11,11,タイヨウ,オス,2022/8/11,,タイチ,インディコ,平川動物公園,https://dj-kata.github.io/koala_familytree/imgs/taiyou.png
+11,11,タイヨウ,オス,2022/8/11,2026/10/14,タイチ,インディコ,平川動物公園,https://dj-kata.github.io/koala_familytree/imgs/taiyou.png
 11,13,シャイン,オス,2017/8/31,2022/1/6,コロン,クイン,王子動物園,https://dj-kata.github.io/koala_familytree/imgs/shine.png
 12,3,ライト,オス,2021/5/14,,バンブラ,イト,平川動物公園,https://dj-kata.github.io/koala_familytree/imgs/raito.png
 12,5,つくし,メス,2020/9/3,,イシン,りん,平川動物公園,https://dj-kata.github.io/koala_familytree/imgs/tukusi.png
 12,6,もなか,オス,2023/10/20,,イシン,りん,東山動植物園,https://dj-kata.github.io/koala_familytree/imgs/monaka.png
 12,7,だいふく,オス,2022/3/14,,タイチ,りん,東山動植物園,https://dj-kata.github.io/koala_familytree/imgs/daifuku.png
-12,9,インディコ仔,メス,2025/5/15,,ししお,インディコ,平川動物公園,https://dj-kata.github.io/koala_familytree/imgs/.png
+12,9,コスモ,メス,2025/5/15,,ししお,インディコ,平川動物公園,https://dj-kata.github.io/koala_familytree/imgs/cosmo.png
 12,12,シャイニー,メス,2021/5/13,,シャイン,マイ,王子動物園,https://dj-kata.github.io/koala_familytree/imgs/shiny.png
 13,4,スミレ,メス,2024/9/11,,ライト,つくし,平川動物公園,https://dj-kata.github.io/koala_familytree/imgs/sumire.png
+10,4,キクタロー,オス,2025/12/2,,コロン,たんぽぽ,金沢動物園,https://dj-kata.github.io/koala_familytree/imgs/kikutaro.png
+7,5,てんむす,オス,2026/1/10,,スカイ,りん,東山動植物園,https://dj-kata.github.io/koala_familytree/imgs/tenmusu.png

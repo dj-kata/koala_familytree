@@ -28,7 +28,7 @@ make serve
 
 ```js
 {
-  "id": 4,
+  "id": "tilly",
   "name": "ティリー",
   "gender": "female",
   "born": "2009/12/15",
@@ -38,8 +38,9 @@ make serve
 }
 ```
 
-- `id`: 変更しない安定ID
-- `fid`, `mid`: 父・母のID。親が不明なら省略
+- `id`: 英小文字・数字・`_`だけで付ける、一意で変更しない安定ID
+- `name`: 画面に表示する個体名。同名でも可
+- `fid`, `mid`: 父・母の英字ID。親が不明なら省略
 - `born`: 誕生日のみ
 - `dead`: 没日。存命または不明なら空文字
 
@@ -52,10 +53,17 @@ make validate
 
 `csvs/*.csv` は生成物なので直接編集しません。
 
+表示グループへ個体を追加する場合は、`familyViews.<グループ>.members` に英字IDを追加します。座標をまだ決めていない場合は自動補完できます。
+
+```bash
+make fill-layouts
+make validate
+```
+
 ## 表示レイアウトを更新する
 
 1. `make serve` で起動する
-2. 対象ビューを選ぶ
+2. コンボボックスから対象ビューを選ぶ（選択時点で表示される）
 3. 「レイアウト編集」を有効にする
 4. 個体、オレンジの接点、黄色の中継点をドラッグする
 5. 「レイアウトを書き出す」でJSONを保存する
@@ -70,7 +78,7 @@ make validate
 
 ## データを確認する
 
-重複ID・個体名、親参照、`born` と `dead`、ビューのメンバー・座標・接点・経路、生成CSVとの同期を検査します。
+英字IDの形式・重複、親参照、`born` と `dead`、ビューのメンバー・座標・接点・経路、生成CSVとの同期を検査します。
 
 ```bash
 make validate
@@ -85,6 +93,7 @@ make validate
 - `assets/style.css`: 画面スタイル
 - `csvs/*.csv`: `data.js` から生成される互換データ
 - `scripts/generate_csvs.py`: CSV生成
+- `scripts/fill_layout_positions.py`: グループへ追加した個体の座標補完
 - `scripts/apply_layout.py`: ブラウザで書き出したレイアウトの反映
 - `scripts/validate_data.py`: データとレイアウトの検査
 - `imgs/`: アイコン画像（正方形のPNGを想定）

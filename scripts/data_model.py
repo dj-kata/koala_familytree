@@ -15,10 +15,10 @@ DATA_PATH = PROJECT_ROOT / "data.js"
 def load_data(path: Path = DATA_PATH) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     source = path.read_text(encoding="utf-8")
     match = re.fullmatch(
-        r"const familyData = (\[.*\]);\n\n"
-        r"const familyViews = (\{.*\});\n\n"
-        r"window\.familyData = familyData;\n"
-        r"window\.familyViews = familyViews;\n?",
+        r"const familyData = (\[.*\]);\s*"
+        r"const familyViews = (\{.*\});\s*"
+        r"window\.familyData = familyData;\s*"
+        r"window\.familyViews = familyViews;\s*",
         source,
         flags=re.DOTALL,
     )

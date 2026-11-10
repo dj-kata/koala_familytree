@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import re
 from collections import Counter
 from pathlib import Path
 from urllib.parse import urlparse
@@ -26,11 +27,9 @@ def validate() -> tuple[list[str], list[str]]:
     for person_id, count in Counter(ids).items():
         if count > 1:
             errors.append(f"ID {person_id} が重複しています")
-    for name, count in Counter(names).items():
+    for name in names:
         if not name:
             errors.append("個体名が空のデータがあります")
-        elif count > 1:
-            errors.append(f"個体名「{name}」が重複しています")
 
     placeholder_names: list[str] = []
     missing_icons: set[str] = set()
@@ -38,10 +37,8 @@ def validate() -> tuple[list[str], list[str]]:
     for person in people:
         person_id = str(person["id"])
         name = str(person.get("name", person_id))
-        if person_id != name:
-            errors.append(f"{name}: idは個体名と同じ文字列にしてください（現在: {person_id}）")
-        if any(delimiter in person_id for delimiter in ("|", ">")):
-            errors.append(f"{name}: idに予約文字 | または > は使えません")
+        if not re.fullmatch(r"[a-z][a-z0-9_]*", person_id):
+            errors.append(f"{name}: id「{person_id}」は英小文字・数字・_で指定してください")
         gender = str(person.get("gender", ""))
         if gender not in VALID_GENDERS:
             errors.append(f"{name}: 未対応のgender「{gender}」です")
@@ -85,6 +82,10 @@ def validate() -> tuple[list[str], list[str]]:
                 errors.append(f"{view_key}: positionsのID {person_id}がmembersにありません")
             if not all(isinstance(position.get(axis), (int, float)) for axis in ("x", "y")):
                 errors.append(f"{view_key}: positions[{person_id}]の座標が不正です")
+        if view_key != "all":
+            missing_positions = [member_id for member_id in members if member_id not in view.get("positions", {})]
+            if missing_positions:
+                errors.append(f"{view_key}: 座標がない個体があります: {', '.join(missing_positions)}")
 
         for pair_key, position in view.get("junctions", {}).items():
             try:

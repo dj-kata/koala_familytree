@@ -1,6 +1,6 @@
 const familyData = [
   {
-    "id": "ラム",
+    "id": "ram",
     "name": "ラム",
     "gender": "male",
     "born": "1988/4/28",
@@ -9,7 +9,7 @@ const familyData = [
     "dead": "2012/3/30"
   },
   {
-    "id": "のぞみ",
+    "id": "nozomi",
     "name": "のぞみ",
     "gender": "female",
     "born": "2008/3/1",
@@ -18,9 +18,9 @@ const familyData = [
     "dead": "2026/7/8"
   },
   {
-    "id": "ミリー",
-    "fid": "ラム",
-    "mid": "カルゴア",
+    "id": "millie",
+    "fid": "ram",
+    "mid": "karugoa",
     "name": "ミリー",
     "gender": "female",
     "born": "2000/8/23",
@@ -29,9 +29,9 @@ const familyData = [
     "dead": "2017/1/30"
   },
   {
-    "id": "ピックス",
-    "fid": "ジェックス",
-    "mid": "ピコ",
+    "id": "pix",
+    "fid": "jex",
+    "mid": "pico",
     "name": "ピックス",
     "gender": "male",
     "born": "2003/6/28",
@@ -40,7 +40,7 @@ const familyData = [
     "dead": "2019/1/21"
   },
   {
-    "id": "ティリー",
+    "id": "tilly",
     "name": "ティリー",
     "gender": "female",
     "born": "2009/12/15",
@@ -49,9 +49,9 @@ const familyData = [
     "dead": "2024/12/25"
   },
   {
-    "id": "ウメ",
-    "fid": "パイン",
-    "mid": "モミジ",
+    "id": "ume",
+    "fid": "pine",
+    "mid": "momiji",
     "name": "ウメ",
     "gender": "female",
     "born": "2010/8/5",
@@ -60,9 +60,9 @@ const familyData = [
     "dead": "2022/11/21"
   },
   {
-    "id": "だいち",
-    "fid": "アーク",
-    "mid": "ゆめ",
+    "id": "daichi",
+    "fid": "ark",
+    "mid": "yume_south",
     "name": "だいち",
     "gender": "male",
     "born": "2013/8/18",
@@ -71,9 +71,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ミライ",
-    "fid": "ライタ",
-    "mid": "ミリー",
+    "id": "mirai",
+    "fid": "raita",
+    "mid": "millie",
     "name": "ミライ",
     "gender": "female",
     "born": "2008/10/25",
@@ -82,9 +82,9 @@ const familyData = [
     "dead": "2020/6/10"
   },
   {
-    "id": "ウミ",
-    "fid": "ウルル",
-    "mid": "ウメ",
+    "id": "umi",
+    "fid": "uluru",
+    "mid": "ume",
     "name": "ウミ",
     "gender": "female",
     "born": "2014/6/13",
@@ -93,7 +93,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ホリー",
+    "id": "holly",
     "name": "ホリー",
     "gender": "female",
     "born": "2013/12/25",
@@ -102,7 +102,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "モモジ",
+    "id": "momoji",
     "name": "モモジ",
     "gender": "male",
     "born": "1997/2/7",
@@ -111,9 +111,9 @@ const familyData = [
     "dead": "2007/2/17"
   },
   {
-    "id": "ハニー",
-    "fid": "ピース♂",
-    "mid": "ライチ",
+    "id": "honey",
+    "fid": "peace_male",
+    "mid": "raichi",
     "name": "ハニー",
     "gender": "female",
     "born": "2014/8/3",
@@ -122,7 +122,7 @@ const familyData = [
     "dead": "2024/8/15"
   },
   {
-    "id": "ウルル",
+    "id": "uluru",
     "name": "ウルル",
     "gender": "male",
     "born": "2007/5/26",
@@ -131,9 +131,9 @@ const familyData = [
     "dead": "2017/12/18"
   },
   {
-    "id": "ユメ",
-    "fid": "フランク",
-    "mid": "ブランディ",
+    "id": "yume",
+    "fid": "frank",
+    "mid": "brandy",
     "name": "ユメ",
     "gender": "female",
     "born": "2015/1/2",
@@ -142,7 +142,7 @@ const familyData = [
     "dead": "2025/3/23"
   },
   {
-    "id": "ジンベラン",
+    "id": "jinberan",
     "name": "ジンベラン",
     "gender": "female",
     "born": "2013/2/23",
@@ -151,9 +151,9 @@ const familyData = [
     "dead": "2023/7/8"
   },
   {
-    "id": "タイチ",
-    "fid": "ティムタム",
-    "mid": "ライチ",
+    "id": "taichi",
+    "fid": "timtam",
+    "mid": "raichi",
     "name": "タイチ",
     "gender": "male",
     "born": "2012/5/3",
@@ -162,9 +162,9 @@ const familyData = [
     "dead": "2022/9/29"
   },
   {
-    "id": "コロン",
-    "fid": "フランク",
-    "mid": "ココロ",
+    "id": "koron",
+    "fid": "frank",
+    "mid": "kokoro",
     "name": "コロン",
     "gender": "male",
     "born": "2014/11/22",
@@ -173,9 +173,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "チャーリー",
-    "fid": "アーチャー(東山)",
-    "mid": "ティリー",
+    "id": "charlie",
+    "fid": "archer_higashiyama",
+    "mid": "tilly",
     "name": "チャーリー",
     "gender": "male",
     "born": "2014/11/27",
@@ -184,9 +184,9 @@ const familyData = [
     "dead": "2026/3/15"
   },
   {
-    "id": "モミジ",
-    "fid": "モモジ",
-    "mid": "ミリー",
+    "id": "momiji",
+    "fid": "momoji",
+    "mid": "millie",
     "name": "モミジ",
     "gender": "female",
     "born": "2006/5/29",
@@ -195,9 +195,9 @@ const familyData = [
     "dead": "2015/8/21"
   },
   {
-    "id": "リオ",
-    "fid": "ブンダ",
-    "mid": "ココロ",
+    "id": "rio",
+    "fid": "bunda",
+    "mid": "kokoro",
     "name": "リオ",
     "gender": "female",
     "born": "2015/12/10",
@@ -206,9 +206,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ピーター",
-    "fid": "ピース♂",
-    "mid": "ティリー",
+    "id": "peter",
+    "fid": "peace_male",
+    "mid": "tilly",
     "name": "ピーター",
     "gender": "male",
     "born": "2016/3/28",
@@ -217,9 +217,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "クイン",
-    "fid": "ボウ",
-    "mid": "ドリー",
+    "id": "quinn",
+    "fid": "bow",
+    "mid": "dolly",
     "name": "クイン",
     "gender": "female",
     "born": "2015/3/23",
@@ -228,9 +228,9 @@ const familyData = [
     "dead": "2023/5/31"
   },
   {
-    "id": "オウカ",
-    "fid": "ウルル",
-    "mid": "ウミ",
+    "id": "ouka",
+    "fid": "uluru",
+    "mid": "umi",
     "name": "オウカ",
     "gender": "female",
     "born": "2016/9/25",
@@ -239,9 +239,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "りん",
-    "fid": "マックス",
-    "mid": "ティリー",
+    "id": "rin",
+    "fid": "max",
+    "mid": "tilly",
     "name": "りん",
     "gender": "female",
     "born": "2017/8/23",
@@ -250,9 +250,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "イシン",
-    "fid": "ブンダ",
-    "mid": "ユメ",
+    "id": "ishin",
+    "fid": "bunda",
+    "mid": "yume",
     "name": "イシン",
     "gender": "male",
     "born": "2017/5/14",
@@ -261,9 +261,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "こまち",
-    "fid": "マックス",
-    "mid": "ホリー",
+    "id": "komati",
+    "fid": "max",
+    "mid": "holly",
     "name": "こまち",
     "gender": "female",
     "born": "2017/4/27",
@@ -272,9 +272,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ぼたん",
-    "fid": "アーティー",
-    "mid": "ウメ",
+    "id": "botan",
+    "fid": "artie",
+    "mid": "ume",
     "name": "ぼたん",
     "gender": "female",
     "born": "2017/5/12",
@@ -283,9 +283,9 @@ const familyData = [
     "dead": "2024/12/13"
   },
   {
-    "id": "ななみ",
-    "fid": "タイチ",
-    "mid": "ホリー",
+    "id": "nanami",
+    "fid": "taichi",
+    "mid": "holly",
     "name": "ななみ",
     "gender": "female",
     "born": "2018/7/7",
@@ -294,9 +294,9 @@ const familyData = [
     "dead": "2025/12/11"
   },
   {
-    "id": "きらら",
-    "fid": "タイチ",
-    "mid": "ティリー",
+    "id": "kirara",
+    "fid": "taichi",
+    "mid": "tilly",
     "name": "きらら",
     "gender": "female",
     "born": "2018/9/6",
@@ -305,7 +305,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "コタロウ (2015)",
+    "id": "kotaro_2015",
     "name": "コタロウ (2015)",
     "gender": "male",
     "born": "2015/9/25",
@@ -314,9 +314,9 @@ const familyData = [
     "dead": "2022/7/31"
   },
   {
-    "id": "ヒマワリ",
-    "fid": "バンブラ",
-    "mid": "ユメ",
+    "id": "himawari",
+    "fid": "banbura",
+    "mid": "yume",
     "name": "ヒマワリ",
     "gender": "female",
     "born": "2019/6/22",
@@ -325,7 +325,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "アーチャー",
+    "id": "archer",
     "name": "アーチャー",
     "gender": "male",
     "born": "2019/4/26",
@@ -334,9 +334,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ハナ",
-    "fid": "ピーター",
-    "mid": "オウカ",
+    "id": "hana",
+    "fid": "peter",
+    "mid": "ouka",
     "name": "ハナ",
     "gender": "female",
     "born": "2019/5/20",
@@ -345,9 +345,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "エマ",
-    "fid": "ピーター",
-    "mid": "ウミ",
+    "id": "ema",
+    "fid": "peter",
+    "mid": "umi",
     "name": "エマ",
     "gender": "female",
     "born": "2018/12/6",
@@ -356,9 +356,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ふく",
-    "fid": "コタロウ",
-    "mid": "ドリー",
+    "id": "fuku",
+    "fid": "kotarou",
+    "mid": "dolly",
     "name": "ふく",
     "gender": "female",
     "born": "2019/6/12",
@@ -367,9 +367,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "コハル",
-    "fid": "コロン",
-    "mid": "クイン",
+    "id": "koharu",
+    "fid": "koron",
+    "mid": "quinn",
     "name": "コハル",
     "gender": "female",
     "born": "2019/4/2",
@@ -378,9 +378,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "つくし",
-    "fid": "イシン",
-    "mid": "りん",
+    "id": "tukusi",
+    "fid": "ishin",
+    "mid": "rin",
     "name": "つくし",
     "gender": "female",
     "born": "2020/9/3",
@@ -389,9 +389,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "インディコ",
-    "fid": "イシン",
-    "mid": "ティリー",
+    "id": "indeko",
+    "fid": "ishin",
+    "mid": "tilly",
     "name": "インディコ",
     "gender": "female",
     "born": "2019/12/22",
@@ -400,9 +400,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "キボウ",
-    "fid": "バンブラ",
-    "mid": "ジェイン",
+    "id": "kibou",
+    "fid": "banbura",
+    "mid": "jane",
     "name": "キボウ",
     "gender": "female",
     "born": "2019/10/17",
@@ -411,9 +411,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "いぶき",
-    "fid": "イシン",
-    "mid": "ホリー",
+    "id": "ibuki",
+    "fid": "ishin",
+    "mid": "holly",
     "name": "いぶき",
     "gender": "male",
     "born": "2020/8/27",
@@ -422,9 +422,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "イツキ",
-    "fid": "バンブラ",
-    "mid": "イト",
+    "id": "itsuki",
+    "fid": "banbura",
+    "mid": "ito",
     "name": "イツキ",
     "gender": "male",
     "born": "2020/4/3",
@@ -433,9 +433,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ワトル",
-    "fid": "タイチ",
-    "mid": "ななみ",
+    "id": "wattle",
+    "fid": "taichi",
+    "mid": "nanami",
     "name": "ワトル",
     "gender": "female",
     "born": "2020/5/14",
@@ -444,9 +444,9 @@ const familyData = [
     "dead": "2026/10/8"
   },
   {
-    "id": "ソラ",
-    "fid": "バンブラ",
-    "mid": "ユメ",
+    "id": "sora",
+    "fid": "banbura",
+    "mid": "yume",
     "name": "ソラ",
     "gender": "male",
     "born": "2020/6/14",
@@ -455,9 +455,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "たんぽぽ",
-    "fid": "チャーリー",
-    "mid": "ぼたん",
+    "id": "tanpopo",
+    "fid": "charlie",
+    "mid": "botan",
     "name": "たんぽぽ",
     "gender": "female",
     "born": "2020/4/26",
@@ -466,9 +466,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "シャイン",
-    "fid": "コロン",
-    "mid": "クイン",
+    "id": "shine",
+    "fid": "koron",
+    "mid": "quinn",
     "name": "シャイン",
     "gender": "male",
     "born": "2017/8/31",
@@ -477,7 +477,7 @@ const familyData = [
     "dead": "2022/1/6"
   },
   {
-    "id": "アーティー",
+    "id": "artie",
     "name": "アーティー",
     "gender": "male",
     "born": "2012/8/11",
@@ -486,9 +486,9 @@ const familyData = [
     "dead": "2017/7/27"
   },
   {
-    "id": "ヒナタ",
-    "fid": "ブンダ",
-    "mid": "ヒマワリ",
+    "id": "hinata",
+    "fid": "bunda",
+    "mid": "himawari",
     "name": "ヒナタ",
     "gender": "female",
     "born": "2021/3/27",
@@ -497,9 +497,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "カナエ",
-    "fid": "バンブラ",
-    "mid": "ユメ",
+    "id": "kanae",
+    "fid": "banbura",
+    "mid": "yume",
     "name": "カナエ",
     "gender": "female",
     "born": "2021/6/13",
@@ -508,9 +508,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ピース",
-    "fid": "ブンダ",
-    "mid": "ジェイン",
+    "id": "peace",
+    "fid": "bunda",
+    "mid": "jane",
     "name": "ピース",
     "gender": "female",
     "born": "2021/6/29",
@@ -519,9 +519,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ライト",
-    "fid": "バンブラ",
-    "mid": "イト",
+    "id": "raito",
+    "fid": "banbura",
+    "mid": "ito",
     "name": "ライト",
     "gender": "male",
     "born": "2021/5/14",
@@ -530,9 +530,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "シャイニー",
-    "fid": "シャイン",
-    "mid": "マイ",
+    "id": "shiny",
+    "fid": "shine",
+    "mid": "mai",
     "name": "シャイニー",
     "gender": "female",
     "born": "2021/5/13",
@@ -541,9 +541,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ミラ",
-    "fid": "コタロウ",
-    "mid": "ジンベラン",
+    "id": "mira",
+    "fid": "kotarou",
+    "mid": "jinberan",
     "name": "ミラ",
     "gender": "female",
     "born": "2021/4/30",
@@ -552,9 +552,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "あずま",
-    "fid": "コロン",
-    "mid": "こまち",
+    "id": "azuma",
+    "fid": "koron",
+    "mid": "komati",
     "name": "あずま",
     "gender": "female",
     "born": "2021/5/18",
@@ -563,9 +563,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ニーナ",
-    "fid": "コタロウ",
-    "mid": "ドリー",
+    "id": "nina",
+    "fid": "kotarou",
+    "mid": "dolly",
     "name": "ニーナ",
     "gender": "female",
     "born": "2016/9/27",
@@ -574,7 +574,7 @@ const familyData = [
     "dead": "2020/5/4"
   },
   {
-    "id": "ミナト",
+    "id": "minato",
     "name": "ミナト",
     "gender": "male",
     "born": "2014/6/12",
@@ -583,9 +583,9 @@ const familyData = [
     "dead": "2017/12/20"
   },
   {
-    "id": "マイ",
-    "fid": "ピーター",
-    "mid": "ウメ",
+    "id": "mai",
+    "fid": "peter",
+    "mid": "ume",
     "name": "マイ",
     "gender": "female",
     "born": "2019/5/15",
@@ -594,9 +594,9 @@ const familyData = [
     "dead": "2022/6/21"
   },
   {
-    "id": "タイヨウ",
-    "fid": "タイチ",
-    "mid": "インディコ",
+    "id": "taiyou",
+    "fid": "taichi",
+    "mid": "indeko",
     "name": "タイヨウ",
     "gender": "male",
     "born": "2022/8/11",
@@ -605,9 +605,9 @@ const familyData = [
     "dead": "2026/10/14"
   },
   {
-    "id": "ししお",
-    "fid": "タイチ",
-    "mid": "ホリー",
+    "id": "sisio",
+    "fid": "taichi",
+    "mid": "holly",
     "name": "ししお",
     "gender": "male",
     "born": "2022/4/4",
@@ -616,9 +616,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ノゾム",
-    "fid": "ブンダ",
-    "mid": "キボウ",
+    "id": "nozomu",
+    "fid": "bunda",
+    "mid": "kibou",
     "name": "ノゾム",
     "gender": "male",
     "born": "2022/2/26",
@@ -627,9 +627,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "おもち",
-    "fid": "イシン",
-    "mid": "ななみ",
+    "id": "omochi",
+    "fid": "ishin",
+    "mid": "nanami",
     "name": "おもち",
     "gender": "female",
     "born": "2022/3/21",
@@ -638,7 +638,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "スカイ",
+    "id": "sky",
     "name": "スカイ",
     "gender": "male",
     "born": "2022/4/20",
@@ -647,9 +647,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "だいふく",
-    "fid": "タイチ",
-    "mid": "りん",
+    "id": "daifuku",
+    "fid": "taichi",
+    "mid": "rin",
     "name": "だいふく",
     "gender": "male",
     "born": "2022/3/14",
@@ -658,9 +658,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ひなぎく",
-    "fid": "チャーリー",
-    "mid": "ぼたん",
+    "id": "hinagiku",
+    "fid": "charlie",
+    "mid": "botan",
     "name": "ひなぎく",
     "gender": "female",
     "born": "2021/12/15",
@@ -669,9 +669,9 @@ const familyData = [
     "dead": "2025/7/2"
   },
   {
-    "id": "ハリー",
-    "fid": "チャーリー",
-    "mid": "コハル",
+    "id": "harry",
+    "fid": "charlie",
+    "mid": "koharu",
     "name": "ハリー",
     "gender": "male",
     "born": "2022/4/22",
@@ -680,9 +680,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "きんとき",
-    "fid": "コロン",
-    "mid": "きらら",
+    "id": "kintoki",
+    "fid": "koron",
+    "mid": "kirara",
     "name": "きんとき",
     "gender": "male",
     "born": "2022/6/25",
@@ -691,9 +691,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "パピー",
-    "fid": "ピックス",
-    "mid": "ミライ",
+    "id": "puppy",
+    "fid": "pix",
+    "mid": "mirai",
     "name": "パピー",
     "gender": "female",
     "born": "2011/6/23",
@@ -702,9 +702,9 @@ const familyData = [
     "dead": "2013/9/3"
   },
   {
-    "id": "ニシチ",
-    "fid": "コタロウ",
-    "mid": "ニーナ",
+    "id": "nishichi",
+    "fid": "kotarou",
+    "mid": "nina",
     "name": "ニシチ",
     "gender": "male",
     "born": "2019/2/7",
@@ -713,9 +713,9 @@ const familyData = [
     "dead": "2021/3/31"
   },
   {
-    "id": "ツムギ",
-    "fid": "アーチャー",
-    "mid": "ユメ",
+    "id": "tumugi",
+    "fid": "archer",
+    "mid": "yume",
     "name": "ツムギ",
     "gender": "female",
     "born": "2023/5/13",
@@ -724,9 +724,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "アラタ",
-    "fid": "アーチャー",
-    "mid": "ヒナタ",
+    "id": "arata",
+    "fid": "archer",
+    "mid": "hinata",
     "name": "アラタ",
     "gender": "male",
     "born": "2023/6/14",
@@ -735,9 +735,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ナギ",
-    "fid": "ピーター",
-    "mid": "ウミ",
+    "id": "nagi",
+    "fid": "peter",
+    "mid": "umi",
     "name": "ナギ",
     "gender": "female",
     "born": "2023/7/31",
@@ -746,9 +746,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "アサヒ",
-    "fid": "アーチャー",
-    "mid": "ヒマワリ",
+    "id": "asahi",
+    "fid": "archer",
+    "mid": "himawari",
     "name": "アサヒ",
     "gender": "male",
     "born": "2022/12/9",
@@ -757,9 +757,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "スミレ",
-    "fid": "ライト",
-    "mid": "つくし",
+    "id": "sumire",
+    "fid": "raito",
+    "mid": "tukusi",
     "name": "スミレ",
     "gender": "female",
     "born": "2024/9/11",
@@ -768,9 +768,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "カスミ",
-    "fid": "アーチャー",
-    "mid": "ヒマワリ",
+    "id": "kasumi",
+    "fid": "archer",
+    "mid": "himawari",
     "name": "カスミ",
     "gender": "female",
     "born": "2024/6/1",
@@ -779,9 +779,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "スター",
-    "fid": "アーチャー",
-    "mid": "インディコ",
+    "id": "star",
+    "fid": "archer",
+    "mid": "indeko",
     "name": "スター",
     "gender": "male",
     "born": "2023/11/18",
@@ -790,9 +790,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "チャーボウ",
-    "fid": "アーチャー",
-    "mid": "キボウ",
+    "id": "charbou",
+    "fid": "archer",
+    "mid": "kibou",
     "name": "チャーボウ",
     "gender": "male",
     "born": "2023/10/21",
@@ -801,9 +801,9 @@ const familyData = [
     "dead": "2026/7/2"
   },
   {
-    "id": "オウキ",
-    "fid": "いぶき",
-    "mid": "オウカ",
+    "id": "ouki",
+    "fid": "ibuki",
+    "mid": "ouka",
     "name": "オウキ",
     "gender": "male",
     "born": "2024/6/12",
@@ -812,9 +812,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "もなか",
-    "fid": "イシン",
-    "mid": "りん",
+    "id": "monaka",
+    "fid": "ishin",
+    "mid": "rin",
     "name": "もなか",
     "gender": "male",
     "born": "2023/10/20",
@@ -823,9 +823,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "さち",
-    "fid": "ソラ",
-    "mid": "ふく",
+    "id": "sachi",
+    "fid": "sora",
+    "mid": "fuku",
     "name": "さち",
     "gender": "female",
     "born": "2024/5/9",
@@ -834,9 +834,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ポポロ",
-    "fid": "コロン",
-    "mid": "たんぽぽ",
+    "id": "poporo",
+    "fid": "koron",
+    "mid": "tanpopo",
     "name": "ポポロ",
     "gender": "male",
     "born": "2024/4/22",
@@ -845,9 +845,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "エイト",
-    "fid": "アーチャー",
-    "mid": "カナエ",
+    "id": "eight",
+    "fid": "archer",
+    "mid": "kanae",
     "name": "エイト",
     "gender": "male",
     "born": "2024/11/24",
@@ -856,9 +856,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "アース",
-    "fid": "アーチャー",
-    "mid": "ピース",
+    "id": "earth",
+    "fid": "archer",
+    "mid": "peace",
     "name": "アース",
     "gender": "male",
     "born": "2024/9/20",
@@ -867,9 +867,9 @@ const familyData = [
     "dead": "2026/7/20"
   },
   {
-    "id": "ミラ仔",
-    "fid": "ソラ",
-    "mid": "ミラ",
+    "id": "mirako1",
+    "fid": "sora",
+    "mid": "mira",
     "name": "ミラ仔",
     "gender": "male",
     "born": "2024/6/23",
@@ -878,7 +878,7 @@ const familyData = [
     "dead": "2025/1/14"
   },
   {
-    "id": "ピコ",
+    "id": "pico",
     "name": "ピコ",
     "gender": "",
     "born": "",
@@ -887,7 +887,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ジェックス",
+    "id": "jex",
     "name": "ジェックス",
     "gender": "",
     "born": "",
@@ -896,7 +896,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ライタ",
+    "id": "raita",
     "name": "ライタ",
     "gender": "",
     "born": "",
@@ -905,7 +905,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "アーチャー(東山)",
+    "id": "archer_higashiyama",
     "name": "アーチャー(東山)",
     "gender": "male",
     "born": "",
@@ -914,7 +914,7 @@ const familyData = [
     "dead": "2015/4/3"
   },
   {
-    "id": "カルゴア",
+    "id": "karugoa",
     "name": "カルゴア",
     "gender": "female",
     "born": "",
@@ -923,7 +923,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ボウ",
+    "id": "bow",
     "name": "ボウ",
     "gender": "male",
     "born": "",
@@ -932,9 +932,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ジンベラン仔",
-    "fid": "コロン",
-    "mid": "ジンベラン",
+    "id": "jinberan_child",
+    "fid": "koron",
+    "mid": "jinberan",
     "name": "ジンベラン仔",
     "gender": "male",
     "born": "",
@@ -943,7 +943,7 @@ const familyData = [
     "dead": "2023/7/9"
   },
   {
-    "id": "ピース♂",
+    "id": "peace_male",
     "name": "ピース♂",
     "gender": "male",
     "born": "",
@@ -952,7 +952,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ゆめ",
+    "id": "yume_south",
     "name": "ゆめ",
     "gender": "female",
     "born": "",
@@ -961,7 +961,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "アーク",
+    "id": "ark",
     "name": "アーク",
     "gender": "male",
     "born": "",
@@ -970,7 +970,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "パイン",
+    "id": "pine",
     "name": "パイン",
     "gender": "",
     "born": "",
@@ -979,7 +979,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ティアラ",
+    "id": "tiara",
     "name": "ティアラ",
     "gender": "",
     "born": "",
@@ -988,7 +988,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ティムタム",
+    "id": "timtam",
     "name": "ティムタム",
     "gender": "",
     "born": "",
@@ -997,7 +997,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ライチ",
+    "id": "raichi",
     "name": "ライチ",
     "gender": "female",
     "born": "",
@@ -1006,7 +1006,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ジェイン",
+    "id": "jane",
     "name": "ジェイン",
     "gender": "female",
     "born": "",
@@ -1015,7 +1015,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ドリー",
+    "id": "dolly",
     "name": "ドリー",
     "gender": "female",
     "born": "",
@@ -1024,7 +1024,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "バンブラ",
+    "id": "banbura",
     "name": "バンブラ",
     "gender": "male",
     "born": "",
@@ -1033,7 +1033,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ココロ",
+    "id": "kokoro",
     "name": "ココロ",
     "gender": "",
     "born": "",
@@ -1042,7 +1042,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ブランディ",
+    "id": "brandy",
     "name": "ブランディ",
     "gender": "",
     "born": "",
@@ -1051,7 +1051,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "フランク",
+    "id": "frank",
     "name": "フランク",
     "gender": "",
     "born": "",
@@ -1060,7 +1060,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "イト",
+    "id": "ito",
     "name": "イト",
     "gender": "female",
     "born": "",
@@ -1069,7 +1069,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ブンダ",
+    "id": "bunda",
     "name": "ブンダ",
     "gender": "male",
     "born": "",
@@ -1078,7 +1078,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "コタロウ",
+    "id": "kotarou",
     "name": "コタロウ",
     "gender": "male",
     "born": "",
@@ -1087,7 +1087,7 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "マックス",
+    "id": "max",
     "name": "マックス",
     "gender": "male",
     "born": "",
@@ -1096,9 +1096,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ラムネ",
-    "fid": "アーチャー",
-    "mid": "キボウ",
+    "id": "ramune",
+    "fid": "archer",
+    "mid": "kibou",
     "name": "ラムネ",
     "gender": "male",
     "born": "2025/4/9",
@@ -1107,9 +1107,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ヒヨリ",
-    "fid": "ソラ",
-    "mid": "コハル",
+    "id": "hiyori",
+    "fid": "sora",
+    "mid": "koharu",
     "name": "ヒヨリ",
     "gender": "female",
     "born": "2025/5/1",
@@ -1118,9 +1118,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "コスモ",
-    "fid": "ししお",
-    "mid": "インディコ",
+    "id": "cosmo",
+    "fid": "sisio",
+    "mid": "indeko",
     "name": "コスモ",
     "gender": "female",
     "born": "2025/5/15",
@@ -1129,9 +1129,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ポル",
-    "fid": "ソラ",
-    "mid": "ミラ",
+    "id": "poll",
+    "fid": "sora",
+    "mid": "mira",
     "name": "ポル",
     "gender": "female",
     "born": "2025/6/2",
@@ -1140,10 +1140,10 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "ユイ",
+    "id": "yui",
     "name": "ユイ",
-    "fid": "ブンダ",
-    "mid": "ユメ",
+    "fid": "bunda",
+    "mid": "yume",
     "gender": "female",
     "born": "",
     "dead": "",
@@ -1151,9 +1151,9 @@ const familyData = [
     "img": "https://dj-kata.github.io/koala_familytree/imgs/yui.png"
   },
   {
-    "id": "キクタロー",
-    "fid": "コロン",
-    "mid": "たんぽぽ",
+    "id": "kikutaro",
+    "fid": "koron",
+    "mid": "tanpopo",
     "name": "キクタロー",
     "gender": "male",
     "born": "2025/12/2",
@@ -1162,9 +1162,9 @@ const familyData = [
     "dead": ""
   },
   {
-    "id": "てんむす",
-    "fid": "スカイ",
-    "mid": "りん",
+    "id": "tenmusu",
+    "fid": "sky",
+    "mid": "rin",
     "name": "てんむす",
     "gender": "male",
     "born": "2026/1/10",
@@ -1179,119 +1179,119 @@ const familyViews = {
     "label": "登録済みの全個体",
     "csv": "csvs/all.csv",
     "members": [
-      "ラム",
-      "のぞみ",
-      "ミリー",
-      "ピックス",
-      "ティリー",
-      "ウメ",
-      "だいち",
-      "ミライ",
-      "ウミ",
-      "ホリー",
-      "モモジ",
-      "ハニー",
-      "ウルル",
-      "ユメ",
-      "ジンベラン",
-      "タイチ",
-      "コロン",
-      "チャーリー",
-      "モミジ",
-      "リオ",
-      "ピーター",
-      "クイン",
-      "オウカ",
-      "りん",
-      "イシン",
-      "こまち",
-      "ぼたん",
-      "ななみ",
-      "きらら",
-      "コタロウ (2015)",
-      "ヒマワリ",
-      "アーチャー",
-      "ハナ",
-      "エマ",
-      "ふく",
-      "コハル",
-      "つくし",
-      "インディコ",
-      "キボウ",
-      "いぶき",
-      "イツキ",
-      "ワトル",
-      "ソラ",
-      "たんぽぽ",
-      "シャイン",
-      "アーティー",
-      "ヒナタ",
-      "カナエ",
-      "ピース",
-      "ライト",
-      "シャイニー",
-      "ミラ",
-      "あずま",
-      "ニーナ",
-      "ミナト",
-      "マイ",
-      "タイヨウ",
-      "ししお",
-      "ノゾム",
-      "おもち",
-      "スカイ",
-      "だいふく",
-      "ひなぎく",
-      "ハリー",
-      "きんとき",
-      "パピー",
-      "ニシチ",
-      "ツムギ",
-      "アラタ",
-      "ナギ",
-      "アサヒ",
-      "スミレ",
-      "カスミ",
-      "スター",
-      "チャーボウ",
-      "オウキ",
-      "もなか",
-      "さち",
-      "ポポロ",
-      "エイト",
-      "アース",
-      "ミラ仔",
-      "ピコ",
-      "ジェックス",
-      "ライタ",
-      "アーチャー(東山)",
-      "カルゴア",
-      "ボウ",
-      "ジンベラン仔",
-      "ピース♂",
-      "ゆめ",
-      "アーク",
-      "パイン",
-      "ティアラ",
-      "ティムタム",
-      "ライチ",
-      "ジェイン",
-      "ドリー",
-      "バンブラ",
-      "ココロ",
-      "ブランディ",
-      "フランク",
-      "イト",
-      "ブンダ",
-      "コタロウ",
-      "マックス",
-      "ラムネ",
-      "ヒヨリ",
-      "コスモ",
-      "ポル",
-      "ユイ",
-      "キクタロー",
-      "てんむす"
+      "ram",
+      "nozomi",
+      "millie",
+      "pix",
+      "tilly",
+      "ume",
+      "daichi",
+      "mirai",
+      "umi",
+      "holly",
+      "momoji",
+      "honey",
+      "uluru",
+      "yume",
+      "jinberan",
+      "taichi",
+      "koron",
+      "charlie",
+      "momiji",
+      "rio",
+      "peter",
+      "quinn",
+      "ouka",
+      "rin",
+      "ishin",
+      "komati",
+      "botan",
+      "nanami",
+      "kirara",
+      "kotaro_2015",
+      "himawari",
+      "archer",
+      "hana",
+      "ema",
+      "fuku",
+      "koharu",
+      "tukusi",
+      "indeko",
+      "kibou",
+      "ibuki",
+      "itsuki",
+      "wattle",
+      "sora",
+      "tanpopo",
+      "shine",
+      "artie",
+      "hinata",
+      "kanae",
+      "peace",
+      "raito",
+      "shiny",
+      "mira",
+      "azuma",
+      "nina",
+      "minato",
+      "mai",
+      "taiyou",
+      "sisio",
+      "nozomu",
+      "omochi",
+      "sky",
+      "daifuku",
+      "hinagiku",
+      "harry",
+      "kintoki",
+      "puppy",
+      "nishichi",
+      "tumugi",
+      "arata",
+      "nagi",
+      "asahi",
+      "sumire",
+      "kasumi",
+      "star",
+      "charbou",
+      "ouki",
+      "monaka",
+      "sachi",
+      "poporo",
+      "eight",
+      "earth",
+      "mirako1",
+      "pico",
+      "jex",
+      "raita",
+      "archer_higashiyama",
+      "karugoa",
+      "bow",
+      "jinberan_child",
+      "peace_male",
+      "yume_south",
+      "ark",
+      "pine",
+      "tiara",
+      "timtam",
+      "raichi",
+      "jane",
+      "dolly",
+      "banbura",
+      "kokoro",
+      "brandy",
+      "frank",
+      "ito",
+      "bunda",
+      "kotarou",
+      "max",
+      "ramune",
+      "hiyori",
+      "cosmo",
+      "poll",
+      "yui",
+      "kikutaro",
+      "tenmusu"
     ],
     "positions": {},
     "junctions": {},
@@ -1301,82 +1301,86 @@ const familyViews = {
     "label": "淡路ファームパーク",
     "csv": "csvs/awaji.csv",
     "members": [
-      "ゆめ",
-      "アーク",
-      "のぞみ",
-      "だいち",
-      "キボウ",
-      "ブンダ",
-      "ノゾム",
-      "ウメ",
-      "ウルル",
-      "ウミ",
-      "ピース♂",
-      "ティリー",
-      "ピーター",
-      "ナギ",
-      "エマ",
-      "こまち"
+      "yume_south",
+      "ark",
+      "nozomi",
+      "daichi",
+      "kibou",
+      "bunda",
+      "nozomu",
+      "ume",
+      "uluru",
+      "umi",
+      "peace_male",
+      "tilly",
+      "peter",
+      "nagi",
+      "ema",
+      "komati"
     ],
     "positions": {
-      "のぞみ": {
+      "nozomi": {
         "x": 800,
         "y": 100
       },
-      "ティリー": {
+      "tilly": {
         "x": 2200,
         "y": 300
       },
-      "ウメ": {
+      "ume": {
         "x": 1000,
         "y": 300
       },
-      "だいち": {
+      "daichi": {
         "x": 400,
         "y": 200
       },
-      "ウミ": {
+      "umi": {
         "x": 1200,
         "y": 400
       },
-      "ウルル": {
+      "uluru": {
         "x": 1400,
         "y": 300
       },
-      "ピーター": {
+      "peter": {
         "x": 2000,
         "y": 400
       },
-      "エマ": {
+      "ema": {
         "x": 1600,
         "y": 500
       },
-      "キボウ": {
+      "kibou": {
         "x": 200,
         "y": 400
       },
-      "ノゾム": {
+      "nozomu": {
         "x": 400,
         "y": 500
       },
-      "ナギ": {
+      "nagi": {
         "x": 1400,
         "y": 500
       },
-      "ピース♂": {
+      "peace_male": {
         "x": 1800,
         "y": 300
       },
-      "ゆめ": {
+      "yume_south": {
         "x": 200,
         "y": 100
       },
-      "アーク": {
+      "ark": {
         "x": 600,
         "y": 100
       },
-      "ブンダ": {
+      "bunda": {
         "x": 600,
+        "y": 400
+      },
+      "komati": {
+        "x": 800,
         "y": 400
       }
     },
@@ -1387,78 +1391,82 @@ const familyViews = {
     "label": "東山動植物園",
     "csv": "csvs/higashiyama2025.csv",
     "members": [
-      "ユメ",
-      "ブンダ",
-      "ティリー",
-      "マックス",
-      "イシン",
-      "りん",
-      "タイチ",
-      "ホリー",
-      "ななみ",
-      "だいふく",
-      "スカイ",
-      "もなか",
-      "ワトル",
-      "おもち",
-      "てんむす"
+      "yume",
+      "bunda",
+      "tilly",
+      "max",
+      "ishin",
+      "rin",
+      "taichi",
+      "holly",
+      "nanami",
+      "daifuku",
+      "sky",
+      "monaka",
+      "wattle",
+      "omochi",
+      "tenmusu"
     ],
     "positions": {
-      "ティリー": {
+      "tilly": {
         "x": 800,
         "y": 100
       },
-      "ホリー": {
+      "holly": {
         "x": 2200,
         "y": 300
       },
-      "ユメ": {
+      "yume": {
         "x": 200,
         "y": 100
       },
-      "タイチ": {
+      "taichi": {
         "x": 1800,
         "y": 300
       },
-      "りん": {
+      "rin": {
         "x": 1000,
         "y": 300
       },
-      "イシン": {
+      "ishin": {
         "x": 400,
         "y": 300
       },
-      "ななみ": {
+      "nanami": {
         "x": 2000,
         "y": 500
       },
-      "ワトル": {
+      "wattle": {
         "x": 2000,
         "y": 600
       },
-      "おもち": {
+      "omochi": {
         "x": 1200,
         "y": 600
       },
-      "スカイ": {
+      "sky": {
         "x": 400,
         "y": 600
       },
-      "だいふく": {
+      "daifuku": {
         "x": 1400,
         "y": 600
       },
-      "もなか": {
+      "monaka": {
         "x": 800,
         "y": 600
       },
-      "ブンダ": {
+      "bunda": {
         "x": 600,
         "y": 100
       },
-      "マックス": {
+      "max": {
         "x": 1200,
         "y": 100
+      },
+      "tenmusu": {
+        "x": 800,
+        "y": 700
       }
     },
     "junctions": {},
@@ -1468,100 +1476,100 @@ const familyViews = {
     "label": "ホリー族",
     "csv": "csvs/holly.csv",
     "members": [
-      "タイチ",
-      "ホリー",
-      "マックス",
-      "ユメ",
-      "ブンダ",
-      "ななみ",
-      "ししお",
-      "イシン",
-      "ワトル",
-      "ティリー",
-      "おもち",
-      "インディコ",
-      "いぶき",
-      "オウカ",
-      "コスモ",
-      "オウキ",
-      "コロン",
-      "こまち",
-      "あずま"
+      "taichi",
+      "holly",
+      "max",
+      "yume",
+      "bunda",
+      "nanami",
+      "sisio",
+      "ishin",
+      "wattle",
+      "tilly",
+      "omochi",
+      "indeko",
+      "ibuki",
+      "ouka",
+      "cosmo",
+      "ouki",
+      "koron",
+      "komati",
+      "azuma"
     ],
     "positions": {
-      "ティリー": {
+      "tilly": {
         "x": 800,
         "y": 500
       },
-      "ホリー": {
+      "holly": {
         "x": 800,
         "y": 100
       },
-      "ユメ": {
+      "yume": {
         "x": 1600,
         "y": 100
       },
-      "タイチ": {
+      "taichi": {
         "x": 200,
         "y": 100
       },
-      "コロン": {
+      "koron": {
         "x": 800,
         "y": 1000
       },
-      "オウカ": {
+      "ouka": {
         "x": 2000,
         "y": 700
       },
-      "イシン": {
+      "ishin": {
         "x": 1800,
         "y": 300
       },
-      "こまち": {
+      "komati": {
         "x": 1200,
         "y": 1000
       },
-      "ななみ": {
+      "nanami": {
         "x": 400,
         "y": 300
       },
-      "インディコ": {
+      "indeko": {
         "x": 1000,
         "y": 600
       },
-      "いぶき": {
+      "ibuki": {
         "x": 1400,
         "y": 700
       },
-      "ワトル": {
+      "wattle": {
         "x": 200,
         "y": 500
       },
-      "あずま": {
+      "azuma": {
         "x": 1000,
         "y": 1100
       },
-      "ししお": {
+      "sisio": {
         "x": 600,
         "y": 300
       },
-      "おもち": {
+      "omochi": {
         "x": 400,
         "y": 600
       },
-      "オウキ": {
+      "ouki": {
         "x": 1600,
         "y": 900
       },
-      "ブンダ": {
+      "bunda": {
         "x": 2000,
         "y": 100
       },
-      "マックス": {
+      "max": {
         "x": 1400,
         "y": 100
       },
-      "コスモ": {
+      "cosmo": {
         "x": 600,
         "y": 800
       }
@@ -1573,90 +1581,90 @@ const familyViews = {
     "label": "インディコ・つくし周辺",
     "csv": "csvs/indeko_tukusi.csv",
     "members": [
-      "マックス",
-      "ティリー",
-      "イシン",
-      "タイチ",
-      "ホリー",
-      "りん",
-      "ライト",
-      "つくし",
-      "もなか",
-      "だいふく",
-      "アーチャー",
-      "インディコ",
-      "ししお",
-      "スミレ",
-      "スター",
-      "タイヨウ",
-      "コスモ"
+      "max",
+      "tilly",
+      "ishin",
+      "taichi",
+      "holly",
+      "rin",
+      "raito",
+      "tukusi",
+      "monaka",
+      "daifuku",
+      "archer",
+      "indeko",
+      "sisio",
+      "sumire",
+      "star",
+      "taiyou",
+      "cosmo"
     ],
     "positions": {
-      "ティリー": {
+      "tilly": {
         "x": 400,
         "y": 100
       },
-      "ホリー": {
+      "holly": {
         "x": 1600,
         "y": 100
       },
-      "タイチ": {
+      "taichi": {
         "x": 1200,
         "y": 100
       },
-      "りん": {
+      "rin": {
         "x": 400,
         "y": 300
       },
-      "イシン": {
+      "ishin": {
         "x": 600,
         "y": 100
       },
-      "アーチャー": {
+      "archer": {
         "x": 1000,
         "y": 600
       },
-      "つくし": {
+      "tukusi": {
         "x": 400,
         "y": 400
       },
-      "インディコ": {
+      "indeko": {
         "x": 1200,
         "y": 600
       },
-      "ライト": {
+      "raito": {
         "x": 200,
         "y": 400
       },
-      "タイヨウ": {
+      "taiyou": {
         "x": 1600,
         "y": 800
       },
-      "ししお": {
+      "sisio": {
         "x": 1400,
         "y": 600
       },
-      "だいふく": {
+      "daifuku": {
         "x": 1000,
         "y": 400
       },
-      "スミレ": {
+      "sumire": {
         "x": 400,
         "y": 800
       },
-      "スター": {
+      "star": {
         "x": 1000,
         "y": 800
       },
-      "もなか": {
+      "monaka": {
         "x": 800,
         "y": 400
       },
-      "マックス": {
+      "max": {
         "x": 200,
         "y": 100
       },
-      "コスモ": {
+      "cosmo": {
         "x": 1200,
         "y": 800
       }
@@ -1668,63 +1676,67 @@ const familyViews = {
     "label": "金沢動物園",
     "csv": "csvs/kanazawa.csv",
     "members": [
-      "ティリー",
-      "アーチャー(東山)",
-      "クイン",
-      "コロン",
-      "ぼたん",
-      "チャーリー",
-      "コハル",
-      "ひなぎく",
-      "たんぽぽ",
-      "ハリー",
-      "ポポロ",
-      "キクタロー"
+      "tilly",
+      "archer_higashiyama",
+      "quinn",
+      "koron",
+      "botan",
+      "charlie",
+      "koharu",
+      "hinagiku",
+      "tanpopo",
+      "harry",
+      "poporo",
+      "kikutaro"
     ],
     "positions": {
-      "ティリー": {
+      "tilly": {
         "x": 400,
         "y": 100
       },
-      "コロン": {
+      "koron": {
         "x": 1400,
         "y": 100
       },
-      "チャーリー": {
+      "charlie": {
         "x": 600,
         "y": 200
       },
-      "クイン": {
+      "quinn": {
         "x": 1000,
         "y": 100
       },
-      "ぼたん": {
+      "botan": {
         "x": 200,
         "y": 200
       },
-      "コハル": {
+      "koharu": {
         "x": 1200,
         "y": 200
       },
-      "たんぽぽ": {
+      "tanpopo": {
         "x": 400,
         "y": 300
       },
-      "ひなぎく": {
+      "hinagiku": {
         "x": 200,
         "y": 300
       },
-      "ハリー": {
+      "harry": {
         "x": 800,
         "y": 400
       },
-      "ポポロ": {
+      "poporo": {
         "x": 1400,
         "y": 400
       },
-      "アーチャー(東山)": {
+      "archer_higashiyama": {
         "x": 800,
         "y": 100
+      },
+      "kikutaro": {
+        "x": 1000,
+        "y": 400
       }
     },
     "junctions": {},
@@ -1734,135 +1746,135 @@ const familyViews = {
     "label": "王子動物園",
     "csv": "csvs/ouji.csv",
     "members": [
-      "ブンダ",
-      "ユメ",
-      "ウメ",
-      "ウルル",
-      "ピース♂",
-      "ティリー",
-      "ウミ",
-      "ホリー",
-      "イシン",
-      "ピーター",
-      "いぶき",
-      "オウカ",
-      "マイ",
-      "ナギ",
-      "エマ",
-      "クイン",
-      "ハナ",
-      "オウキ",
-      "シャイン",
-      "コロン",
-      "シャイニー",
-      "コハル",
-      "バンブラ",
-      "イト",
-      "ライト",
-      "イツキ"
+      "bunda",
+      "yume",
+      "ume",
+      "uluru",
+      "peace_male",
+      "tilly",
+      "umi",
+      "holly",
+      "ishin",
+      "peter",
+      "ibuki",
+      "ouka",
+      "mai",
+      "nagi",
+      "ema",
+      "quinn",
+      "hana",
+      "ouki",
+      "shine",
+      "koron",
+      "shiny",
+      "koharu",
+      "banbura",
+      "ito",
+      "raito",
+      "itsuki"
     ],
     "positions": {
-      "ティリー": {
+      "tilly": {
         "x": 2200,
         "y": 100
       },
-      "ウメ": {
+      "ume": {
         "x": 1000,
         "y": 100
       },
-      "ウミ": {
+      "umi": {
         "x": 1200,
         "y": 300
       },
-      "ホリー": {
+      "holly": {
         "x": 200,
         "y": 300
       },
-      "ウルル": {
+      "uluru": {
         "x": 1400,
         "y": 100
       },
-      "ユメ": {
+      "yume": {
         "x": 800,
         "y": 100
       },
-      "コロン": {
+      "koron": {
         "x": 2000,
         "y": 800
       },
-      "ピーター": {
+      "peter": {
         "x": 2000,
         "y": 400
       },
-      "クイン": {
+      "quinn": {
         "x": 1800,
         "y": 700
       },
-      "オウカ": {
+      "ouka": {
         "x": 1400,
         "y": 500
       },
-      "イシン": {
+      "ishin": {
         "x": 600,
         "y": 300
       },
-      "ハナ": {
+      "hana": {
         "x": 2000,
         "y": 600
       },
-      "エマ": {
+      "ema": {
         "x": 1200,
         "y": 700
       },
-      "コハル": {
+      "koharu": {
         "x": 1800,
         "y": 1000
       },
-      "いぶき": {
+      "ibuki": {
         "x": 400,
         "y": 500
       },
-      "イツキ": {
+      "itsuki": {
         "x": 600,
         "y": 900
       },
-      "シャイン": {
+      "shine": {
         "x": 1200,
         "y": 800
       },
-      "ライト": {
+      "raito": {
         "x": 400,
         "y": 900
       },
-      "シャイニー": {
+      "shiny": {
         "x": 1000,
         "y": 1000
       },
-      "マイ": {
+      "mai": {
         "x": 1000,
         "y": 600
       },
-      "ナギ": {
+      "nagi": {
         "x": 1400,
         "y": 700
       },
-      "オウキ": {
+      "ouki": {
         "x": 800,
         "y": 700
       },
-      "ピース♂": {
+      "peace_male": {
         "x": 1800,
         "y": 100
       },
-      "バンブラ": {
+      "banbura": {
         "x": 200,
         "y": 800
       },
-      "イト": {
+      "ito": {
         "x": 600,
         "y": 800
       },
-      "ブンダ": {
+      "bunda": {
         "x": 400,
         "y": 100
       }
@@ -1874,95 +1886,95 @@ const familyViews = {
     "label": "埼玉県こども動物自然公園",
     "csv": "csvs/scz.csv",
     "members": [
-      "バンブラ",
-      "ユメ",
-      "ヒマワリ",
-      "アーチャー",
-      "アサヒ",
-      "カナエ",
-      "コロン",
-      "クイン",
-      "ドリー",
-      "コハル",
-      "ソラ",
-      "ふく",
-      "コタロウ",
-      "ジンベラン",
-      "ミラ",
-      "ヒヨリ",
-      "ポル",
-      "さち"
+      "banbura",
+      "yume",
+      "himawari",
+      "archer",
+      "asahi",
+      "kanae",
+      "koron",
+      "quinn",
+      "dolly",
+      "koharu",
+      "sora",
+      "fuku",
+      "kotarou",
+      "jinberan",
+      "mira",
+      "hiyori",
+      "poll",
+      "sachi"
     ],
     "positions": {
-      "ユメ": {
+      "yume": {
         "x": 1000,
         "y": 100
       },
-      "ジンベラン": {
+      "jinberan": {
         "x": 1600,
         "y": 800
       },
-      "コロン": {
+      "koron": {
         "x": 200,
         "y": 300
       },
-      "クイン": {
+      "quinn": {
         "x": 600,
         "y": 300
       },
-      "ヒマワリ": {
+      "himawari": {
         "x": 1000,
         "y": 200
       },
-      "アーチャー": {
+      "archer": {
         "x": 1400,
         "y": 200
       },
-      "ふく": {
+      "fuku": {
         "x": 1200,
         "y": 500
       },
-      "コハル": {
+      "koharu": {
         "x": 400,
         "y": 500
       },
-      "ソラ": {
+      "sora": {
         "x": 800,
         "y": 500
       },
-      "カナエ": {
+      "kanae": {
         "x": 1000,
         "y": 300
       },
-      "ミラ": {
+      "mira": {
         "x": 1200,
         "y": 700
       },
-      "アサヒ": {
+      "asahi": {
         "x": 1200,
         "y": 300
       },
-      "さち": {
+      "sachi": {
         "x": 1000,
         "y": 900
       },
-      "ドリー": {
+      "dolly": {
         "x": 1600,
         "y": 400
       },
-      "バンブラ": {
+      "banbura": {
         "x": 600,
         "y": 100
       },
-      "コタロウ": {
+      "kotarou": {
         "x": 1600,
         "y": 600
       },
-      "ヒヨリ": {
+      "hiyori": {
         "x": 600,
         "y": 900
       },
-      "ポル": {
+      "poll": {
         "x": 1400,
         "y": 1000
       }
@@ -1974,63 +1986,67 @@ const familyViews = {
     "label": "多摩動物公園",
     "csv": "csvs/tama2025.csv",
     "members": [
-      "アーチャー(東山)",
-      "ティリー",
-      "タイチ",
-      "ホリー",
-      "マックス",
-      "チャーリー",
-      "きらら",
-      "コロン",
-      "こまち",
-      "きんとき",
-      "あずま",
-      "ソラ"
+      "archer_higashiyama",
+      "tilly",
+      "taichi",
+      "holly",
+      "max",
+      "charlie",
+      "kirara",
+      "koron",
+      "komati",
+      "kintoki",
+      "azuma",
+      "sora"
     ],
     "positions": {
-      "ティリー": {
+      "tilly": {
         "x": 600,
         "y": 100
       },
-      "ホリー": {
+      "holly": {
         "x": 1400,
         "y": 100
       },
-      "タイチ": {
+      "taichi": {
         "x": 1000,
         "y": 100
       },
-      "コロン": {
+      "koron": {
         "x": 1200,
         "y": 300
       },
-      "チャーリー": {
+      "charlie": {
         "x": 400,
         "y": 200
       },
-      "こまち": {
+      "komati": {
         "x": 1600,
         "y": 300
       },
-      "きらら": {
+      "kirara": {
         "x": 800,
         "y": 300
       },
-      "あずま": {
+      "azuma": {
         "x": 1400,
         "y": 400
       },
-      "きんとき": {
+      "kintoki": {
         "x": 1000,
         "y": 400
       },
-      "アーチャー(東山)": {
+      "archer_higashiyama": {
         "x": 200,
         "y": 100
       },
-      "マックス": {
+      "max": {
         "x": 1800,
         "y": 100
+      },
+      "sora": {
+        "x": 0,
+        "y": 400
       }
     },
     "junctions": {},
@@ -2040,199 +2056,207 @@ const familyViews = {
     "label": "ティリー族",
     "csv": "csvs/tilly.csv",
     "members": [
-      "アーチャー(東山)",
-      "ティリー",
-      "ピース♂",
-      "マックス",
-      "ぼたん",
-      "チャーリー",
-      "りん",
-      "タイチ",
-      "ハリー",
-      "イシン",
-      "ピーター",
-      "ウミ",
-      "コハル",
-      "ひなぎく",
-      "たんぽぽ",
-      "コロン",
-      "アーチャー",
-      "インディコ",
-      "ウメ",
-      "オウカ",
-      "エマ",
-      "ナギ",
-      "ポポロ",
-      "きらら",
-      "マイ",
-      "ハナ",
-      "きんとき",
-      "スター",
-      "ししお",
-      "タイヨウ",
-      "シャイン",
-      "ライト",
-      "つくし",
-      "もなか",
-      "だいふく",
-      "コスモ",
-      "シャイニー",
-      "スミレ",
-      "キクタロー",
-      "てんむす"
+      "archer_higashiyama",
+      "tilly",
+      "peace_male",
+      "max",
+      "botan",
+      "charlie",
+      "rin",
+      "taichi",
+      "harry",
+      "ishin",
+      "peter",
+      "umi",
+      "koharu",
+      "hinagiku",
+      "tanpopo",
+      "koron",
+      "archer",
+      "indeko",
+      "ume",
+      "ouka",
+      "ema",
+      "nagi",
+      "poporo",
+      "kirara",
+      "mai",
+      "hana",
+      "kintoki",
+      "star",
+      "sisio",
+      "taiyou",
+      "shine",
+      "raito",
+      "tukusi",
+      "monaka",
+      "daifuku",
+      "cosmo",
+      "shiny",
+      "sumire",
+      "kikutaro",
+      "tenmusu"
     ],
     "positions": {
-      "ティリー": {
+      "tilly": {
         "x": 2000,
         "y": 100
       },
-      "ウメ": {
+      "ume": {
         "x": 2200,
         "y": 900
       },
-      "ウミ": {
+      "umi": {
         "x": 3200,
         "y": 700
       },
-      "タイチ": {
+      "taichi": {
         "x": 1800,
         "y": 600
       },
-      "コロン": {
+      "koron": {
         "x": 800,
         "y": 900
       },
-      "チャーリー": {
+      "charlie": {
         "x": 600,
         "y": 500
       },
-      "ピーター": {
+      "peter": {
         "x": 2800,
         "y": 700
       },
-      "オウカ": {
+      "ouka": {
         "x": 2600,
         "y": 900
       },
-      "りん": {
+      "rin": {
         "x": 1000,
         "y": 600
       },
-      "イシン": {
+      "ishin": {
         "x": 1200,
         "y": 700
       },
-      "ぼたん": {
+      "botan": {
         "x": 200,
         "y": 500
       },
-      "きらら": {
+      "kirara": {
         "x": 1200,
         "y": 1000
       },
-      "アーチャー": {
+      "archer": {
         "x": 1600,
         "y": 900
       },
-      "ハナ": {
+      "hana": {
         "x": 2800,
         "y": 1000
       },
-      "エマ": {
+      "ema": {
         "x": 3000,
         "y": 900
       },
-      "コハル": {
+      "koharu": {
         "x": 600,
         "y": 800
       },
-      "つくし": {
+      "tukusi": {
         "x": 1000,
         "y": 1200
       },
-      "インディコ": {
+      "indeko": {
         "x": 1800,
         "y": 900
       },
-      "たんぽぽ": {
+      "tanpopo": {
         "x": 400,
         "y": 900
       },
-      "シャイン": {
+      "shine": {
         "x": 2600,
         "y": 1100
       },
-      "ライト": {
+      "raito": {
         "x": 600,
         "y": 1200
       },
-      "シャイニー": {
+      "shiny": {
         "x": 2400,
         "y": 1200
       },
-      "マイ": {
+      "mai": {
         "x": 2400,
         "y": 1000
       },
-      "タイヨウ": {
+      "taiyou": {
         "x": 2200,
         "y": 1100
       },
-      "ししお": {
+      "sisio": {
         "x": 2000,
         "y": 1100
       },
-      "だいふく": {
+      "daifuku": {
         "x": 1400,
         "y": 1200
       },
-      "ひなぎく": {
+      "hinagiku": {
         "x": 200,
         "y": 900
       },
-      "ハリー": {
+      "harry": {
         "x": 800,
         "y": 700
       },
-      "きんとき": {
+      "kintoki": {
         "x": 800,
         "y": 1100
       },
-      "ナギ": {
+      "nagi": {
         "x": 3200,
         "y": 900
       },
-      "スミレ": {
+      "sumire": {
         "x": 800,
         "y": 1300
       },
-      "スター": {
+      "star": {
         "x": 1600,
         "y": 1100
       },
-      "もなか": {
+      "monaka": {
         "x": 1200,
         "y": 1200
       },
-      "ポポロ": {
+      "poporo": {
         "x": 600,
         "y": 1000
       },
-      "アーチャー(東山)": {
+      "archer_higashiyama": {
         "x": 400,
         "y": 100
       },
-      "ピース♂": {
+      "peace_male": {
         "x": 3000,
         "y": 100
       },
-      "マックス": {
+      "max": {
         "x": 800,
         "y": 200
       },
-      "コスモ": {
+      "cosmo": {
         "x": 1800,
         "y": 1200
+      },
+      "tenmusu": {
+        "x": 1000,
+        "y": 700
+      },
+      "kikutaro": {
+        "x": 800,
+        "y": 1000
       }
     },
     "junctions": {},
@@ -2242,205 +2266,205 @@ const familyViews = {
     "label": "ユメ族",
     "csv": "csvs/yume.csv",
     "members": [
-      "タイチ",
-      "ホリー",
-      "ブンダ",
-      "ユメ",
-      "ツムギ",
-      "バンブラ",
-      "コハル",
-      "ソラ",
-      "イシン",
-      "ユイ",
-      "ミラ",
-      "ヒマワリ",
-      "アーチャー",
-      "ヒナタ",
-      "ヒヨリ",
-      "カスミ",
-      "アサヒ",
-      "ふく",
-      "ティリー",
-      "カナエ",
-      "ミラ仔",
-      "ポル",
-      "ななみ",
-      "りん",
-      "アラタ",
-      "さち",
-      "ししお",
-      "インディコ",
-      "エイト",
-      "おもち",
-      "ライト",
-      "つくし",
-      "もなか",
-      "オウカ",
-      "いぶき",
-      "タイヨウ",
-      "スター",
-      "オウキ",
-      "コスモ",
-      "スミレ"
+      "taichi",
+      "holly",
+      "bunda",
+      "yume",
+      "tumugi",
+      "banbura",
+      "koharu",
+      "sora",
+      "ishin",
+      "yui",
+      "mira",
+      "himawari",
+      "archer",
+      "hinata",
+      "hiyori",
+      "kasumi",
+      "asahi",
+      "fuku",
+      "tilly",
+      "kanae",
+      "mirako1",
+      "poll",
+      "nanami",
+      "rin",
+      "arata",
+      "sachi",
+      "sisio",
+      "indeko",
+      "eight",
+      "omochi",
+      "raito",
+      "tukusi",
+      "monaka",
+      "ouka",
+      "ibuki",
+      "taiyou",
+      "star",
+      "ouki",
+      "cosmo",
+      "sumire"
     ],
     "positions": {
-      "ティリー": {
+      "tilly": {
         "x": 2800,
         "y": 700
       },
-      "ホリー": {
+      "holly": {
         "x": 2000,
         "y": 100
       },
-      "ユメ": {
+      "yume": {
         "x": 3200,
         "y": 200
       },
-      "タイチ": {
+      "taichi": {
         "x": 1400,
         "y": 100
       },
-      "オウカ": {
+      "ouka": {
         "x": 1600,
         "y": 1100
       },
-      "りん": {
+      "rin": {
         "x": 3600,
         "y": 800
       },
-      "イシン": {
+      "ishin": {
         "x": 3000,
         "y": 400
       },
-      "ななみ": {
+      "nanami": {
         "x": 1400,
         "y": 800
       },
-      "ヒマワリ": {
+      "himawari": {
         "x": 3200,
         "y": 500
       },
-      "アーチャー": {
+      "archer": {
         "x": 4000,
         "y": 500
       },
-      "ふく": {
+      "fuku": {
         "x": 1000,
         "y": 700
       },
-      "コハル": {
+      "koharu": {
         "x": 400,
         "y": 400
       },
-      "つくし": {
+      "tukusi": {
         "x": 3400,
         "y": 1000
       },
-      "インディコ": {
+      "indeko": {
         "x": 2600,
         "y": 900
       },
-      "いぶき": {
+      "ibuki": {
         "x": 2000,
         "y": 1100
       },
-      "ソラ": {
+      "sora": {
         "x": 800,
         "y": 400
       },
-      "ヒナタ": {
+      "hinata": {
         "x": 4400,
         "y": 500
       },
-      "カナエ": {
+      "kanae": {
         "x": 3800,
         "y": 700
       },
-      "ライト": {
+      "raito": {
         "x": 3000,
         "y": 1000
       },
-      "ミラ": {
+      "mira": {
         "x": 200,
         "y": 500
       },
-      "タイヨウ": {
+      "taiyou": {
         "x": 2200,
         "y": 1100
       },
-      "ししお": {
+      "sisio": {
         "x": 1800,
         "y": 900
       },
-      "おもち": {
+      "omochi": {
         "x": 1600,
         "y": 1000
       },
-      "ツムギ": {
+      "tumugi": {
         "x": 4400,
         "y": 200
       },
-      "アラタ": {
+      "arata": {
         "x": 4200,
         "y": 800
       },
-      "アサヒ": {
+      "asahi": {
         "x": 3600,
         "y": 600
       },
-      "スミレ": {
+      "sumire": {
         "x": 3200,
         "y": 1200
       },
-      "カスミ": {
+      "kasumi": {
         "x": 3400,
         "y": 600
       },
-      "スター": {
+      "star": {
         "x": 2800,
         "y": 1100
       },
-      "オウキ": {
+      "ouki": {
         "x": 1800,
         "y": 1200
       },
-      "もなか": {
+      "monaka": {
         "x": 3600,
         "y": 1000
       },
-      "さち": {
+      "sachi": {
         "x": 800,
         "y": 900
       },
-      "エイト": {
+      "eight": {
         "x": 4000,
         "y": 900
       },
-      "ミラ仔": {
+      "mirako1": {
         "x": 200,
         "y": 800
       },
-      "バンブラ": {
+      "banbura": {
         "x": 3800,
         "y": 300
       },
-      "ブンダ": {
+      "bunda": {
         "x": 2600,
         "y": 200
       },
-      "ヒヨリ": {
+      "hiyori": {
         "x": 600,
         "y": 600
       },
-      "コスモ": {
+      "cosmo": {
         "x": 2400,
         "y": 1200
       },
-      "ポル": {
+      "poll": {
         "x": 400,
         "y": 800
       },
-      "ユイ": {
+      "yui": {
         "x": 3200,
         "y": 400
       }
@@ -2451,6 +2475,4 @@ const familyViews = {
 };
 
 window.familyData = familyData;
-
 window.familyViews = familyViews;
-

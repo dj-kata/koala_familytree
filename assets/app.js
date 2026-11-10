@@ -520,11 +520,7 @@
       option.textContent = view.label;
       select.append(option);
     });
-    document.getElementById("render-view").addEventListener("click", renderSelectedView);
-    select.addEventListener("change", () => {
-      const view = window.familyViews[select.value];
-      document.getElementById("download-csv").href = `./${view.csv}`;
-    });
+    select.addEventListener("change", renderSelectedView);
     document.getElementById("edit-layout").addEventListener("change", (event) => setEditMode(event.target.checked));
     document.getElementById("export-layout").addEventListener("click", exportLayout);
     document.getElementById("render-custom").addEventListener("click", renderCustom);

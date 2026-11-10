@@ -27,6 +27,15 @@ class DataModelTests(unittest.TestCase):
         self.assertEqual("2009/12/15", tilly["born"])
         self.assertEqual("2024/12/25", tilly["dead"])
 
+    def test_ids_and_parent_references_are_ascii_strings(self) -> None:
+        known_ids = set(self.by_id)
+        for person in self.people:
+            self.assertRegex(person["id"], r"^[a-z][a-z0-9_]*$")
+            for field in ("fid", "mid"):
+                if field in person:
+                    self.assertIsInstance(person[field], str)
+                    self.assertIn(person[field], known_ids)
+
     def test_generated_csv_has_dead_column(self) -> None:
         generated = render_view(self.views["all"], self.by_id)
         self.assertTrue(generated.startswith("行番号,列番号,個体名,性別,生年月日,没日,"))
@@ -37,6 +46,11 @@ class DataModelTests(unittest.TestCase):
         self.assertEqual(11, len(self.views))
         for view in self.views.values():
             self.assertLessEqual(set(map(str, view["members"])), known_ids)
+
+    def test_named_views_have_saved_positions(self) -> None:
+        for view_key, view in self.views.items():
+            if view_key != "all":
+                self.assertLessEqual(set(view["members"]), set(view["positions"]), view_key)
 
     def test_layout_export_can_be_merged(self) -> None:
         views = copy.deepcopy(self.views)
