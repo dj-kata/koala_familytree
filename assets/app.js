@@ -3,6 +3,7 @@
 
   const ROW_SPACING = 150;
   const COLUMN_SPACING = 220;
+  const PERSON_PREFIX = "person:";
   const UNION_PREFIX = "union:";
   const ROUTE_PREFIX = "route:";
   const PARENT_ROUTE_PREFIX = "parent-route:";
@@ -20,14 +21,23 @@
     editMode: false,
   };
 
-  const byId = new Map(window.familyData.map((person) => [Number(person.id), person]));
+  const byId = new Map(window.familyData.map((person) => [String(person.id), person]));
 
   function clone(value) {
     return JSON.parse(JSON.stringify(value));
   }
 
   function pairKey(firstId, secondId) {
-    return [Number(firstId), Number(secondId)].sort((a, b) => a - b).join("|");
+    return `${firstId}|${secondId}`;
+  }
+
+  function personNodeId(personId) {
+    return `${PERSON_PREFIX}${personId}`;
+  }
+
+  function personIdFromNode(nodeId) {
+    const value = String(nodeId);
+    return value.startsWith(PERSON_PREFIX) ? value.slice(PERSON_PREFIX.length) : null;
   }
 
   function showStatus(message, type = "info") {
@@ -50,8 +60,8 @@
     visiting.add(personId);
     const person = peopleById.get(personId);
     const parentGenerations = [person?.fid, person?.mid]
-      .filter((id) => id !== undefined && peopleInView.has(Number(id)))
-      .map((id) => generationFor(Number(id), peopleInView, peopleById, cache, visiting));
+      .filter((id) => id !== undefined && peopleInView.has(String(id)))
+      .map((id) => generationFor(String(id), peopleInView, peopleById, cache, visiting));
     visiting.delete(personId);
     const generation = parentGenerations.length ? Math.max(...parentGenerations) + 1 : 0;
     cache.set(personId, generation);
@@ -60,14 +70,14 @@
 
   function completePositions(people, savedPositions) {
     const positions = clone(savedPositions || {});
-    const peopleInView = new Set(people.map((person) => Number(person.id)));
-    const peopleById = new Map(people.map((person) => [Number(person.id), person]));
+    const peopleInView = new Set(people.map((person) => String(person.id)));
+    const peopleById = new Map(people.map((person) => [String(person.id), person]));
     const generations = new Map();
     const generationCache = new Map();
 
     people.forEach((person, sourceIndex) => {
       if (positions[String(person.id)]) return;
-      const generation = generationFor(Number(person.id), peopleInView, peopleById, generationCache);
+      const generation = generationFor(String(person.id), peopleInView, peopleById, generationCache);
       if (!generations.has(generation)) generations.set(generation, []);
       generations.get(generation).push({ person, sourceIndex });
     });
@@ -94,20 +104,20 @@
   }
 
   function parentFamilies(people) {
-    const visibleIds = new Set(people.map((person) => Number(person.id)));
+    const visibleIds = new Set(people.map((person) => String(person.id)));
     const families = new Map();
     people.forEach((child) => {
       if (child.fid === undefined || child.mid === undefined) return;
-      if (!visibleIds.has(Number(child.fid)) || !visibleIds.has(Number(child.mid))) return;
+      if (!visibleIds.has(String(child.fid)) || !visibleIds.has(String(child.mid))) return;
       const key = pairKey(child.fid, child.mid);
       if (!families.has(key)) {
         families.set(key, {
           key,
-          parentIds: key.split("|").map(Number),
+          parentIds: key.split("|"),
           children: [],
         });
       }
-      families.get(key).children.push(Number(child.id));
+      families.get(key).children.push(String(child.id));
     });
     return families;
   }
@@ -199,7 +209,7 @@
     const visNodes = [];
     const visEdges = [];
     state.routeNodeMeta.clear();
-    const visibleById = new Map(people.map((person) => [Number(person.id), person]));
+    const visibleById = new Map(people.map((person) => [String(person.id), person]));
     layout.positions = completePositions(people, layout.positions);
     layout.junctions ||= {};
     layout.routes ||= {};
@@ -208,7 +218,7 @@
       const position = layout.positions[String(person.id)];
       const hasImage = person.img && !person.img.endsWith("/imgs/.png");
       const node = {
-        id: Number(person.id),
+        id: personNodeId(person.id),
         x: position.x,
         y: position.y,
         label: makeLabel(person),
@@ -257,7 +267,7 @@
         addSegmentedEdges(
           visNodes,
           visEdges,
-          parentId,
+          personNodeId(parentId),
           junctionId,
           points,
           {
@@ -280,7 +290,7 @@
           visEdges.push({
             id: `child:${routeKey}`,
             from: junctionId,
-            to: childId,
+            to: personNodeId(childId),
             color: { color: "#718078" },
             width: 2,
             arrows: "to",
@@ -291,7 +301,7 @@
             visNodes,
             visEdges,
             junctionId,
-            childId,
+            personNodeId(childId),
             route.points || [],
             { color: { color: "#718078" }, width: 2, smooth: false, arrows: "to" },
             `child:${routeKey}`,
@@ -309,7 +319,7 @@
     if (!state.network || !state.layout) return;
     const positions = state.network.getPositions();
     state.people.forEach((person) => {
-      const position = positions[String(person.id)];
+      const position = positions[personNodeId(person.id)];
       if (position) state.layout.positions[String(person.id)] = { x: Math.round(position.x), y: Math.round(position.y) };
     });
     Object.keys(state.layout.junctions).forEach((key) => {
@@ -363,8 +373,10 @@
       showStatus("レイアウトを変更しました。必要なら「レイアウトを書き出す」で保存してください。", "success");
     });
     state.network.on("click", (params) => {
-      if (params.nodes.length !== 1 || typeof params.nodes[0] !== "number") return;
-      const person = people.find((item) => Number(item.id) === params.nodes[0]) || byId.get(params.nodes[0]);
+      if (params.nodes.length !== 1) return;
+      const personId = personIdFromNode(params.nodes[0]);
+      if (!personId) return;
+      const person = people.find((item) => String(item.id) === personId) || byId.get(personId);
       if (person) showStatus(`${person.name}${person.dead ? `（没 ${person.dead}）` : ""}`);
     });
     state.resizeObserver = new ResizeObserver(() => state.network?.redraw());
@@ -377,7 +389,7 @@
     const viewKey = document.getElementById("view-select").value;
     const view = window.familyViews[viewKey];
     if (!view) return showStatus(`表示設定「${viewKey}」がありません。`, "error");
-    const people = view.members.map((id) => byId.get(Number(id))).filter(Boolean).map(clone);
+    const people = view.members.map((id) => byId.get(String(id))).filter(Boolean).map(clone);
     document.getElementById("download-csv").href = `./${view.csv}`;
     renderGraph(people, view, viewKey, view.label);
   }
@@ -439,7 +451,8 @@
     result.data.forEach((row) => {
       const name = String(row["個体名"] || row.name || "").trim();
       if (!name) return;
-      const id = people.length;
+      if (names.has(name)) throw new Error(`個体名「${name}」が重複しています`);
+      const id = name;
       let born = String(row["生年月日"] || row.born || "").trim();
       let dead = String(row["没日"] || row.dead || "").trim();
       if (!dead && born.includes("-")) [born, dead] = born.split("-", 2);
@@ -486,6 +499,12 @@
           : { people: json.people, layout: json.layout || { positions: {}, junctions: {}, routes: {} } };
       }
       if (!Array.isArray(parsed.people) || !parsed.people.length) throw new Error("個体データがありません");
+      parsed.people = parsed.people.map((person) => ({
+        ...person,
+        id: String(person.id ?? person.name),
+        ...(person.fid === undefined ? {} : { fid: String(person.fid) }),
+        ...(person.mid === undefined ? {} : { mid: String(person.mid) }),
+      }));
       document.getElementById("download-csv").removeAttribute("href");
       renderGraph(parsed.people, parsed.layout, "custom", "貼り付けたデータ");
     } catch (error) {

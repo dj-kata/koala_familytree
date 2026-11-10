@@ -44,5 +44,5 @@ def write_data(
     )
 
 
-def people_by_id(people: list[dict[str, Any]]) -> dict[int, dict[str, Any]]:
-    return {int(person["id"]): person for person in people}
+def people_by_id(people: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    return {str(person["id"]): person for person in people}

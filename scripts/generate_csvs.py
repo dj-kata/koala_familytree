@@ -32,16 +32,16 @@ def grid_value(value: float, spacing: int) -> str:
     return str(int(result)) if result.is_integer() else str(result)
 
 
-def render_view(view: dict, by_id: dict[int, dict]) -> str:
+def render_view(view: dict, by_id: dict[str, dict]) -> str:
     target = io.StringIO(newline="")
     positions = view.get("positions", {})
     writer = csv.DictWriter(target, fieldnames=FIELDNAMES, lineterminator="\n")
     writer.writeheader()
     for person_id in view["members"]:
-        person = by_id[int(person_id)]
+        person = by_id[str(person_id)]
         position = positions.get(str(person_id), {})
-        father = by_id.get(int(person["fid"])) if "fid" in person else None
-        mother = by_id.get(int(person["mid"])) if "mid" in person else None
+        father = by_id.get(str(person["fid"])) if "fid" in person else None
+        mother = by_id.get(str(person["mid"])) if "mid" in person else None
         writer.writerow(
             {
                 "行番号": grid_value(float(position["y"]), ROW_SPACING) if "y" in position else "",

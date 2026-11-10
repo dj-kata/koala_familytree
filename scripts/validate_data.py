@@ -21,7 +21,7 @@ def validate() -> tuple[list[str], list[str]]:
     people, views = load_data()
     by_id = people_by_id(people)
 
-    ids = [int(person["id"]) for person in people]
+    ids = [str(person["id"]) for person in people]
     names = [str(person.get("name", "")) for person in people]
     for person_id, count in Counter(ids).items():
         if count > 1:
@@ -34,10 +34,14 @@ def validate() -> tuple[list[str], list[str]]:
 
     placeholder_names: list[str] = []
     missing_icons: set[str] = set()
-    partner_pairs: set[tuple[int, int]] = set()
+    partner_pairs: set[tuple[str, str]] = set()
     for person in people:
-        person_id = int(person["id"])
+        person_id = str(person["id"])
         name = str(person.get("name", person_id))
+        if person_id != name:
+            errors.append(f"{name}: idは個体名と同じ文字列にしてください（現在: {person_id}）")
+        if any(delimiter in person_id for delimiter in ("|", ">")):
+            errors.append(f"{name}: idに予約文字 | または > は使えません")
         gender = str(person.get("gender", ""))
         if gender not in VALID_GENDERS:
             errors.append(f"{name}: 未対応のgender「{gender}」です")
@@ -46,17 +50,17 @@ def validate() -> tuple[list[str], list[str]]:
         if "-" in str(person.get("born", "")):
             errors.append(f"{name}: bornに没日が混在しています")
 
-        parent_ids: list[int] = []
+        parent_ids: list[str] = []
         for field in ("fid", "mid"):
             if field in person:
-                parent_id = int(person[field])
+                parent_id = str(person[field])
                 parent_ids.append(parent_id)
                 if parent_id not in by_id:
                     errors.append(f"{name}: 存在しない{field}={parent_id}を参照しています")
                 if parent_id == person_id:
                     errors.append(f"{name}: 自分自身が親になっています")
         if len(parent_ids) == 2:
-            partner_pairs.add(tuple(sorted(parent_ids)))
+            partner_pairs.add((parent_ids[0], parent_ids[1]))
 
         icon = str(person.get("img", ""))
         filename = Path(urlparse(icon).path).name
@@ -67,7 +71,7 @@ def validate() -> tuple[list[str], list[str]]:
 
     valid_ids = set(by_id)
     for view_key, view in views.items():
-        members = [int(value) for value in view.get("members", [])]
+        members = [str(value) for value in view.get("members", [])]
         duplicate_members = [value for value, count in Counter(members).items() if count > 1]
         if duplicate_members:
             errors.append(f"{view_key}: membersに重複IDがあります: {duplicate_members}")
@@ -77,14 +81,17 @@ def validate() -> tuple[list[str], list[str]]:
 
         member_set = set(members)
         for person_id, position in view.get("positions", {}).items():
-            if int(person_id) not in member_set:
+            if str(person_id) not in member_set:
                 errors.append(f"{view_key}: positionsのID {person_id}がmembersにありません")
             if not all(isinstance(position.get(axis), (int, float)) for axis in ("x", "y")):
                 errors.append(f"{view_key}: positions[{person_id}]の座標が不正です")
 
         for pair_key, position in view.get("junctions", {}).items():
             try:
-                pair = tuple(sorted(int(value) for value in pair_key.split("|")))
+                pair_parts = pair_key.split("|")
+                if len(pair_parts) != 2 or not all(pair_parts):
+                    raise ValueError
+                pair = (pair_parts[0], pair_parts[1])
             except ValueError:
                 errors.append(f"{view_key}: 接点キー「{pair_key}」が不正です")
                 continue
@@ -99,7 +106,9 @@ def validate() -> tuple[list[str], list[str]]:
                 continue
             pair_key, child_text = route_key.split(">", 1)
             try:
-                child_id = int(child_text)
+                if not child_text:
+                    raise ValueError
+                child_id = child_text
             except ValueError:
                 errors.append(f"{view_key}: 経路の子ID「{child_text}」が不正です")
                 continue
@@ -107,7 +116,7 @@ def validate() -> tuple[list[str], list[str]]:
             if child is None or "fid" not in child or "mid" not in child:
                 errors.append(f"{view_key}: 経路「{route_key}」の子または両親が不正です")
             else:
-                expected_pair = "|".join(map(str, sorted((int(child["fid"]), int(child["mid"])))))
+                expected_pair = f"{child['fid']}|{child['mid']}"
                 if pair_key != expected_pair:
                     errors.append(f"{view_key}: 経路「{route_key}」の親ペアが一致しません")
             points = route.get("points") if isinstance(route, dict) else None
@@ -117,6 +126,10 @@ def validate() -> tuple[list[str], list[str]]:
                 for point in points
             ):
                 errors.append(f"{view_key}: routes[{route_key}]のpointsが不正です")
+
+    all_members = [str(value) for value in views.get("all", {}).get("members", [])]
+    if all_members != ids:
+        errors.append("allビューのmembersがfamilyDataの全個体・並び順と一致しません")
 
     if placeholder_names:
         warnings.append(f"プレースホルダーのアイコンURLが{len(placeholder_names)}件あります")

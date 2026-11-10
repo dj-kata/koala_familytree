@@ -36,15 +36,15 @@ class DataModelTests(unittest.TestCase):
         known_ids = set(self.by_id)
         self.assertEqual(11, len(self.views))
         for view in self.views.values():
-            self.assertLessEqual(set(map(int, view["members"])), known_ids)
+            self.assertLessEqual(set(map(str, view["members"])), known_ids)
 
     def test_layout_export_can_be_merged(self) -> None:
         views = copy.deepcopy(self.views)
         exported = {
             "view": "yume",
-            "positions": {"4": {"x": 100, "y": 200}},
-            "junctions": {"4|24": {"x": 150, "y": 200}},
-            "routes": {"4|24>17": {"mode": "orthogonal", "points": []}},
+            "positions": {"ティリー": {"x": 100, "y": 200}},
+            "junctions": {"マックス|ティリー": {"x": 150, "y": 200}},
+            "routes": {"マックス|ティリー>チャーリー": {"mode": "orthogonal", "points": []}},
         }
         self.assertEqual("yume", merge_layout(exported, views))
         self.assertEqual(exported["positions"], views["yume"]["positions"])
